@@ -1,9 +1,9 @@
 import './App.css'
 import HomePage from "./components/HomePage"
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Journey from './components/Journey'
 import FunFacts from './components/FunFacts'
 import Header from './components/Header'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 
 const App = () => {

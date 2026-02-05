@@ -38,7 +38,7 @@ const HomePage = () => {
                     <span className="h-px w-12 bg-[#e8d4d4]"></span>
                 </div>
                 <p className="text-[#5a5a5a] leading-relaxed text-lg">
-                    We met back in their senior year of high school through 
+                    We met back in our senior year of high school through 
                     mutual friends, with Sahil asking Ambika to be his prom date. From that 
                     point we started to hang out more, started dating, and have been 
                     together since!
