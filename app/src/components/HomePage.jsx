@@ -3,7 +3,7 @@ import pic1 from "../assets/sahilambika1.jpg"
 
 const HomePage = () => {
     return (
-        <div className="min-h-full bg-gradient-to-b from-rose-50 to-cream-50 bg-[#fdfbf7]">
+        <div className="justify-center min-h-screen bg-gradient-to-b from-rose-50 to-cream-50 bg-[#fdfbf7]">
             <header className="pt-16 pb-8 text-center">
                 <h1 className="font-serif text-5xl md:text-6xl text-[#4a4a4a] mb-2">
                     Sahil & Ambika
@@ -14,7 +14,7 @@ const HomePage = () => {
                     <span className="h-px w-16 bg-[#d4b896]"></span>
                 </div>
                 <p className="mt-6 text-lg text-[#7d8c7a] tracking-wide">
-                    May 2027 • Hard Rock Los Cabos
+                    May 2027
                 </p>
             </header>
 
