@@ -1,8 +1,18 @@
 import engagementPic from "../assets/sahilambika1.jpg"
-
+import Countdown from 'react-countdown'
 
 
 const HomePage = () => {
+    const date = new Date(2027, 5, 21);
+    const renderer = ({ days, hours, minutes, seconds }) => {
+        return (
+        <div>
+            <p className="mt-6 text-lg text-[#3B3B3B] tracking-wide font-bold">
+                {days} Days, {hours} Hours, {minutes} Minutes, {seconds}s
+            </p>
+        </div>
+        )
+    };
     return (
         <div className="justify-center min-h-screen bg-gradient-to-b from-rose-50 to-cream-50 bg-[#fdfbf7]">
             <header className="pt-16 pb-8 text-center items-center justify-center">
@@ -17,6 +27,7 @@ const HomePage = () => {
                 <p className="mt-6 text-2xl text-[#3B3B3B] tracking-wide">
                     May 2027
                 </p>
+                <Countdown date={date} renderer={renderer}/>
             </header>
 
             <div className="flex justify-center px-6 py-8">
