@@ -54,7 +54,7 @@ const Journey = () => {
     return (
         <div className="min-h-full bg-gradient-to-b from-rose-50 to-cream-50 bg-[#fdfbf7] py-16 px-4 overflow-x-hidden">
             <div className="text-center mb-16">
-                <h1 className="font-serif text-4xl md:text-5xl text-[#4a4a4a] mb-4">Our Journey</h1>
+                <h1 className="font-serif text-4xl md:text-6xl text-[#4a4a4a] mb-4">Our Journey</h1>
                 <div className="flex items-center justify-center gap-4">
                     <span className="h-px w-12 md:w-16 bg-[#d4b896]"></span>
                     <span className="text-[#d4b896] text-2xl md:text-3xl">♥</span>
@@ -93,7 +93,7 @@ const Journey = () => {
                                         {event.date}
                                     </span>
                                 </div>
-                                <h3 className="font-serif text-xl md:text-2xl text-[#4a4a4a] mt-2">
+                                <h3 className="font-serif text-xl md:text-3xl text-[#4a4a4a] mt-2">
                                     {event.title}
                                 </h3>
                             </div>
