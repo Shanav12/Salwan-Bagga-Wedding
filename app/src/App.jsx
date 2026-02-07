@@ -3,19 +3,19 @@ import HomePage from "./components/HomePage"
 import Journey from './components/Journey'
 import FunFacts from './components/FunFacts'
 import Header from './components/Header'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { Routes, Route, HashRouter } from 'react-router-dom'
 
 
 const App = () => {
   return (
-    <BrowserRouter basename="/Salwan-Bagga-Wedding">
+    <HashRouter>
         <Header />
         <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/journey" element={<Journey />} />
             <Route path="/fun-facts" element={<FunFacts />} />
         </Routes>
-    </BrowserRouter>
+    </HashRouter>
   )
 }
 

@@ -2,15 +2,40 @@ import engagementPic from "../assets/sahilambika1.jpg"
 import Countdown from 'react-countdown'
 
 
+
 const HomePage = () => {
     const date = new Date(2027, 5, 21);
     const renderer = ({ days, hours, minutes, seconds }) => {
         return (
-        <div>
-            <p className="mt-6 text-lg text-[#3B3B3B] tracking-wide font-bold">
-                {days} Days, {hours} Hours, {minutes} Minutes, {seconds}s
-            </p>
-        </div>
+            <div className="flex justify-center gap-3 md:gap-4 mt-6">
+                <div className="flex flex-col items-center">
+                    <div className="bg-[#fdfbf7] border-2 border-[#d4b896] rounded-lg w-16 h-16 md:w-20 md:h-20 flex items-center justify-center shadow-md">
+                        <span className="text-2xl md:text-3xl font-bold text-[#d4b896]">{days}</span>
+                    </div>
+                    <span className="text-xs text-[#5a5a5a] mt-2 uppercase tracking-widest">Days</span>
+                </div>
+                
+                <div className="flex flex-col items-center">
+                    <div className="bg-[#fdfbf7] border-2 border-[#d4b896] rounded-lg w-16 h-16 md:w-20 md:h-20 flex items-center justify-center shadow-md">
+                        <span className="text-2xl md:text-3xl font-bold text-[#d4b896]">{hours}</span>
+                    </div>
+                    <span className="text-xs text-[#5a5a5a] mt-2 uppercase tracking-widest">Hours</span>
+                </div>
+                
+                <div className="flex flex-col items-center">
+                    <div className="bg-[#fdfbf7] border-2 border-[#d4b896] rounded-lg w-16 h-16 md:w-20 md:h-20 flex items-center justify-center shadow-md">
+                        <span className="text-2xl md:text-3xl font-bold text-[#d4b896]">{minutes}</span>
+                    </div>
+                    <span className="text-xs text-[#5a5a5a] mt-2 uppercase tracking-widest">Mins</span>
+                </div>
+                
+                <div className="flex flex-col items-center">
+                    <div className="bg-[#fdfbf7] border-2 border-[#d4b896] rounded-lg w-16 h-16 md:w-20 md:h-20 flex items-center justify-center shadow-md">
+                        <span className="text-2xl md:text-3xl font-bold text-[#d4b896]">{seconds}</span>
+                    </div>
+                    <span className="text-xs text-[#5a5a5a] mt-2 uppercase tracking-widest">Secs</span>
+                </div>
+            </div>
         )
     };
     return (
