@@ -49,7 +49,7 @@ const HomePage = () => {
                     <span className="text-[#d4b896] text-2xl">♥</span>
                     <span className="h-px w-16 bg-[#d4b896]"></span>
                 </div>
-                <p className="mt-6 text-2xl text-[#3B3B3B] tracking-wide">
+                <p className="mt-6 text-2xl text-bold text-[#3B3B3B] tracking-wide">
                     May 2027
                 </p>
                 <Countdown date={date} renderer={renderer}/>
