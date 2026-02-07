@@ -29,7 +29,7 @@ const Header = () => {
 
     return (
         <header 
-            className={`w-full py-3 px-4 md:px-6 sticky top-0 z-50 bg-gray-100 border-b border-[#edededed] transition-transform duration-300 ${
+            className={`w-full py-3 px-4 md:px-6 sticky top-0 z-50 bg-gray-100 border-b border-[#d4b896] transition-transform duration-300 ${
                 isVisible ? 'translate-y-0' : '-translate-y-full md:translate-y-0'
             }`}
         >
