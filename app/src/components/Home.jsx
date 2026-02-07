@@ -66,7 +66,7 @@ const HomePage = () => {
                 </div>
             </div>
 
-            <section className="max-w-2xl mx-auto px-8 py-12 text-center">
+            <section className="max-w-2xl md:max-w-3xl mx-auto px-4 py-6 text-center">
                 <h2 className="font-serif text-4xl md:text-5xl text-[#4a4a4a] mb-2">Our Story</h2>
                 <div className="flex items-center justify-center gap-3 mb-8">
                     <span className="h-px w-12 bg-[#e8d4d4]"></span>
@@ -80,7 +80,7 @@ const HomePage = () => {
                     together since!
                 </p>
                 <p className="text-[#5a5a5a] leading-relaxed text-xl mt-6">
-                    We both went to MSU <span className="text-[#7d8c7a] font-medium">(Go Green Go White!)</span> together 
+                    We both started at MSU <span className="text-[#7d8c7a] font-medium">(Go Green Go White!)</span> together 
                     for our undergrad, and Sahil transferred to UMich his junior 
                     year <span className="text-[#1c4e80] font-medium">(Go Blue!)</span>.
                 </p>
