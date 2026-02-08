@@ -6,31 +6,48 @@ import Countdown from 'react-countdown'
 const HomePage = () => {
     const date = new Date(2027, 5, 21);
     const renderer = ({ days, hours, minutes, seconds }) => {
+        const years = Math.floor(days / 365);
+        const adjustedDays = days - (365 * Math.floor(days / 365));
         return (
             <div className="flex justify-center gap-3 md:gap-4 mt-6">
+                {days >= 365 ? 
+                <>
                 <div className="flex flex-col items-center">
-                    <div className="bg-[#fdfbf7] border-2 border-[#d4b896] rounded-lg w-16 h-16 md:w-20 md:h-20 flex items-center justify-center shadow-md">
-                        <span className="text-2xl md:text-3xl font-bold text-[#d4b896]">{days}</span>
+                    <div className="bg-[#fdfbf7] border-2 border-[#d4b896] rounded-lg w-14 h-14 md:w-20 md:h-20 flex items-center justify-center shadow-md">
+                        <span className="text-2xl md:text-3xl font-bold text-[#d4b896]">{years}</span>
+                    </div>
+                    <span className="text-xs text-[#5a5a5a] mt-2 uppercase tracking-widest">Year</span>
+                </div>
+                <div className="flex flex-col items-center">
+                    <div className="bg-[#fdfbf7] border-2 border-[#d4b896] rounded-lg w-14 h-14 md:w-20 md:h-20 flex items-center justify-center shadow-md">
+                        <span className="text-2xl md:text-3xl font-bold text-[#d4b896]">{adjustedDays}</span>
                     </div>
                     <span className="text-xs text-[#5a5a5a] mt-2 uppercase tracking-widest">Days</span>
                 </div>
+                </> : 
+                <div className="flex flex-col items-center">
+                    <div className="bg-[#fdfbf7] border-2 border-[#d4b896] rounded-lg w-14 h-14 md:w-20 md:h-20 flex items-center justify-center shadow-md">
+                        <span className="text-2xl md:text-3xl font-bold text-[#d4b896]">{days}</span>
+                    </div>
+                    <span className="text-xs text-[#5a5a5a] mt-2 uppercase tracking-widest">Days</span>
+                </div>}
                 
                 <div className="flex flex-col items-center">
-                    <div className="bg-[#fdfbf7] border-2 border-[#d4b896] rounded-lg w-16 h-16 md:w-20 md:h-20 flex items-center justify-center shadow-md">
+                    <div className="bg-[#fdfbf7] border-2 border-[#d4b896] rounded-lg w-14 h-14 md:w-20 md:h-20 flex items-center justify-center shadow-md">
                         <span className="text-2xl md:text-3xl font-bold text-[#d4b896]">{hours}</span>
                     </div>
                     <span className="text-xs text-[#5a5a5a] mt-2 uppercase tracking-widest">Hours</span>
                 </div>
                 
                 <div className="flex flex-col items-center">
-                    <div className="bg-[#fdfbf7] border-2 border-[#d4b896] rounded-lg w-16 h-16 md:w-20 md:h-20 flex items-center justify-center shadow-md">
+                    <div className="bg-[#fdfbf7] border-2 border-[#d4b896] rounded-lg w-14 h-14 md:w-20 md:h-20 flex items-center justify-center shadow-md">
                         <span className="text-2xl md:text-3xl font-bold text-[#d4b896]">{minutes}</span>
                     </div>
                     <span className="text-xs text-[#5a5a5a] mt-2 uppercase tracking-widest">Mins</span>
                 </div>
                 
                 <div className="flex flex-col items-center">
-                    <div className="bg-[#fdfbf7] border-2 border-[#d4b896] rounded-lg w-16 h-16 md:w-20 md:h-20 flex items-center justify-center shadow-md">
+                    <div className="bg-[#fdfbf7] border-2 border-[#d4b896] rounded-lg w-14 h-14 md:w-20 md:h-20 flex items-center justify-center shadow-md">
                         <span className="text-2xl md:text-3xl font-bold text-[#d4b896]">{seconds}</span>
                     </div>
                     <span className="text-xs text-[#5a5a5a] mt-2 uppercase tracking-widest">Secs</span>
