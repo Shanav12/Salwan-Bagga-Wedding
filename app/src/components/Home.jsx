@@ -13,42 +13,42 @@ const HomePage = () => {
                 {days >= 365 ? 
                 <>
                 <div className="flex flex-col items-center">
-                    <div className="bg-[#fdfbf7] border-2 border-[#d4b896] rounded-lg w-14 h-14 md:w-20 md:h-20 flex items-center justify-center shadow-md">
-                        <span className="text-2xl md:text-3xl font-bold text-[#d4b896]">{years}</span>
+                    <div className="bg-[#fdfbf7] border-2 border-[#691700] rounded-lg w-14 h-14 md:w-20 md:h-20 flex items-center justify-center shadow-md">
+                        <span className="text-2xl md:text-3xl font-bold text-[#991D00]">{years}</span>
                     </div>
                     <span className="text-xs text-[#5a5a5a] mt-2 uppercase tracking-widest">Year</span>
                 </div>
                 <div className="flex flex-col items-center">
-                    <div className="bg-[#fdfbf7] border-2 border-[#d4b896] rounded-lg w-14 h-14 md:w-20 md:h-20 flex items-center justify-center shadow-md">
-                        <span className="text-2xl md:text-3xl font-bold text-[#d4b896]">{adjustedDays}</span>
+                    <div className="bg-[#fdfbf7] border-2 border-[#691700] rounded-lg w-14 h-14 md:w-20 md:h-20 flex items-center justify-center shadow-md">
+                        <span className="text-2xl md:text-3xl font-bold text-[#991D00]">{adjustedDays}</span>
                     </div>
                     <span className="text-xs text-[#5a5a5a] mt-2 uppercase tracking-widest">Days</span>
                 </div>
                 </> : 
                 <div className="flex flex-col items-center">
-                    <div className="bg-[#fdfbf7] border-2 border-[#d4b896] rounded-lg w-14 h-14 md:w-20 md:h-20 flex items-center justify-center shadow-md">
-                        <span className="text-2xl md:text-3xl font-bold text-[#d4b896]">{days}</span>
+                    <div className="bg-[#fdfbf7] border-2 border-[#691700] rounded-lg w-14 h-14 md:w-20 md:h-20 flex items-center justify-center shadow-md">
+                        <span className="text-2xl md:text-3xl font-bold text-[#991D00]">{days}</span>
                     </div>
                     <span className="text-xs text-[#5a5a5a] mt-2 uppercase tracking-widest">Days</span>
                 </div>}
                 
                 <div className="flex flex-col items-center">
-                    <div className="bg-[#fdfbf7] border-2 border-[#d4b896] rounded-lg w-14 h-14 md:w-20 md:h-20 flex items-center justify-center shadow-md">
-                        <span className="text-2xl md:text-3xl font-bold text-[#d4b896]">{hours}</span>
+                    <div className="bg-[#fdfbf7] border-2 border-[#691700] rounded-lg w-14 h-14 md:w-20 md:h-20 flex items-center justify-center shadow-md">
+                        <span className="text-2xl md:text-3xl font-bold text-[#991D00]">{hours}</span>
                     </div>
                     <span className="text-xs text-[#5a5a5a] mt-2 uppercase tracking-widest">Hours</span>
                 </div>
                 
                 <div className="flex flex-col items-center">
-                    <div className="bg-[#fdfbf7] border-2 border-[#d4b896] rounded-lg w-14 h-14 md:w-20 md:h-20 flex items-center justify-center shadow-md">
-                        <span className="text-2xl md:text-3xl font-bold text-[#d4b896]">{minutes}</span>
+                    <div className="bg-[#fdfbf7] border-2 border-[#691700] rounded-lg w-14 h-14 md:w-20 md:h-20 flex items-center justify-center shadow-md">
+                        <span className="text-2xl md:text-3xl font-bold text-[#991D00]">{minutes}</span>
                     </div>
                     <span className="text-xs text-[#5a5a5a] mt-2 uppercase tracking-widest">Mins</span>
                 </div>
                 
                 <div className="flex flex-col items-center">
-                    <div className="bg-[#fdfbf7] border-2 border-[#d4b896] rounded-lg w-14 h-14 md:w-20 md:h-20 flex items-center justify-center shadow-md">
-                        <span className="text-2xl md:text-3xl font-bold text-[#d4b896]">{seconds}</span>
+                    <div className="bg-[#fdfbf7] border-2 border-[#691700] rounded-lg w-14 h-14 md:w-20 md:h-20 flex items-center justify-center shadow-md">
+                        <span className="text-2xl md:text-3xl font-bold text-[#991D00]">{seconds}</span>
                     </div>
                     <span className="text-xs text-[#5a5a5a] mt-2 uppercase tracking-widest">Secs</span>
                 </div>
@@ -56,15 +56,15 @@ const HomePage = () => {
         )
     };
     return (
-        <div className="justify-center min-h-screen bg-gradient-to-b from-rose-50 to-cream-50 bg-[#fdfbf7]">
+        <div className="justify-center min-h-screen bg-[#faf0e6]">
             <header className="pt-16 pb-8 text-center items-center justify-center">
                 <h1 className="font-serif text-5xl md:text-7xl text-[#3B3B3B] mb-2">
                     Sahil & Ambika
                 </h1>
                 <div className="flex items-center justify-center gap-4 mt-6">
-                    <span className="h-px w-16 bg-[#d4b896]"></span>
-                    <span className="text-[#d4b896] text-2xl">♥</span>
-                    <span className="h-px w-16 bg-[#d4b896]"></span>
+                    <span className="h-px w-16 bg-[#691700]"></span>
+                    <span className="text-[#991D00] text-2xl">♥</span>
+                    <span className="h-px w-16 bg-[#691700]"></span>
                 </div>
                 <p className="mt-6 text-2xl md:text-3xl text-bold text-[#3B3B3B] tracking-wide">
                     May 2027
@@ -74,7 +74,7 @@ const HomePage = () => {
 
             <div className="flex justify-center px-6 py-8">
                 <div className="relative">
-                    <div className="absolute inset-0 bg-[#d4b896] rounded-lg transform rotate-3"></div>
+                    <div className="absolute inset-0 bg-[#691700] rounded-lg transform rotate-3"></div>
                     <img 
                         src={engagementPic} 
                         alt="Sahil and Ambika's Engagement" 
@@ -86,9 +86,9 @@ const HomePage = () => {
             <section className="max-w-2xl md:max-w-3xl mx-auto px-4 py-6 text-center">
                 <h2 className="font-serif text-4xl md:text-5xl text-[#4a4a4a] mb-2">Our Story</h2>
                 <div className="flex items-center justify-center gap-3 mb-8">
-                    <span className="h-px w-12 bg-[#e8d4d4]"></span>
-                    <span className="text-[#d4b896]">✦</span>
-                    <span className="h-px w-12 bg-[#e8d4d4]"></span>
+                    <span className="h-px w-12 bg-[#691700]"></span>
+                    <span className="text-[#991D00]">✦</span>
+                    <span className="h-px w-12 bg-[#691700]"></span>
                 </div>
                 <p className="text-[#5a5a5a] leading-relaxed text-xl">
                     We met back in our senior year of high school through 
@@ -108,7 +108,7 @@ const HomePage = () => {
             </section>
 
             <div className="text-center pb-16">
-                <span className="text-4xl text-[#e8d4d4]">❧</span>
+                <span className="text-4xl text-[#991D00]">❧</span>
             </div>
         </div>
     )

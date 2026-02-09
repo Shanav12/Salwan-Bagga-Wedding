@@ -52,18 +52,18 @@ const timelineEvents = [
 
 const Journey = () => {
     return (
-        <div className="min-h-full bg-gradient-to-b from-rose-50 to-cream-50 bg-[#fdfbf7] py-16 px-4 overflow-x-hidden">
+        <div className="min-h-full bg-[#faf0e6] py-16 px-4 overflow-x-hidden">
             <div className="text-center mb-16">
                 <h1 className="font-serif text-5xl md:text-7xl text-[#4a4a4a] mb-4">Our Journey</h1>
                 <div className="flex items-center justify-center gap-4">
-                    <span className="h-px w-12 md:w-16 bg-[#d4b896]"></span>
-                    <span className="text-[#d4b896] text-2xl md:text-3xl">♥</span>
-                    <span className="h-px w-12 md:w-16 bg-[#d4b896]"></span>
+                    <span className="h-px w-12 md:w-16 bg-[#691700]"></span>
+                    <span className="text-[#991D00] text-2xl md:text-3xl">♥</span>
+                    <span className="h-px w-12 md:w-16 bg-[#691700]"></span>
                 </div>
             </div>
 
             <div className="max-w-4xl mx-auto relative">
-                <div className="absolute left-4 md:left-1/2 md:transform md:-translate-x-1/2 h-full w-0.5 bg-[#e8d4d4]"></div>
+                <div className="absolute left-4 md:left-1/2 md:transform md:-translate-x-1/2 h-full w-0.5 bg-[#691700]"></div>
 
                 {timelineEvents.map((event, index) => {
                     const isLeft = index % 2 === 0
@@ -72,7 +72,7 @@ const Journey = () => {
                             key={index}
                             className={`relative flex items-center mb-12 md:mb-0 justify-start md:${isLeft ? 'justify-start' : 'justify-end'}`}
                         >
-                            <div className="absolute left-4 md:left-1/2 transform -translate-x-1/2 w-4 h-4 md:w-5 md:h-5 bg-[#d4b896] rounded-full border-4 border-[#fdfbf7] z-10"></div>
+                            <div className="absolute left-4 md:left-1/2 transform -translate-x-1/2 w-4 h-4 md:w-5 md:h-5 bg-[#991D00] rounded-full border-4 border-[#fdfbf7] z-10"></div>
                             <div
                                 className={`ml-12 md:ml-0 md:w-[45%] text-left ${
                                     isLeft 
@@ -81,7 +81,7 @@ const Journey = () => {
                                 }`}
                             >
                                 <div className={`relative inline-block ${isLeft ? 'md:ml-auto' : 'md:mr-auto'}`}>
-                                    <div className="absolute inset-0 bg-[#d4b896] rounded-lg transform rotate-2"></div>
+                                    <div className="absolute inset-0 bg-[#691700] rounded-lg transform rotate-2"></div>
                                     <img
                                         src={event.image}
                                         alt={event.title}
@@ -89,7 +89,7 @@ const Journey = () => {
                                     />
                                 </div>
                                 <div className={`mt-3 text-left ${isLeft ? 'md:text-right' : 'md:text-left'}`}>
-                                    <span className="inline-block px-3 py-1 bg-[#f8e8e8] text-[#d4b896] rounded-full text-sm md:text-base font-medium tracking-wide">
+                                    <span className="inline-block px-3 py-1 bg-[#A32100] text-[#d4b896] rounded-full text-sm md:text-base font-medium tracking-wide">
                                         {event.date}
                                     </span>
                                 </div>

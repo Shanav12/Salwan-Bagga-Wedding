@@ -1,5 +1,5 @@
 
-const FunFacts = () => {
+const Gallery = () => {
     return (
         <div className="justify-center min-h-screen bg-[#faf0e6]">
 
@@ -7,4 +7,4 @@ const FunFacts = () => {
     )
 }
 
-export default FunFacts;
+export default Gallery;
