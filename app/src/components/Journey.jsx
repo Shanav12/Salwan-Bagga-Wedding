@@ -212,7 +212,6 @@ const Journey = () => {
                             <h2 className="text-3xl font-serif font-bold text-[#4a4a4a] mb-2">{chapter.title}</h2>
                         </div>
                         {
-                        console.log(chapterIndex),
                         chapter.events.map((event, _) => {
                         const isLeft = (chapterIndex % 2) === 0
                         index += 1
@@ -221,7 +220,7 @@ const Journey = () => {
                                     key={index}
                                     className={`relative flex items-center mb-12 md:mb-0 justify-start md:${isLeft ? 'justify-start' : 'justify-end'}`}
                                 >
-                                    <div className="absolute left-4 md:left-1/2 transform -translate-x-1/2 w-4 h-4 md:w-5 md:h-5 bg-[#d4b896] rounded-full border-4 border-[#fdfbf7] z-10"></div>
+                                    <div className="absolute left-4 md:left-1/2 transform -translate-x-1/2 w-4 h-4 md:w-5 md:h-5 bg-[#991D00] rounded-full border-4 border-[#fdfbf7] z-10"></div>
                                     <div
                                         className={`ml-12 md:ml-0 md:w-[45%] text-left ${
                                             isLeft 
@@ -239,7 +238,7 @@ const Journey = () => {
                                         </div>
                                         <div className="mt-3 mb-3 font-serif ">
                                             <div className={`mt-3 text-left ${isLeft ? 'md:text-right' : 'md:text-left'}`}>
-                                                <span className="inline-block px-3 py-1 bg-[#f8e8e8] text-[#d4b896] rounded-full text-sm md:text-base font-medium tracking-wide">
+                                                <span className="inline-block px-3 py-1 bg-[#A32100] text-[#d4b896] rounded-full text-sm md:text-base font-medium tracking-wide">
                                                     {event.date}
                                                 </span>
                                             </div>
