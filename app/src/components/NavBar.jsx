@@ -29,34 +29,43 @@ const Header = () => {
 
     return (
         <header 
-            className={`w-full py-3 px-4 md:px-6 sticky top-0 z-50 bg-gray-100 border-b border-[#d4b896] transition-transform duration-300 ${
+            className={`w-full py-3 px-4 md:px-6 sticky top-0 z-50 bg-gray-100 border-b border-[#691700] transition-transform duration-300 ${
                 isVisible ? 'translate-y-0' : '-translate-y-full md:translate-y-0'
             }`}
         >
             <nav className="hidden md:flex justify-end items-center gap-4">
                 <Link 
                     to="/" 
-                    className="px-4 py-2 border border-[#d4b896] rounded text-[#5a5a5a] hover:bg-[#d4b896] hover:text-white transition-all tracking-wide text-sm uppercase"
+                    className="px-4 py-2 border border-[#691700] rounded text-[#5a5a5a] hover:bg-[#E0462B] hover:text-white transition-all tracking-wide text-sm uppercase"
                 >
                     Home
                 </Link>
                 
-                <span className="text-[#d4b896]">♥</span>
+                <span className="text-[#991D00]">♥</span>
                 
                 <Link 
                     to="/journey" 
-                    className="px-4 py-2 border border-[#d4b896] rounded text-[#5a5a5a] hover:bg-[#d4b896] hover:text-white transition-all tracking-wide text-sm uppercase"
+                    className="px-4 py-2 border border-[#691700] rounded text-[#5a5a5a] hover:bg-[#E0462B] hover:text-white transition-all tracking-wide text-sm uppercase"
                 >
                     Our Journey
                 </Link>
                 
-                <span className="text-[#d4b896]">♥</span>
+                <span className="text-[#991D00]">♥</span>
                 
                 <Link 
                     to="/fun-facts" 
-                    className="px-4 py-2 border border-[#d4b896] rounded text-[#5a5a5a] hover:bg-[#d4b896] hover:text-white transition-all tracking-wide text-sm uppercase"
+                    className="px-4 py-2 border border-[#691700] rounded text-[#5a5a5a] hover:bg-[#E0462B] hover:text-white transition-all tracking-wide text-sm uppercase"
                 >
                     Fun Facts
+                </Link>
+
+                <span className="text-[#991D00]">♥</span>
+
+                <Link 
+                    to="/gallery" 
+                    className="px-4 py-2 border border-[#border-[#691700]] rounded text-[#5a5a5a] hover:bg-[#E0462B] hover:text-white transition-all tracking-wide text-sm uppercase"
+                >
+                    Gallery
                 </Link>
             </nav>
 
@@ -83,29 +92,39 @@ const Header = () => {
                     <Link 
                         to="/" 
                         onClick={() => setIsMenuOpen(false)}
-                        className="w-full text-center px-4 py-2 border border-[#d4b896] rounded text-[#5a5a5a] hover:bg-[#d4b896] hover:text-white transition-all tracking-wide text-sm uppercase"
+                        className="w-full text-center px-4 py-2 border border-[#691700] rounded text-[#5a5a5a] hover:bg-[#E0462B] hover:text-white transition-all tracking-wide text-sm uppercase"
                     >
                         Home
                     </Link>
 
-                    <span className="text-[#d4b896]">♥</span>
+                    <span className="text-[#991D00]">♥</span>
                     
                     <Link 
                         to="/journey" 
                         onClick={() => setIsMenuOpen(false)}
-                        className="w-full text-center px-4 py-2 border border-[#d4b896] rounded text-[#5a5a5a] hover:bg-[#d4b896] hover:text-white transition-all tracking-wide text-sm uppercase"
+                        className="w-full text-center px-4 py-2 border border-[#691700] rounded text-[#5a5a5a] hover:bg-[#E0462B] hover:text-white transition-all tracking-wide text-sm uppercase"
                     >
                         Our Journey
                     </Link>
 
-                    <span className="text-[#d4b896]">♥</span>
+                    <span className="text-[#991D00]">♥</span>
                     
                     <Link 
                         to="/fun-facts" 
                         onClick={() => setIsMenuOpen(false)}
-                        className="w-full text-center px-4 py-2 border border-[#d4b896] rounded text-[#5a5a5a] hover:bg-[#d4b896] hover:text-white transition-all tracking-wide text-sm uppercase"
+                        className="w-full text-center px-4 py-2 border border-[#691700] rounded text-[#5a5a5a] hover:bg-[#E0462B] hover:text-white transition-all tracking-wide text-sm uppercase"
                     >
                         Fun Facts
+                    </Link>
+
+                    <span className="text-[#991D00]">♥</span>
+
+                    <Link 
+                        to="/gallery" 
+                        onClick={() => setIsMenuOpen(false)}
+                        className="w-full text-center px-4 py-2 border border-[#691700] rounded text-[#5a5a5a] hover:bg-[#E0462B] hover:text-white transition-all tracking-wide text-sm uppercase"
+                    >
+                        Gallery
                     </Link>
                 </nav>
             )}
