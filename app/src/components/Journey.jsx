@@ -229,7 +229,7 @@ const Journey = () => {
                                         }`}
                                     >
                                         <div className={`relative inline-block ${isLeft ? 'md:ml-auto' : 'md:mr-auto'}`}>
-                                            <div className="absolute inset-0 bg-[#d4b896] rounded-lg transform rotate-2"></div>
+                                            <div className="absolute inset-0 bg-[#691700] rounded-lg transform rotate-2"></div>
                                             <img
                                                 src={event.image}
                                                 alt={event.title}
