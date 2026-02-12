@@ -1,8 +1,6 @@
-import engagementPic from "../assets/sahilambika1.jpg"
 import promPic from "../assets/sahilambika2.jpg"
 import hsGradPic from "../assets/sahilambika3.jpg"
 import sahilGradPic from "../assets/sahilambika4.jpg"
-import ambikaWhiteCoatPic from "../assets/sahilambika5.jpg"
 import firstDatePic from "../assets/sahilambika6.jpeg"
 import gradPartyPic from "../assets/sahilambika7.jpg"
 import lollaPic from "../assets/sahilambika8.jpg"
@@ -85,7 +83,7 @@ const timelineEvents = [
             },
             {
                 image: juniorHalloweenPic,
-                date: "October 2020",
+                date: "October 2021",
                 title: "College Junior Halloween",
                 description: "College Junior Halloween",
             },
@@ -144,9 +142,9 @@ const timelineEvents = [
             },
             {
                 image: rokaBackyardPic,
-                date: "May 2019",
-                title: "High School Graduation",
-                description: "High School Grad",
+                date: "August 2025",
+                title: "Roka",
+                description: "Roka",
             },
             {
                 image: proposalLedgePic,
@@ -203,7 +201,6 @@ const Journey = () => {
             </div>
 
             <div className="max-w-4xl mx-auto relative">
-                <div className="absolute left-4 md:left-1/2 md:transform md:-translate-x-1/2 h-full w-0.5 bg-[#691700]"></div>
 
                 {timelineEvents.map((chapter, chapterIndex) => {
                     return (
@@ -212,7 +209,7 @@ const Journey = () => {
                             <h2 className="text-3xl font-serif font-bold text-[#4a4a4a] mb-2">{chapter.title}</h2>
                         </div>
                         {
-                        chapter.events.map((event, _) => {
+                        chapter.events.map((event) => {
                         const isLeft = (chapterIndex % 2) === 0
                         index += 1
                         return (
@@ -220,7 +217,9 @@ const Journey = () => {
                                     key={index}
                                     className={`relative flex items-center mb-12 md:mb-0 justify-start md:${isLeft ? 'justify-start' : 'justify-end'}`}
                                 >
-                                    <div className="absolute left-4 md:left-1/2 transform -translate-x-1/2 w-4 h-4 md:w-5 md:h-5 bg-[#d4b896] rounded-full border-4 border-[#fdfbf7] z-10"></div>
+                                    <div className="absolute left-4 md:left-1/2 md:transform md:-translate-x-1/2 h-full w-0.5 bg-[#691700]"></div>
+
+                                    <div className="absolute left-4 md:left-1/2 transform -translate-x-1/2 w-4 h-4 md:w-5 md:h-5 bg-[#991D00] rounded-full border-4 border-[#fdfbf7] z-10"></div>
                                     <div
                                         className={`ml-12 md:ml-0 md:w-[45%] text-left ${
                                             isLeft 
@@ -229,7 +228,7 @@ const Journey = () => {
                                         }`}
                                     >
                                         <div className={`relative inline-block ${isLeft ? 'md:ml-auto' : 'md:mr-auto'}`}>
-                                            <div className="absolute inset-0 bg-[#d4b896] rounded-lg transform rotate-2"></div>
+                                            <div className="absolute inset-0 bg-[#691700] rounded-lg transform rotate-2"></div>
                                             <img
                                                 src={event.image}
                                                 alt={event.title}
@@ -238,7 +237,7 @@ const Journey = () => {
                                         </div>
                                         <div className="mt-3 mb-3 font-serif ">
                                             <div className={`mt-3 text-left ${isLeft ? 'md:text-right' : 'md:text-left'}`}>
-                                                <span className="inline-block px-3 py-1 bg-[#f8e8e8] text-[#d4b896] rounded-full text-sm md:text-base font-medium tracking-wide">
+                                                <span className="inline-block px-3 py-1 bg-[#A32100] text-[#d4b896] rounded-full text-sm md:text-base font-medium tracking-wide">
                                                     {event.date}
                                                 </span>
                                             </div>
