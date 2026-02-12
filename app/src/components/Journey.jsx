@@ -208,11 +208,10 @@ const Journey = () => {
                 {timelineEvents.map((chapter, chapterIndex) => {
                     return (
                         <>
-                        <div key={chapterIndex} className={`mb-12 md:mb-16 flex items-center underline underline-offset-10 ${((chapterIndex % 2) === 0) ? 'justify-start' : 'justify-end'}`}>
+                        <div key={chapterIndex} className={`mb-12 md:mb-16 sm:ml-16 flex items-center underline underline-offset-10 ${((chapterIndex % 2) === 0) ? 'justify-start' : 'justify-end'}`}>
                             <h2 className="text-3xl font-serif font-bold text-[#4a4a4a] mb-2">{chapter.title}</h2>
                         </div>
                         {
-                        console.log(chapterIndex),
                         chapter.events.map((event, _) => {
                         const isLeft = (chapterIndex % 2) === 0
                         index += 1

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-
+import MusicPlayer from './MusicPlayer'
 
 
 const Header = () => {
@@ -67,6 +67,7 @@ const Header = () => {
                 >
                     Gallery
                 </Link>
+                <MusicPlayer></MusicPlayer>
             </nav>
 
             <div className="md:hidden flex justify-between items-center">                
@@ -126,6 +127,7 @@ const Header = () => {
                     >
                         Gallery
                     </Link>
+                    <MusicPlayer></MusicPlayer>
                 </nav>
             )}
         </header>
