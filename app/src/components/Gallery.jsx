@@ -1,5 +1,5 @@
 import { ref, uploadBytesResumable, listAll, getDownloadURL } from 'firebase/storage';
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { storage, auth } from '../firebase_config';
 import { signInAnonymously } from 'firebase/auth';
 
@@ -13,8 +13,9 @@ const Gallery = () => {
     const [loading, setLoading] = useState(true);
     const [showSuccess, setShowSuccess] = useState(false);
     const [currIdx, setCurrIdx] = useState(0);
-    const [fadeIn, setFadeIn] = useState(true);
     const [authReady, setAuthReady] = useState(false);
+    const [transitioning, setTransitioning] = useState(false);
+    const intervalRef = useRef(null);
 
     useEffect(() => {
         signInAnonymously(auth).then().catch(err => console.log(err));
@@ -33,27 +34,30 @@ const Gallery = () => {
 
 
     useEffect(() => {
+        if (intervalRef.current) {
+            clearInterval(intervalRef.current);
+        }
+
         if (imageList.length > 1) {
-            const interval = setInterval(() => {
-                setFadeIn(false);
+            intervalRef.current = setInterval(() => {
+                setTransitioning(true);
+                
                 setTimeout(() => {
                     setCurrIdx((prev) => {
-                        const nextIndex = prev + 1;
-                        return nextIndex >= imageList.length ? 0 : nextIndex;
+                        const next = prev + 1;
+                        return next >= imageList.length ? 0 : next;
                     });
-                    setFadeIn(true);
+                    setTransitioning(false);
                 }, 500);
             }, 3000);
-            return () => clearInterval(interval);
         }
-    }, [imageList.length, imageList]);
 
-
-    useEffect(() => {
-        if (currIdx >= imageList.length && imageList.length > 0) {
-            setCurrIdx(0);
-        }
-    }, [imageList.length, currIdx]);
+        return () => {
+            if (intervalRef.current) {
+                clearInterval(intervalRef.current);
+            }
+        };
+    }, [imageList.length]);
 
 
     const handleFileChange = (e) => {
@@ -207,10 +211,13 @@ const Gallery = () => {
                         <div className="relative w-half">
                             <div className="absolute inset-0 bg-[#691700] rounded-lg transform rotate-1"></div>
                             <img 
+                                key={currIdx}
                                 src={imageList[currIdx]} 
-                                className={`relative rounded-lg shadow-xl w-half h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] object-cover transition-opacity duration-500 ${
-                                    fadeIn ? 'opacity-100' : 'opacity-0'
-                                }`}
+                                style={{
+                                    opacity: transitioning ? 0 : 1,
+                                    transition: 'opacity 0.5s ease-in-out'
+                                }}
+                                className="relative rounded-lg shadow-xl w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] object-cover"
                             />
                         </div>
                     </div>
