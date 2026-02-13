@@ -1,9 +1,7 @@
 import { ref, uploadBytesResumable, listAll, getDownloadURL } from 'firebase/storage';
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { storage, auth } from '../firebase_config';
 import { signInAnonymously } from 'firebase/auth';
-
-
 
 const Gallery = () => {
     const [file, setFile] = useState(null);
@@ -14,13 +12,18 @@ const Gallery = () => {
     const [showSuccess, setShowSuccess] = useState(false);
     const [currIdx, setCurrIdx] = useState(0);
     const [authReady, setAuthReady] = useState(false);
-    const [transitioning, setTransitioning] = useState(false);
-    const intervalRef = useRef(null);
+
 
     useEffect(() => {
-        signInAnonymously(auth).then().catch(err => console.log(err));
-        setAuthReady(true);
-    }, []);
+        signInAnonymously(auth)
+            .then(() => {
+                setAuthReady(true);
+            })
+            .catch(err => {
+                console.error('Auth error:', err);
+                setAuthReady(true);
+            });
+    }, [])
 
 
     useEffect(() => {
@@ -33,38 +36,12 @@ const Gallery = () => {
     }, [showSuccess]);
 
 
-    useEffect(() => {
-        if (intervalRef.current) {
-            clearInterval(intervalRef.current);
-        }
-
-        if (imageList.length > 1) {
-            intervalRef.current = setInterval(() => {
-                setTransitioning(true);
-                
-                setTimeout(() => {
-                    setCurrIdx((prev) => {
-                        const next = prev + 1;
-                        return next >= imageList.length ? 0 : next;
-                    });
-                    setTransitioning(false);
-                }, 500);
-            }, 3000);
-        }
-
-        return () => {
-            if (intervalRef.current) {
-                clearInterval(intervalRef.current);
-            }
-        };
-    }, [imageList.length]);
-
-
     const handleFileChange = (e) => {
         if (e.target.files[0]) {
             setFile(e.target.files[0])
         }
-    };
+    }
+
 
     const handleUpload = () => {
         if (!file) {
@@ -91,7 +68,8 @@ const Gallery = () => {
                 fetchImages();
             }
         )   
-    };
+    }
+
 
     const fetchImages = async () => {
         setLoading(true);
@@ -108,7 +86,7 @@ const Gallery = () => {
         } finally {
             setLoading(false);
         }
-    };
+    }
 
 
     useEffect(() => {
@@ -116,6 +94,19 @@ const Gallery = () => {
             fetchImages();
         }
     }, [authReady])
+
+
+    const handlePrevious = () => {
+        setCurrIdx((prev) => {
+            return prev === 0 ? imageList.length - 1 : prev - 1;
+        });
+    };
+
+    const handleNext = () => {
+        setCurrIdx((prev) => {
+            return prev === imageList.length - 1 ? 0 : prev + 1;
+        });
+    };
 
 
     return (
@@ -130,13 +121,13 @@ const Gallery = () => {
             )}
 
             <header className="pt-8 md:pt-16 pb-6 md:pb-8 text-center px-4">
-                <div className="text-center mb-16">
-                    <h1 className="font-serif text-5xl md:text-7xl text-[#4a4a4a] mb-4">Gallery</h1>
-                    <div className="flex items-center justify-center gap-4">
-                        <span className="h-px w-12 md:w-16 bg-[#691700]"></span>
-                        <span className="text-[#991D00] text-2xl md:text-3xl">♥</span>
-                        <span className="h-px w-12 md:w-16 bg-[#691700]"></span>
-                    </div>
+                <h1 className="font-serif text-4xl md:text-5xl lg:text-7xl text-[#3B3B3B] mb-2">
+                    Photo Gallery
+                </h1>
+                <div className="flex items-center justify-center gap-3 md:gap-4 mt-4 md:mt-6">
+                    <span className="h-px w-12 md:w-16 bg-[#691700]"></span>
+                    <span className="text-[#991D00] text-xl md:text-2xl">♥</span>
+                    <span className="h-px w-12 md:w-16 bg-[#691700]"></span>
                 </div>
                 <p className="mt-4 md:mt-6 text-lg md:text-xl text-[#5a5a5a] tracking-wide">
                     Share your favorite moments with us!
@@ -147,12 +138,12 @@ const Gallery = () => {
                 <div className="bg-[#fdfbf7] border-2 border-[#691700] rounded-lg p-4 md:p-6 shadow-md">
                     <h2 className="font-serif text-2xl md:text-3xl text-[#4a4a4a] mb-3 md:mb-4 text-center">
                         Upload Photos
-                        <div className="flex items-center justify-center gap-2 md:gap-3 mb-4 md:mb-6">
-                            <span className="h-px w-8 md:w-12 bg-[#691700]"></span>
-                            <span className="text-[#991D00] text-sm md:text-base">✦</span>
-                            <span className="h-px w-8 md:w-12 bg-[#691700]"></span>
-                        </div>
                     </h2>
+                    <div className="flex items-center justify-center gap-2 md:gap-3 mb-4 md:mb-6">
+                        <span className="h-px w-8 md:w-12 bg-[#691700]"></span>
+                        <span className="text-[#991D00] text-sm md:text-base">✦</span>
+                        <span className="h-px w-8 md:w-12 bg-[#691700]"></span>
+                    </div>
                     
                     <div className="flex flex-col items-center gap-3 md:gap-4">
                         <label className="cursor-pointer w-full md:w-auto">
@@ -195,30 +186,68 @@ const Gallery = () => {
             <section className="max-w-6xl mx-auto px-4 md:px-6 py-6 md:py-8">
                 <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-[#4a4a4a] mb-2 text-center">
                     Our Moments
-                    <div className="flex items-center justify-center gap-2 md:gap-3 mb-6 md:mb-8">
-                        <span className="h-px w-8 md:w-12 bg-[#691700]"></span>
-                        <span className="text-[#991D00] text-sm md:text-base">✦</span>
-                        <span className="h-px w-8 md:w-12 bg-[#691700]"></span>
-                    </div>
                 </h2>
+                <div className="flex items-center justify-center gap-2 md:gap-3 mb-6 md:mb-8">
+                    <span className="h-px w-8 md:w-12 bg-[#691700]"></span>
+                    <span className="text-[#991D00] text-sm md:text-base">✦</span>
+                    <span className="h-px w-8 md:w-12 bg-[#691700]"></span>
+                </div>
 
                 {loading ? (
                     <p className="text-center text-[#5a5a5a] text-lg md:text-xl">Loading photos...</p>
                 ) : imageList.length === 0 ? (
                     <p className="text-center text-[#5a5a5a] text-lg md:text-xl px-4">No photos yet. Be the first to share!</p>
                 ) : (
-                    <div className="flex justify-center">
-                        <div className="relative w-half">
-                            <div className="absolute inset-0 bg-[#691700] rounded-lg transform rotate-1"></div>
-                            <img 
-                                key={currIdx}
-                                src={imageList[currIdx]} 
-                                style={{
-                                    opacity: transitioning ? 0 : 1,
-                                    transition: 'opacity 0.5s ease-in-out'
-                                }}
-                                className="relative rounded-lg shadow-xl w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] object-cover"
-                            />
+                    <div className="relative">
+                        <div className="flex justify-center mb-6">
+                            <div className="relative w-half max-w-4xl">
+                                <div className="absolute inset-0 bg-[#691700] rounded-lg transform rotate-1"></div>
+                                <img 
+                                    src={imageList[currIdx]} 
+                                    className="relative rounded-lg shadow-xl w-half h-[350px] sm:h-[400px] md:h-[500px] lg:h-[500px] object-cover"
+                                />
+                            </div>
+                        </div>
+
+                        <div className="flex items-center justify-center gap-4 md:gap-6">
+                            <button
+                                onClick={handlePrevious}
+                                className="bg-[#fdfbf7] border-2 border-[#691700] text-[#991D00] p-2 md:p-3 rounded-full hover:bg-[#691700] hover:text-[#fdfbf7] transition-colors duration-200 shadow-md"
+                                aria-label="Previous photo"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 md:h-6 md:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                                </svg>
+                            </button>
+                            <div className="text-center min-w-[80px] md:min-w-[100px]">
+                                <p className="text-[#5a5a5a] text-base md:text-lg font-medium">
+                                    {currIdx + 1} / {imageList.length}
+                                </p>
+                            </div>
+                            <button
+                                onClick={handleNext}
+                                className="bg-[#fdfbf7] border-2 border-[#691700] text-[#991D00] p-2 md:p-3 rounded-full hover:bg-[#691700] hover:text-[#fdfbf7] transition-colors duration-200 shadow-md"
+                                aria-label="Next photo"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 md:h-6 md:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div className="flex justify-center gap-1.5 md:gap-2 mt-6 flex-wrap max-w-md mx-auto">
+                            {imageList.map((_, index) => (
+                                <button
+                                    key={index}
+                                    onClick={() => setCurrIdx(index)}
+                                    className={`w-2 h-2 rounded-full transition-all duration-200 ${
+                                        index === currIdx 
+                                            ? 'bg-[#991D00] w-6 md:w-8' 
+                                            : 'bg-[#691700] opacity-40 hover:opacity-70'
+                                    }`}
+                                    aria-label={`Go to photo ${index + 1}`}
+                                />
+                            ))}
                         </div>
                     </div>
                 )}
