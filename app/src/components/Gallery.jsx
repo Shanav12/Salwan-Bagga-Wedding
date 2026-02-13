@@ -30,6 +30,7 @@ const Gallery = () => {
         if (showSuccess) {
             const timer = setTimeout(() => {
                 setShowSuccess(false);
+                window.location.reload();
             }, 2000);
             return () => clearTimeout(timer);
         }
@@ -64,14 +65,18 @@ const Gallery = () => {
                     console.error('Upload error:', error);
                     setUploading(false);
                 },
+                () => {
+                    console.log("image " + files[i].name + " uploaded successfully!");
+                    if (i == (storageRefs.length - 1)) {
+                        setUploading(false);
+                        setUploadProgress(0);
+                        setFiles([]);
+                        setShowSuccess(true);
+                        fetchImages();
+                    }
+                }
             )
         }
-  
-        setUploading(false);
-        setUploadProgress(0);
-        setFiles([]);
-        setShowSuccess(true);
-        fetchImages();
     }
 
 
