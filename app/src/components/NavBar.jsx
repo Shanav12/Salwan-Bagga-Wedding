@@ -51,7 +51,7 @@ const Header = () => {
                 </Link>
                 
                 <span className="text-[#991D00]">♥</span>
-                
+{/*                 
                 <Link 
                     to="/fun-facts" 
                     className="px-4 py-2 border border-[#691700] rounded text-[#5a5a5a] hover:bg-[#E0462B] hover:text-white transition-all tracking-wide text-sm uppercase"
@@ -59,7 +59,7 @@ const Header = () => {
                     Fun Facts
                 </Link>
 
-                <span className="text-[#991D00]">♥</span>
+                <span className="text-[#991D00]">♥</span> */}
 
                 <Link 
                     to="/gallery" 
@@ -110,7 +110,7 @@ const Header = () => {
 
                     <span className="text-[#991D00]">♥</span>
                     
-                    <Link 
+                    {/* <Link 
                         to="/fun-facts" 
                         onClick={() => setIsMenuOpen(false)}
                         className="w-full text-center px-4 py-2 border border-[#691700] rounded text-[#5a5a5a] hover:bg-[#E0462B] hover:text-white transition-all tracking-wide text-sm uppercase"
@@ -118,7 +118,7 @@ const Header = () => {
                         Fun Facts
                     </Link>
 
-                    <span className="text-[#991D00]">♥</span>
+                    <span className="text-[#991D00]">♥</span> */}
 
                     <Link 
                         to="/gallery" 
