@@ -14,9 +14,11 @@ const Gallery = () => {
     const [showSuccess, setShowSuccess] = useState(false);
     const [currIdx, setCurrIdx] = useState(0);
     const [fadeIn, setFadeIn] = useState(true);
+    const [authReady, setAuthReady] = useState(false);
 
     useEffect(() => {
         signInAnonymously(auth).then().catch(err => console.log(err));
+        setAuthReady(true);
     }, []);
 
 
@@ -106,8 +108,10 @@ const Gallery = () => {
 
 
     useEffect(() => {
-        fetchImages();
-    }, []);
+        if (authReady) {
+            fetchImages();
+        }
+    }, [authReady])
 
 
     return (
