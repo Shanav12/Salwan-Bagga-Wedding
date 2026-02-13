@@ -42,10 +42,6 @@ const Gallery = () => {
         }
     }
 
-    const refreshPage = () => {
-        window.location.reload();
-    }
-
     const handleUpload = () => {
         if (!files) {
             return;
