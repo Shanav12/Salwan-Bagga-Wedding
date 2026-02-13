@@ -109,6 +109,17 @@ const Gallery = () => {
     };
 
 
+    useEffect(() => {
+        if (imageList.length > 1) {
+            const interval = setInterval(() => {
+                setCurrIdx(prev => (prev + 1) % imageList.length)
+            }, 3000);
+            
+            return () => clearInterval(interval);
+        }
+    }, [imageList.length])
+
+
     return (
         <div className="min-h-screen bg-[#faf0e6]">
             {showSuccess && (
@@ -130,7 +141,7 @@ const Gallery = () => {
                     <span className="h-px w-12 md:w-16 bg-[#691700]"></span>
                 </div>
                 <p className="mt-4 md:mt-6 text-lg md:text-xl text-[#5a5a5a] tracking-wide">
-                    Share your favorite moments with us!
+                    Share pictures of your favorite memories with us!
                 </p>
             </header>
 
@@ -185,7 +196,7 @@ const Gallery = () => {
 
             <section className="max-w-6xl mx-auto px-4 md:px-6 py-6 md:py-8">
                 <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-[#4a4a4a] mb-2 text-center">
-                    Our Moments
+                    Memories
                 </h2>
                 <div className="flex items-center justify-center gap-2 md:gap-3 mb-6 md:mb-8">
                     <span className="h-px w-8 md:w-12 bg-[#691700]"></span>
