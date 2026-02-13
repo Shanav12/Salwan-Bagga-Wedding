@@ -4,7 +4,7 @@ import { storage, auth } from '../firebase_config';
 import { signInAnonymously } from 'firebase/auth';
 
 const Gallery = () => {
-    const [file, setFile] = useState(null);
+    const [files, setFiles] = useState([]);
     const [imageList, setImageList] = useState([]);
     const [uploading, setUploading] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
@@ -37,37 +37,45 @@ const Gallery = () => {
 
 
     const handleFileChange = (e) => {
-        if (e.target.files[0]) {
-            setFile(e.target.files[0])
+        if (e.target.files) {
+            setFiles(e.target.files);
         }
     }
 
+    const refreshPage = () => {
+        window.location.reload();
+    }
 
     const handleUpload = () => {
-        if (!file) {
+        if (!files) {
             return;
         }
         setUploading(true);
-        const storageRef = ref(storage, `${file.name}-${Date.now()}`);
-        const upload = uploadBytesResumable(storageRef, file); 
-        upload.on(
-            'state_changed',
-            (snapshot) => {
-                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                setUploadProgress(progress);
-            },
-            (error) => {
-                console.error('Upload error:', error);
-                setUploading(false);
-            },
-            () => {
-                setUploading(false);
-                setUploadProgress(0);
-                setFile(null);
-                setShowSuccess(true);
-                fetchImages();
-            }
-        )   
+        let storageRefs = [];
+        for (let i = 0; i < files.length; i++) {
+            storageRefs.push(ref(storage, `${files[i].name}-${Date.now()}`)); 
+        };
+
+        for (let i = 0; i < storageRefs.length; i++) {
+            const upload = uploadBytesResumable(storageRefs[i], files[i]); 
+            upload.on(
+                'state_changed',
+                (snapshot) => {
+                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    setUploadProgress(progress);
+                },
+                (error) => {
+                    console.error('Upload error:', error);
+                    setUploading(false);
+                },
+            )
+        }
+  
+        setUploading(false);
+        setUploadProgress(0);
+        setFiles([]);
+        setShowSuccess(true);
+        fetchImages();
     }
 
 
@@ -163,20 +171,22 @@ const Gallery = () => {
                                 accept='image/*' 
                                 onChange={handleFileChange}
                                 className="hidden"
+                                name="files[]"
+                                multiple
                             />
                             <span className="inline-block w-full md:w-auto text-center bg-[#fdfbf7] border-2 border-[#691700] text-[#991D00] px-4 md:px-6 py-2 md:py-3 rounded-lg hover:bg-[#691700] hover:text-[#fdfbf7] transition-colors duration-200 font-medium text-sm md:text-base">
-                                {file ? (file.name.length > 30 ? file.name.substring(0, 30) + '...' : file.name) : 'Choose Photo'}
+                                {files.length > 0 ? files.length + ' photo(s)' : 'Choose Photo(s)'}
                             </span>
                         </label>
                         
                         <button 
                             onClick={handleUpload} 
-                            disabled={uploading || !file}
+                            disabled={uploading || files.length == 0}
                             className="w-full md:w-auto bg-[#991D00] text-[#fdfbf7] px-6 md:px-8 py-2 md:py-3 rounded-lg hover:bg-[#691700] disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors duration-200 font-medium shadow-md text-sm md:text-base"
                         >
-                            {uploading ? 'Uploading...' : 'Upload Photo'}
+                            {uploading ? 'Uploading...' : 'Upload Photo(s)'}
                         </button>
-                        
+
                         {uploading && (
                             <div className="w-full">
                                 <p className="text-[#5a5a5a] text-center mb-2 text-sm md:text-base">
