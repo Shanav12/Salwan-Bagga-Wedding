@@ -48,13 +48,9 @@ const Gallery = () => {
             return;
         }
         setUploading(true);
-        let storageRefs = [];
-        for (let i = 0; i < files.length; i++) {
-            storageRefs.push(ref(storage, `${files[i].name}-${Date.now()}`)); 
-        };
-
-        for (let i = 0; i < storageRefs.length; i++) {
-            const upload = uploadBytesResumable(storageRefs[i], files[i]); 
+        Array.from(files).forEach((file, idx) => {
+            const currRef = ref(storage, `${file.name}-${Date.now()}`);
+            const upload = uploadBytesResumable(currRef, file); 
             upload.on(
                 'state_changed',
                 (snapshot) => {
@@ -66,8 +62,7 @@ const Gallery = () => {
                     setUploading(false);
                 },
                 () => {
-                    console.log("image " + files[i].name + " uploaded successfully!");
-                    if (i == (storageRefs.length - 1)) {
+                    if (idx == (files.length - 1)) {
                         setUploading(false);
                         setUploadProgress(0);
                         setFiles([]);
@@ -76,7 +71,7 @@ const Gallery = () => {
                     }
                 }
             )
-        }
+        })
     }
 
 
