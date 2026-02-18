@@ -1,41 +1,24 @@
-import { ref, uploadBytesResumable, listAll, getDownloadURL } from 'firebase/storage';
+import { ref, uploadBytesResumable } from 'firebase/storage';
 import { useState, useEffect } from "react";
-import { storage, auth } from '../firebase_config';
-import { signInAnonymously } from 'firebase/auth';
+import { storage } from '../firebase_config';
+import { useGallery } from '../contexts/GalleryContext';
 
 const Gallery = () => {
+    const { imageList, loading, fetchImages } = useGallery();
     const [files, setFiles] = useState([]);
-    const [imageList, setImageList] = useState([]);
     const [uploading, setUploading] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
-    const [loading, setLoading] = useState(true);
     const [showSuccess, setShowSuccess] = useState(false);
     const [currIdx, setCurrIdx] = useState(0);
-    const [authReady, setAuthReady] = useState(false);
-
-
-    useEffect(() => {
-        signInAnonymously(auth)
-            .then(() => {
-                setAuthReady(true);
-            })
-            .catch(err => {
-                console.error('Auth error:', err);
-                setAuthReady(true);
-            });
-    }, [])
-
 
     useEffect(() => {
         if (showSuccess) {
             const timer = setTimeout(() => {
                 setShowSuccess(false);
-                window.location.reload();
             }, 2000);
             return () => clearTimeout(timer);
         }
     }, [showSuccess]);
-
 
     const handleFileChange = (e) => {
         if (e.target.files) {
@@ -44,11 +27,15 @@ const Gallery = () => {
     }
 
     const handleUpload = () => {
-        if (!files) {
+        if (!files || files.length === 0) {
             return;
         }
         setUploading(true);
-        Array.from(files).forEach((file, idx) => {
+        
+        let completedUploads = 0;
+        const totalFiles = files.length;
+        
+        Array.from(files).forEach((file) => {
             const currRef = ref(storage, `${file.name}-${Date.now()}`);
             const upload = uploadBytesResumable(currRef, file); 
             upload.on(
@@ -62,7 +49,8 @@ const Gallery = () => {
                     setUploading(false);
                 },
                 () => {
-                    if (idx == (files.length - 1)) {
+                    completedUploads++;
+                    if (completedUploads === totalFiles) {
                         setUploading(false);
                         setUploadProgress(0);
                         setFiles([]);
@@ -73,32 +61,6 @@ const Gallery = () => {
             )
         })
     }
-
-
-    const fetchImages = async () => {
-        setLoading(true);
-        try {
-            const imageListRef = ref(storage);
-            const response = await listAll(imageListRef);
-            
-            const urlPromises = response.items.map((item) => getDownloadURL(item));
-            const urls = await Promise.all(urlPromises);
-            
-            setImageList(urls);
-        } catch (error) {
-            console.error('Error fetching images:', error);
-        } finally {
-            setLoading(false);
-        }
-    }
-
-
-    useEffect(() => {
-        if (authReady) {
-            fetchImages();
-        }
-    }, [authReady])
-
 
     const handlePrevious = () => {
         setCurrIdx((prev) => {
@@ -111,7 +73,6 @@ const Gallery = () => {
             return prev === imageList.length - 1 ? 0 : prev + 1;
         });
     };
-
 
     useEffect(() => {
         if (imageList.length > 1) {
