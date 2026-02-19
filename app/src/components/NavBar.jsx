@@ -137,6 +137,8 @@ const Header = () => {
                         Gallery
                     </Link>
 
+                    <span className="text-[#991D00]">♥</span>
+
                     <Link 
                         to="/wedding-logistics" 
                         onClick={() => setIsMenuOpen(false)}
