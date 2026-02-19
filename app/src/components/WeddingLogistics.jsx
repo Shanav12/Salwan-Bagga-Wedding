@@ -1,7 +1,6 @@
 import "../App.css"
 
 
-
 const WeddingLogistics = () => {
     return (
          <div className="min-h-full bg-[#faf0e6] py-16 px-4 overflow-x-hidden">
@@ -17,6 +16,10 @@ const WeddingLogistics = () => {
             <section className="max-w-2xl md:max-w-3xl mx-auto px-4 py-6 text-center">
                 <p className="font-prata text-[#5a5a5a] leading-relaxed text-xl mt-6">
                     Cabo San Lucas
+                </p>
+
+                <p className="font-prata text-[#5a5a5a] leading-relaxed text-xl mt-6">
+                    5/20/27 - 5/22/27
                 </p>
 
                 <p className="font-prata text-[#5a5a5a] leading-relaxed text-xl mt-6">
