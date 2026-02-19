@@ -6,7 +6,7 @@ import Header from './components/NavBar'
 import Gallery from './components/Gallery'
 import { GalleryProvider } from "./contexts/GalleryContext"
 import { Routes, Route, HashRouter } from 'react-router-dom'
-
+import WeddingLogistics from './components/WeddingLogistics'
 
 
 const App = () => {
@@ -19,6 +19,7 @@ const App = () => {
               <Route path="/journey" element={<Journey />} />
               <Route path="/fun-facts" element={<FunFacts />} />
               <Route path='/gallery' element={<Gallery />} />
+              <Route path='/wedding-logistics' element={<WeddingLogistics/>} />
           </Routes>
       </HashRouter>
     </GalleryProvider>

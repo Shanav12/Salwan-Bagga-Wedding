@@ -67,6 +67,15 @@ const Header = () => {
                 >
                     Gallery
                 </Link>
+
+                <span className="text-[#991D00]">♥</span>
+
+                <Link 
+                    to="/wedding-logistics" 
+                    className="px-4 py-2 font-prata border border-[#border-[#691700]] rounded text-[#5a5a5a] hover:bg-[#E0462B] hover:text-white transition-all tracking-wide text-sm uppercase"
+                >
+                    Logistics
+                </Link>
                 <MusicPlayer></MusicPlayer>
             </nav>
 
@@ -126,6 +135,14 @@ const Header = () => {
                         className="w-full font-prata text-center px-4 py-2 border border-[#691700] rounded text-[#5a5a5a] hover:bg-[#E0462B] hover:text-white transition-all tracking-wide text-sm uppercase"
                     >
                         Gallery
+                    </Link>
+
+                    <Link 
+                        to="/wedding-logistics" 
+                        onClick={() => setIsMenuOpen(false)}
+                        className="w-full font-prata text-center px-4 py-2 border border-[#691700] rounded text-[#5a5a5a] hover:bg-[#E0462B] hover:text-white transition-all tracking-wide text-sm uppercase"
+                    >
+                        Logistics
                     </Link>
                     <MusicPlayer></MusicPlayer>
                 </nav>
