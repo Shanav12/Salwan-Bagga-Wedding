@@ -42,7 +42,7 @@ const MusicPlayer = () => {
           </svg>
         )}
       </button>
-      <span className="text-xs tracking-[0.15em] uppercase font-serif opacity-80">
+      <span className="text-xs tracking-[0.15em] uppercase font-prata opacity-80">
         {playing ? 'Pause Music' : 'Play Music'}
       </span>
     </div>

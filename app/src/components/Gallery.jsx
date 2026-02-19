@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import { storage } from '../firebase_config';
 import { useGallery } from '../contexts/GalleryContext';
 
+
+
 const Gallery = () => {
     const { imageList, loading, fetchImages } = useGallery();
     const [files, setFiles] = useState([]);
@@ -97,7 +99,7 @@ const Gallery = () => {
             )}
 
             <header className="pt-8 md:pt-16 pb-6 md:pb-8 text-center px-4">
-                <h1 className="font-serif text-4xl md:text-5xl lg:text-7xl text-[#3B3B3B] mb-2">
+                <h1 className="font-prata text-4xl md:text-5xl lg:text-7xl text-[#3B3B3B] mb-2">
                     Photo Gallery
                 </h1>
                 <div className="flex items-center justify-center gap-3 md:gap-4 mt-4 md:mt-6">
@@ -105,14 +107,14 @@ const Gallery = () => {
                     <span className="text-[#991D00] text-xl md:text-2xl">♥</span>
                     <span className="h-px w-12 md:w-16 bg-[#691700]"></span>
                 </div>
-                <p className="mt-4 md:mt-6 text-lg md:text-xl text-[#5a5a5a] tracking-wide">
+                <p className="font-prata mt-4 md:mt-6 text-lg md:text-xl text-[#5a5a5a] tracking-wide">
                     Share pictures of your favorite memories with us!
                 </p>
             </header>
 
             <section className="max-w-2xl mx-auto px-4 md:px-6 py-6 md:py-8">
                 <div className="bg-[#fdfbf7] border-2 border-[#691700] rounded-lg p-4 md:p-6 shadow-md">
-                    <h2 className="font-serif text-2xl md:text-3xl text-[#4a4a4a] mb-3 md:mb-4 text-center">
+                    <h2 className="font-prata text-2xl md:text-3xl text-[#4a4a4a] mb-3 md:mb-4 text-center">
                         Upload Photos
                     </h2>
                     <div className="flex items-center justify-center gap-2 md:gap-3 mb-4 md:mb-6">
@@ -131,7 +133,7 @@ const Gallery = () => {
                                 name="files[]"
                                 multiple
                             />
-                            <span className="inline-block w-full md:w-auto text-center bg-[#fdfbf7] border-2 border-[#691700] text-[#991D00] px-4 md:px-6 py-2 md:py-3 rounded-lg hover:bg-[#691700] hover:text-[#fdfbf7] transition-colors duration-200 font-medium text-sm md:text-base">
+                            <span className="font-prata inline-block w-full md:w-auto text-center bg-[#fdfbf7] border-2 border-[#691700] text-[#991D00] px-4 md:px-6 py-2 md:py-3 rounded-lg hover:bg-[#691700] hover:text-[#fdfbf7] transition-colors duration-200 font-medium text-sm md:text-base">
                                 {files.length > 0 ? files.length + ' photo(s)' : 'Choose Photo(s)'}
                             </span>
                         </label>
@@ -139,7 +141,7 @@ const Gallery = () => {
                         <button 
                             onClick={handleUpload} 
                             disabled={uploading || files.length == 0}
-                            className="w-full md:w-auto bg-[#991D00] text-[#fdfbf7] px-6 md:px-8 py-2 md:py-3 rounded-lg hover:bg-[#691700] disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors duration-200 font-medium shadow-md text-sm md:text-base"
+                            className="font-prata w-full md:w-auto bg-[#991D00] text-[#fdfbf7] px-6 md:px-8 py-2 md:py-3 rounded-lg hover:bg-[#691700] disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors duration-200 font-medium shadow-md text-sm md:text-base"
                         >
                             {uploading ? 'Uploading...' : 'Upload Photo(s)'}
                         </button>
@@ -162,7 +164,7 @@ const Gallery = () => {
             </section>
 
             <section className="max-w-6xl mx-auto px-4 md:px-6 py-6 md:py-8">
-                <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-[#4a4a4a] mb-2 text-center">
+                <h2 className="font-prata text-3xl md:text-4xl lg:text-5xl text-[#4a4a4a] mb-2 text-center">
                     Memories
                 </h2>
                 <div className="flex items-center justify-center gap-2 md:gap-3 mb-6 md:mb-8">
@@ -172,9 +174,9 @@ const Gallery = () => {
                 </div>
 
                 {loading ? (
-                    <p className="text-center text-[#5a5a5a] text-lg md:text-xl">Loading photos...</p>
+                    <p className="font-prata text-center text-[#5a5a5a] text-lg md:text-xl">Loading photos...</p>
                 ) : imageList.length === 0 ? (
-                    <p className="text-center text-[#5a5a5a] text-lg md:text-xl px-4">No photos yet. Be the first to share!</p>
+                    <p className="font-prata text-center text-[#5a5a5a] text-lg md:text-xl px-4">No photos yet. Be the first to share!</p>
                 ) : (
                     <div className="relative">
                         <div className="flex justify-center mb-6">
@@ -218,7 +220,7 @@ const Gallery = () => {
                                 <button
                                     key={index}
                                     onClick={() => setCurrIdx(index)}
-                                    className={`w-2 h-2 rounded-full transition-all duration-200 ${
+                                    className={`w-2 h-2 font-prata rounded-full transition-all duration-200 ${
                                         index === currIdx 
                                             ? 'bg-[#991D00] w-6 md:w-8' 
                                             : 'bg-[#691700] opacity-40 hover:opacity-70'

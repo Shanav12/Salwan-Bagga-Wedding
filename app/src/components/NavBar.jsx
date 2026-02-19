@@ -36,7 +36,7 @@ const Header = () => {
             <nav className="hidden md:flex justify-end items-center gap-4">
                 <Link 
                     to="/" 
-                    className="px-4 py-2 border border-[#691700] rounded text-[#5a5a5a] hover:bg-[#E0462B] hover:text-white transition-all tracking-wide text-sm uppercase"
+                    className="px-4 py-2 font-prata border border-[#691700] rounded text-[#5a5a5a] hover:bg-[#E0462B] hover:text-white transition-all tracking-wide text-sm uppercase"
                 >
                     Home
                 </Link>
@@ -45,7 +45,7 @@ const Header = () => {
                 
                 <Link 
                     to="/journey" 
-                    className="px-4 py-2 border border-[#691700] rounded text-[#5a5a5a] hover:bg-[#E0462B] hover:text-white transition-all tracking-wide text-sm uppercase"
+                    className="px-4 py-2 font-prata border border-[#691700] rounded text-[#5a5a5a] hover:bg-[#E0462B] hover:text-white transition-all tracking-wide text-sm uppercase"
                 >
                     Our Journey
                 </Link>
@@ -63,7 +63,7 @@ const Header = () => {
 
                 <Link 
                     to="/gallery" 
-                    className="px-4 py-2 border border-[#border-[#691700]] rounded text-[#5a5a5a] hover:bg-[#E0462B] hover:text-white transition-all tracking-wide text-sm uppercase"
+                    className="px-4 py-2 font-prata border border-[#border-[#691700]] rounded text-[#5a5a5a] hover:bg-[#E0462B] hover:text-white transition-all tracking-wide text-sm uppercase"
                 >
                     Gallery
                 </Link>
@@ -93,7 +93,7 @@ const Header = () => {
                     <Link 
                         to="/" 
                         onClick={() => setIsMenuOpen(false)}
-                        className="w-full text-center px-4 py-2 border border-[#691700] rounded text-[#5a5a5a] hover:bg-[#E0462B] hover:text-white transition-all tracking-wide text-sm uppercase"
+                        className="w-full font-prata text-center px-4 py-2 border border-[#691700] rounded text-[#5a5a5a] hover:bg-[#E0462B] hover:text-white transition-all tracking-wide text-sm uppercase"
                     >
                         Home
                     </Link>
@@ -103,7 +103,7 @@ const Header = () => {
                     <Link 
                         to="/journey" 
                         onClick={() => setIsMenuOpen(false)}
-                        className="w-full text-center px-4 py-2 border border-[#691700] rounded text-[#5a5a5a] hover:bg-[#E0462B] hover:text-white transition-all tracking-wide text-sm uppercase"
+                        className="w-full font-prata text-center px-4 py-2 border border-[#691700] rounded text-[#5a5a5a] hover:bg-[#E0462B] hover:text-white transition-all tracking-wide text-sm uppercase"
                     >
                         Our Journey
                     </Link>
@@ -123,7 +123,7 @@ const Header = () => {
                     <Link 
                         to="/gallery" 
                         onClick={() => setIsMenuOpen(false)}
-                        className="w-full text-center px-4 py-2 border border-[#691700] rounded text-[#5a5a5a] hover:bg-[#E0462B] hover:text-white transition-all tracking-wide text-sm uppercase"
+                        className="w-full font-prata text-center px-4 py-2 border border-[#691700] rounded text-[#5a5a5a] hover:bg-[#E0462B] hover:text-white transition-all tracking-wide text-sm uppercase"
                     >
                         Gallery
                     </Link>

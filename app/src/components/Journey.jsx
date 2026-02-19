@@ -192,7 +192,7 @@ const Journey = () => {
     return (
         <div className="min-h-full bg-[#faf0e6] py-16 px-4 overflow-x-hidden">
             <div className="text-center mb-16">
-                <h1 className="font-serif text-5xl md:text-7xl text-[#4a4a4a] mb-4">Our Journey</h1>
+                <h1 className="font-prata text-5xl md:text-7xl text-[#4a4a4a] mb-4">Our Journey</h1>
                 <div className="flex items-center justify-center gap-4">
                     <span className="h-px w-12 md:w-16 bg-[#691700]"></span>
                     <span className="text-[#991D00] text-2xl md:text-3xl">♥</span>
@@ -206,7 +206,7 @@ const Journey = () => {
                     return (
                         <>
                         <div key={chapterIndex} className={`mb-12 md:mb-16 sm:ml-16 flex items-center underline underline-offset-10 ${((chapterIndex % 2) === 0) ? 'justify-start' : 'justify-end'}`}>
-                            <h2 className="text-3xl font-serif font-bold text-[#4a4a4a] mb-2">{chapter.title}</h2>
+                            <h2 className="text-3xl font-prata text-[#4a4a4a] mb-2">{chapter.title}</h2>
                         </div>
                         {
                         chapter.events.map((event) => {
@@ -235,16 +235,16 @@ const Journey = () => {
                                                 className="relative rounded-lg shadow-lg w-80 h-96 md:w-96 md:h-102 object-cover"
                                             />
                                         </div>
-                                        <div className="mt-3 mb-3 font-serif ">
+                                        <div className="mt-3 mb-3 font-prata ">
                                             <div className={`mt-3 text-left ${isLeft ? 'md:text-right' : 'md:text-left'}`}>
-                                                <span className="inline-block px-3 py-1 bg-[#A32100] text-[#d4b896] rounded-full text-sm md:text-base font-medium tracking-wide">
+                                                <span className="font-prata inline-block px-3 py-1 bg-[#A32100] text-[#d4b896] rounded-full text-sm md:text-base font-medium tracking-wide">
                                                     {event.date}
                                                 </span>
                                             </div>
-                                            <h4 className="font-serif text-xl md:text-2xl text-[#4a4a4a] mt-2">
+                                            <h4 className="font-prata text-xl md:text-2xl text-[#4a4a4a] mt-2">
                                                 {event.title}
                                             </h4>
-                                            <div className="text-[#4a4a4a] mt-1 text-sm md:text-base"> 
+                                            <div className="font-prata text-[#4a4a4a] mt-1 text-sm md:text-base"> 
                                                 {event.description}
                                             </div>
                                         </div>

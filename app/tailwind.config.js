@@ -6,8 +6,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        display: ['Lilita One', 'cursive'],
-        sans: ['Inter', 'ui-sans-serif', 'system-ui'],
+        prata: ['"Prata"', 'serif'],
       },
       animation: {
         'fade-in-down': 'fadeInDown 0.5s ease-out',
