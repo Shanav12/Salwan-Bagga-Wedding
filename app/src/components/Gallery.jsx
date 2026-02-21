@@ -99,7 +99,7 @@ const Gallery = () => {
             )}
 
             <header className="pt-8 md:pt-16 pb-6 md:pb-8 text-center px-4">
-                <h1 className="font-prata text-4xl md:text-5xl lg:text-7xl text-[#3B3B3B] mb-2">
+                <h1 className="font-prata text-5xl md:text-7xl text-[#3B3B3B] mb-2">
                     Photo Gallery
                 </h1>
                 <div className="flex items-center justify-center gap-3 md:gap-4 mt-4 md:mt-6">

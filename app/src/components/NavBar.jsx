@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import MusicPlayer from './MusicPlayer'
 
 
-const Header = () => {
+const NavBar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const [isVisible, setIsVisible] = useState(true)
     const [lastScrollY, setLastScrollY] = useState(0)
@@ -153,4 +153,4 @@ const Header = () => {
     )
 }
 
-export default Header
+export default NavBar;

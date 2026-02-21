@@ -6,7 +6,7 @@ import "../App.css"
 
 
 const HomePage = () => {
-    const date = new Date(2027, 5, 21);
+    const date = new Date('2027-05-21T00:00:00-07:00');
     const renderer = ({ days, hours, minutes, seconds }) => {
         const years = Math.floor(days / 365);
         const adjustedDays = days - (365 * Math.floor(days / 365));
