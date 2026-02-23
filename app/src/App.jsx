@@ -38,7 +38,10 @@ const App = () => {
                   transition: "opacity 1s ease-out", 
                   opacity: splashOpacity,
                   background: "radial-gradient(ellipse at center, #fdfbf7 0%, #f0dfd0 50%, #d4a882 100%)"}}>
-              <img src={saveTheDate} className="w-96 h-96 md:w-128 md:h-128 object-contain" />
+              <img 
+                  src={saveTheDate} 
+                  className="h-96 md:h-128 rounded-lg object-cover shadow-2xl border-2 border-[#691700]" 
+              />
           </div>
       )}
       <HashRouter>

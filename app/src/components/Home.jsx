@@ -1,4 +1,3 @@
-import engagementPic from "../assets/sahilambika1.jpg"
 import Countdown from 'react-countdown'
 import ambikaSahil from "../assets/ambika-Sahil.png"
 import "../App.css"
