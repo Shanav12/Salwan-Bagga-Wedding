@@ -5,6 +5,9 @@ export default {
   ],
   theme: {
     extend: {
+      spacing: {
+        '128': '32rem',
+      },
       fontFamily: {
         prata: ['"Prata"', 'serif'],
       },

@@ -2,7 +2,7 @@ import engagementPic from "../assets/sahilambika1.jpg"
 import Countdown from 'react-countdown'
 import ambikaSahil from "../assets/ambika-Sahil.png"
 import "../App.css"
-
+import saveTheDate from "../assets/saveTheDate.png"
 
 
 const HomePage = () => {
@@ -81,11 +81,14 @@ const HomePage = () => {
 
             <div className="flex justify-center px-6 py-8">
                 <div className="relative">
-                    <div className="absolute inset-0 bg-[#691700] rounded-lg transform rotate-3"></div>
+                    <div 
+                    className="absolute inset-0 bg-[#691700] rounded-lg max-h-80 md:max-h-112 
+                    transform rotate-3">                        
+                    </div>
                     <img 
-                        src={engagementPic} 
+                        src={saveTheDate} 
                         alt="Sahil and Ambika's Engagement" 
-                        className="relative rounded-lg shadow-xl max-w-md w-full object-cover"
+                        className="relative rounded-lg shadow-xl max-w-md w-full max-h-80 md:max-h-112 object-cover"
                     />
                 </div>
             </div>

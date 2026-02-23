@@ -7,11 +7,40 @@ import Gallery from './components/Gallery'
 import { GalleryProvider } from "./contexts/GalleryContext"
 import { Routes, Route, HashRouter } from 'react-router-dom'
 import WeddingLogistics from './components/WeddingLogistics'
+import { useState, useEffect } from 'react'
+import saveTheDate from "../src/assets/saveTheDate.png"
 
 
 const App = () => {
+  const [splashVisible, setSplashVisible] = useState(() => {
+    return !sessionStorage.getItem('splashShown');
+  });
+  const [splashOpacity, setSplashOpacity] = useState(1);
+
+  useEffect(() => {
+      if (!splashVisible) {
+        return;
+      }
+      sessionStorage.setItem('splashShown', 'true');
+      const fadeTimer = setTimeout(() => setSplashOpacity(0), 2000);
+      const removeTimer = setTimeout(() => setSplashVisible(false), 3000);
+      return () => {
+          clearTimeout(fadeTimer);
+          clearTimeout(removeTimer);
+      };
+  }, []);
   return (
     <GalleryProvider>
+      {splashVisible && (
+          <div
+              className="fixed inset-0 z-50 flex items-center justify-center px-6 py-8"
+              style={{ 
+                  transition: "opacity 1s ease-out", 
+                  opacity: splashOpacity,
+                  background: "radial-gradient(ellipse at center, #fdfbf7 0%, #f0dfd0 50%, #d4a882 100%)"}}>
+              <img src={saveTheDate} className="w-96 h-96 md:w-128 md:h-128 object-contain" />
+          </div>
+      )}
       <HashRouter>
           <NavBar />
           <Routes>
