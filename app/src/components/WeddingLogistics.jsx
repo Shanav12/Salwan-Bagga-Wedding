@@ -57,11 +57,11 @@ const WeddingLogistics = () => {
 
             <div className="flex justify-center px-6 py-8">
                 <div className="relative">
-                    <img 
-                        src={saveTheDateBack} 
-                        alt="Sahil and Ambika's Engagement" 
-                        className="h-96 md:h-128 rounded-lg object-cover shadow-2xl border-1 border-[#691700]" 
-                        style={{ maxHeight }}
+                    <div className="absolute inset-0 bg-[#691700] rounded-lg transform rotate-3"></div>
+                    <img
+                        src={saveTheDateBack}
+                        alt="Sahil and Ambika's Engagement"
+                        className="relative rounded-lg shadow-xl w-72 h-96 md:w-80 md:h-112 object-cover"
                     />
                 </div>
             </div>
