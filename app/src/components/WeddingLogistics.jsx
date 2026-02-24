@@ -2,13 +2,20 @@ import "../App.css"
 import Confetti from 'react-confetti'
 import { useWindowSize } from 'react-use'
 import { useState, useEffect } from "react"
-
+import saveTheDateBack from "../assets/saveTheDateBack.png"
 
 
 const WeddingLogistics = () => {
     const { width, height } = useWindowSize();
     const [showConfetti, setShowConfetti] = useState(true);
     const [opacity, setOpacity] = useState(1);
+    const [maxHeight, setMaxHeight] = useState(window.innerWidth < 768 ? '20rem' : '28rem');
+
+    useEffect(() => {
+        const handleResize = () => setMaxHeight(window.innerWidth < 768 ? '20rem' : '28rem');
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     useEffect(() => {
         const fadeTimer = setTimeout(() => {
@@ -47,16 +54,19 @@ const WeddingLogistics = () => {
                     <span className="h-px w-12 md:w-16 bg-[#691700]"></span>
                 </div>
             </div>
+
+            <div className="flex justify-center px-6 py-8">
+                <div className="relative">
+                    <img 
+                        src={saveTheDateBack} 
+                        alt="Sahil and Ambika's Engagement" 
+                        className="h-96 md:h-128 rounded-lg object-cover shadow-2xl border-1 border-[#691700]" 
+                        style={{ maxHeight }}
+                    />
+                </div>
+            </div>
             
             <section className="max-w-2xl md:max-w-3xl mx-auto px-4 py-6 text-center">
-                <p className="font-prata text-[#5a5a5a] leading-relaxed text-xl mt-6">
-                    Cabo San Lucas
-                </p>
-
-                <p className="font-prata text-[#5a5a5a] leading-relaxed text-xl mt-6">
-                    5/20/27 - 5/22/27
-                </p>
-
                 <p className="font-prata text-[#5a5a5a] leading-relaxed text-xl mt-6">
                     More Details to Come...
                 </p>
