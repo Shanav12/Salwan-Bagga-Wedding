@@ -64,7 +64,7 @@ const HomePage = () => {
             </div>
         )
     };
-    
+
     return (
         <div className="justify-center min-h-screen bg-[#faf0e6]">
             <header className="pt-16 pb-8 text-center items-center justify-center px-4">
