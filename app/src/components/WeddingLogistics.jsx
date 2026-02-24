@@ -9,13 +9,7 @@ const WeddingLogistics = () => {
     const { width, height } = useWindowSize();
     const [showConfetti, setShowConfetti] = useState(true);
     const [opacity, setOpacity] = useState(1);
-    const [maxHeight, setMaxHeight] = useState(window.innerWidth < 768 ? '20rem' : '28rem');
 
-    useEffect(() => {
-        const handleResize = () => setMaxHeight(window.innerWidth < 768 ? '20rem' : '28rem');
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
 
     useEffect(() => {
         const fadeTimer = setTimeout(() => {
@@ -61,7 +55,7 @@ const WeddingLogistics = () => {
                     <img
                         src={saveTheDateBack}
                         alt="Sahil and Ambika's Engagement"
-                        className="relative rounded-lg shadow-xl w-72 h-96 md:w-80 md:h-112 object-cover"
+                        className="relative rounded-lg shadow-xl w-80 h-auto md:w-96 md:h-auto object-contain"
                     />
                 </div>
             </div>
