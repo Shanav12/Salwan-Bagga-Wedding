@@ -87,7 +87,7 @@ const HomePage = () => {
                     <img 
                         src={saveTheDate} 
                         alt="Sahil and Ambika's Engagement" 
-                        className="relative rounded-lg shadow-xl max-w-md w-full max-h-80 md:max-h-112 object-cover"
+                        className="relative rounded-lg shadow-xl max-w-md w-full max-h-80 md:max-h-112 object-contain"
                     />
                 </div>
             </div>
