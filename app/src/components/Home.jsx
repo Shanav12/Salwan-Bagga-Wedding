@@ -2,17 +2,11 @@ import Countdown from 'react-countdown'
 import ambikaSahil from "../assets/ambika-Sahil.png"
 import "../App.css"
 import saveTheDate from "../assets/saveTheDate.png"
-import { useState, useEffect } from "react"
+
+
 
 const HomePage = () => {
     const date = new Date('2027-05-21T00:00:00-07:00');
-    const [maxHeight, setMaxHeight] = useState(window.innerWidth < 768 ? '20rem' : '28rem');
-
-    useEffect(() => {
-        const handleResize = () => setMaxHeight(window.innerWidth < 768 ? '20rem' : '28rem');
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
 
     const renderer = ({ days, hours, minutes, seconds }) => {
         const years = Math.floor(days / 365);
@@ -88,15 +82,11 @@ const HomePage = () => {
 
             <div className="flex justify-center px-6 py-8">
                 <div className="relative">
-                    <div 
-                        className="absolute inset-0 bg-[#691700] rounded-lg transform rotate-3"
-                        style={{ maxHeight }}
-                    ></div>
-                    <img 
-                        src={saveTheDate} 
-                        alt="Sahil and Ambika's Engagement" 
-                        className="relative rounded-lg shadow-xl max-w-md w-full object-contain"
-                        style={{ maxHeight }}
+                    <div className="absolute inset-0 bg-[#691700] rounded-lg transform rotate-3"></div>
+                    <img
+                        src={saveTheDate}
+                        alt="Sahil and Ambika's Engagement"
+                        className="relative rounded-lg shadow-xl w-72 h-96 md:w-80 md:h-112 object-cover"
                     />
                 </div>
             </div>

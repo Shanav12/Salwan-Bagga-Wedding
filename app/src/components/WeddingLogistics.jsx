@@ -9,13 +9,7 @@ const WeddingLogistics = () => {
     const { width, height } = useWindowSize();
     const [showConfetti, setShowConfetti] = useState(true);
     const [opacity, setOpacity] = useState(1);
-    const [maxHeight, setMaxHeight] = useState(window.innerWidth < 768 ? '20rem' : '28rem');
 
-    useEffect(() => {
-        const handleResize = () => setMaxHeight(window.innerWidth < 768 ? '20rem' : '28rem');
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
 
     useEffect(() => {
         const fadeTimer = setTimeout(() => {
@@ -57,11 +51,11 @@ const WeddingLogistics = () => {
 
             <div className="flex justify-center px-6 py-8">
                 <div className="relative">
-                    <img 
-                        src={saveTheDateBack} 
-                        alt="Sahil and Ambika's Engagement" 
-                        className="h-96 md:h-128 rounded-lg object-cover shadow-2xl border-1 border-[#691700]" 
-                        style={{ maxHeight }}
+                    <div className="absolute inset-0 bg-[#691700] rounded-lg transform rotate-3"></div>
+                    <img
+                        src={saveTheDateBack}
+                        alt="Sahil and Ambika's Engagement"
+                        className="relative rounded-lg shadow-xl w-80 h-auto md:w-96 md:h-auto object-contain"
                     />
                 </div>
             </div>
