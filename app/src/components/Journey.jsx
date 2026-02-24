@@ -99,7 +99,7 @@ const timelineEvents = [
                 image: gamedayPic,
                 date: "November 2021",
                 title: "Game Day",
-                description: "Go Blue! Go Green! Go White! The legendary Michigan State vs Michigan game was always an exhialarating experience, it brought out our competitive spirit in the best way.",
+                description: "Go Blue! Go Green! Go White! The legendary Michigan State vs Michigan game was always an exhilarating experience, it brought out our competitive spirit in the best way.",
             },
             {
                 image: ambuGradPic,
