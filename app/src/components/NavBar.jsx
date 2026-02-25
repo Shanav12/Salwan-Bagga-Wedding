@@ -97,6 +97,10 @@ const NavBar = () => {
                 </button>
             </div>
 
+            <div className="md:hidden absolute top-1 right-2 scale-80">
+                <MusicPlayer />
+            </div>
+
             {isMenuOpen && (
                 <nav className="md:hidden mt-4 pb-2 flex flex-col items-center gap-3">
                     <Link 
@@ -146,7 +150,6 @@ const NavBar = () => {
                     >
                         Logistics
                     </Link>
-                    <MusicPlayer></MusicPlayer>
                 </nav>
             )}
         </header>
