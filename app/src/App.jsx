@@ -4,6 +4,7 @@ import Journey from './components/Journey'
 import FunFacts from './components/FunFacts'
 import NavBar from './components/NavBar'
 import Gallery from './components/Gallery'
+import MusicPlayer from './components/MusicPlayer'
 import { GalleryProvider } from "./contexts/GalleryContext"
 import { Routes, Route, HashRouter } from 'react-router-dom'
 import WeddingLogistics from './components/WeddingLogistics'
@@ -29,6 +30,7 @@ const App = () => {
           clearTimeout(removeTimer);
       };
   }, []);
+
   return (
     <GalleryProvider>
       {splashVisible && (
@@ -45,14 +47,17 @@ const App = () => {
           </div>
       )}
       <HashRouter>
-          <NavBar />
-          <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/journey" element={<Journey />} />
-              <Route path="/fun-facts" element={<FunFacts />} />
-              <Route path='/gallery' element={<Gallery />} />
-              <Route path='/wedding-logistics' element={<WeddingLogistics/>} />
-          </Routes>
+        <NavBar />
+        <div className="fixed top-3 right-6 z-50">
+            <MusicPlayer />
+        </div>
+        <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/journey" element={<Journey />} />
+            <Route path="/fun-facts" element={<FunFacts />} />
+            <Route path='/gallery' element={<Gallery />} />
+            <Route path='/wedding-logistics' element={<WeddingLogistics />} />
+        </Routes>
       </HashRouter>
     </GalleryProvider>
   )
