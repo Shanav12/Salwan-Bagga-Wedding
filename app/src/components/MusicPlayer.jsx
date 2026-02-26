@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import EoO from "../assets/EoO.mp3";
-import enchantedBridgerton from "../assets/enchanted_bridgerton.mp3";
+import teriOre from "../assets/teri_ore.mp3";
 import headlines from "../assets/drake_headlines.mp3";
 import dieForYou from "../assets/die_for_you_weeknd.mp3";
 
@@ -12,7 +12,7 @@ const MusicPlayer = () => {
   const [currIdx, setCurrIdx] = useState(0);
   const audioRef = useRef(null);
   const location = useLocation();
-  const songs = useMemo(() => [enchantedBridgerton, dieForYou, headlines, EoO], []);
+  const songs = useMemo(() => [teriOre, dieForYou, headlines, EoO], []);
 
   useEffect(() => {
     audioRef.current = new Audio(songs[currIdx]);
