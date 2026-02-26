@@ -17,7 +17,7 @@ const Lineup = () => {
                         key={index} 
                         src={image.default} 
                         className="md:w-[60%] mx-auto mb-10"
-                         loading="lazy"
+                        loading="lazy"
                     />
                 ))}
             </div>
