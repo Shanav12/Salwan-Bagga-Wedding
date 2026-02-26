@@ -5,6 +5,7 @@ import FunFacts from './components/FunFacts'
 import NavBar from './components/NavBar'
 import Gallery from './components/Gallery'
 import MusicPlayer from './components/MusicPlayer'
+import Lineup from './components/Lineup'
 import { GalleryProvider } from "./contexts/GalleryContext"
 import { Routes, Route, HashRouter } from 'react-router-dom'
 import WeddingLogistics from './components/WeddingLogistics'
@@ -57,6 +58,7 @@ const App = () => {
             <Route path="/fun-facts" element={<FunFacts />} />
             <Route path='/gallery' element={<Gallery />} />
             <Route path='/wedding-logistics' element={<WeddingLogistics />} />
+            <Route path='/lineup' element={<Lineup />}/>
         </Routes>
       </HashRouter>
     </GalleryProvider>
