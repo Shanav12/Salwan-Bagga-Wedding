@@ -23,9 +23,10 @@ import proposalChampagnePic from "../assets/sahilambika24.jpg"
 import proposalDecorPosePic from "../assets/sahilambika25.jpg"
 import proposalLedgePosePic from "../assets/sahilambika26.jpg"
 import engagementPartyPic from "../assets/sahilambika28.jpg"
+import centralParkPicCarry from "../assets/sahilambika29.jpg"
+import centralParkPicPosing from "../assets/sahilambika30.jpg"
 
 
-let index = 0
 const timelineEvents = [
     {
         title: "Chapter 1 - High School",
@@ -127,13 +128,11 @@ const timelineEvents = [
             {
                 image: proposalChampagnePic,
                 date: "June 2025",
-                title: "Proposal Champagne",
                 description: "In all the happiness, a nice cold champagne toast to help with the Chicago heat and mark the celebratory moment.",
             },
             {
                 image: proposalLedgePosePic,
                 date: "June 2025",
-                title: "Proposal Ledge Pose",
                 description: "Having a private proposal at Chicago's London house, we had to take the opportunity to take engagement photos with the iconic Chicago skyline.",
             },
             {
@@ -166,11 +165,20 @@ const timelineEvents = [
                 title: "Engagement Party",
                 description: "Time to party! A night filled with laughs, smiles, and unlimited happniess surrounded by the best people.",
             },
+            {
+                image: centralParkPicPosing,
+                date: "September 2025",
+                title: "Central Park Engagement Shoot",
+                description: "Warm weather, lush greenery, iconic NYC skyscrapers, and a whismical photo shoot in Central Park to capture the love and excitement of our engagement.",
+            },
+            {
+                image: centralParkPicCarry,
+                date: "September 2025",
+                description: "A candid moment from the engagement shoot, venturing into a restricted area of the park to capture photos with beautiful scenery in our own bubble.",
+            },
         ]
     }
 ]
-
-
 
 const Journey = () => {
     return (
@@ -184,65 +192,72 @@ const Journey = () => {
                 </div>
             </div>
 
-            <div className="max-w-4xl mx-auto relative">
+            <div className="max-w-6xl mx-auto relative">
+                {/* Vertical Center Line (Desktop) */}
+                <div className="absolute left-4 md:left-1/2 md:transform md:-translate-x-1/2 h-full w-0.5 bg-[#691700] z-0"></div>
 
-                {timelineEvents.map((chapter, chapterIndex) => {
+                {timelineEvents.map((chapter, chapterIndex) => {                    
                     return (
-                        <>
-                        <div key={chapterIndex} className={`mb-12 md:mb-16 sm:ml-16 flex items-center underline underline-offset-10 ${((chapterIndex % 2) === 0) ? 'justify-start' : 'justify-end'}`}>
-                            <h2 className="text-3xl font-prata text-[#4a4a4a] mb-2">{chapter.title}</h2>
-                        </div>
-                        {
-                        chapter.events.map((event) => {
-                        const isLeft = (chapterIndex % 2) === 0
-                        index += 1
-                        return (
-                                <div
-                                    key={index}
-                                    className={`relative flex items-center mb-12 md:mb-0 justify-start md:${isLeft ? 'justify-start' : 'justify-end'}`}
-                                >
-                                    <div className="absolute left-4 md:left-1/2 md:transform md:-translate-x-1/2 h-full w-0.5 bg-[#691700]"></div>
+                        <div key={chapterIndex} className="mb-20">
+                            {/* Chapter Heading */}
+                            <div className="relative z-10 mb-12 flex items-center justify-start pl-12 md:pl-0 md:ml-[5%]">
+                                <h2 className="text-3xl font-prata text-[#4a4a4a] border-b-2 border-[#691700] pb-2 bg-[#faf0e6] pr-2">
+                                    {chapter.title}
+                                </h2>
+                            </div>
 
-                                    <div className="absolute left-4 md:left-1/2 transform -translate-x-1/2 w-4 h-4 md:w-5 md:h-5 bg-[#991D00] rounded-full border-4 border-[#fdfbf7] z-10"></div>
-                                    <div
-                                        className={`ml-12 md:ml-0 md:w-[45%] text-left ${
-                                            isLeft 
-                                                ? 'md:pr-8 md:text-right' 
-                                                : 'md:pl-8 md:text-left md:ml-auto'
-                                        }`}
-                                    >
-                                        <div className={`relative inline-block ${isLeft ? 'md:ml-auto' : 'md:mr-auto'}`}>
-                                            <div className="absolute inset-0 bg-[#691700] rounded-lg transform rotate-2"></div>
-                                            <img
-                                                src={event.image}
-                                                alt={event.title}
-                                                className="relative rounded-lg shadow-lg w-80 h-96 md:w-96 md:h-102 object-cover"
-                                            />
+                            {chapter.events.map((event, eventIndex) => {
+                                return (
+                                    <div key={eventIndex} className="relative flex flex-col md:flex-row items-center mb-24 last:mb-0">
+                                        
+                                        {/* Timeline Dot */}
+                                        <div className="absolute left-4 md:left-1/2 transform -translate-x-1/2 w-4 h-4 md:w-5 md:h-5 bg-[#991D00] rounded-full border-4 border-[#faf0e6] z-20"></div>
+
+                                        {/* Left Side Container (Always Image) */}
+                                        <div className="w-full md:w-1/2 pl-12 pr-4 md:px-8 mb-6 md:mb-0 md:flex md:justify-end">
+                                            <TimelineImage image={event.image} title={event.title} />
                                         </div>
-                                        <div className="mt-3 mb-3 font-prata ">
-                                            <div className={`mt-3 text-left ${isLeft ? 'md:text-right' : 'md:text-left'}`}>
-                                                <span className="font-prata inline-block px-3 py-1 bg-[#A32100] text-[#d4b896] rounded-full text-sm md:text-base font-medium tracking-wide">
-                                                    {event.date}
-                                                </span>
-                                            </div>
-                                            <h4 className="font-prata text-xl md:text-2xl text-[#4a4a4a] mt-2">
-                                                {event.title}
-                                            </h4>
-                                            <div className="font-prata text-[#4a4a4a] mt-1 text-sm md:text-base"> 
-                                                {event.description}
-                                            </div>
+
+                                        {/* Right Side Container (Always Text) */}
+                                        <div className="w-full md:w-1/2 pl-12 pr-4 md:px-8 md:flex md:justify-start">
+                                            <TimelineContent event={event} align="left" />
                                         </div>
                                     </div>
-                                </div>
-                            )
-                        })}
-                        </>
-                    )
+                                );
+                            })}
+                        </div>
+                    );
                 })}
             </div>
         </div>
-    )
-}
+    );
+};
 
+// Helper component for the styled image
+const TimelineImage = ({ image, title }) => (
+    <div className="relative inline-block">
+        <div className="absolute inset-0 bg-[#691700] rounded-lg transform rotate-2"></div>
+        <img
+            src={image}
+            alt={title}
+            className="relative rounded-lg shadow-lg w-full max-w-[320px] h-96 object-cover"
+        />
+    </div>
+);
+
+// Helper component for the text content
+const TimelineContent = ({ event, align }) => (
+    <div className={`flex flex-col ${align === 'right' ? 'md:items-end' : 'md:items-start'}`}>
+        <h4 className="font-prata text-2xl md:text-3xl text-[#4a4a4a] mb-2">
+            {event.title}
+        </h4>
+        <span className="font-prata inline-block px-3 py-1 bg-[#A32100] text-[#d4b896] rounded-full text-sm md:text-base font-medium tracking-wide mb-3">
+            {event.date}
+        </span>
+        <p className="font-prata text-[#4a4a4a] text-base leading-relaxed max-w-sm">
+            {event.description}
+        </p>
+    </div>
+);
 
 export default Journey;
