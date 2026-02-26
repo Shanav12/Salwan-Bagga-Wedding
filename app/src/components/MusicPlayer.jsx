@@ -54,7 +54,6 @@ const MusicPlayer = () => {
 
   useEffect(() => {
     if (location.pathname === '/') {
-      setCurrIdx(0);
       setPlaying(false);
     }
     if (location.pathname === '/journey') {
