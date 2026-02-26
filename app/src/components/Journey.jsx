@@ -236,6 +236,7 @@ const TimelineImage = ({ image, title }) => (
         <img
             src={image}
             alt={title}
+            loading="lazy"
             className="relative rounded-lg shadow-lg w-full max-w-[320px] h-96 object-cover"
         />
     </div>
