@@ -1,7 +1,7 @@
 
 
 const Lineup = () => {
-    const allImages = import.meta.glob('../assets/bach-trip/*')
+    const allImages = import.meta.glob('../assets/bach-trip/*', { eager: true })
     return (
         <div className="min-h-full bg-[#faf0e6] py-16 px-4 overflow-x-hidden">
             <div className="text-center mb-16">
