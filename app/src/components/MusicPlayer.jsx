@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
-import sadiGali from '../assets/sadi_gali.mp3';
 import EoO from "../assets/EoO.mp3";
 import enchantedBridgerton from "../assets/enchanted_bridgerton.mp3";
 import headlines from "../assets/drake_headlines.mp3";
