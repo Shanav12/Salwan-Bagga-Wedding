@@ -13,7 +13,7 @@ const Lineup = () => {
                 </div>
                 <div className="mb-6"></div>
                 {Object.values(allImages).map((image, index) => (
-                    <img key={index} src={image.default} className=" w-[90%] md:w-[70%] mx-auto mb-10" />
+                    <img key={index} src={image.default} className=" md:w-[60%] mx-auto mb-10" />
                 ))}
             </div>
             <div className="max-w-4xl mx-auto relative">
