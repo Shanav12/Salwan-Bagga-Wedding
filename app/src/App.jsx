@@ -6,7 +6,7 @@ import NavBar from './components/NavBar'
 import Gallery from './components/Gallery'
 import MusicPlayer from './components/MusicPlayer'
 import Lineup from './components/Lineup'
-import { GalleryProvider } from "./contexts/GalleryContext"
+import GalleryProvider from "./contexts/GalleryProvider"
 import { Routes, Route, HashRouter } from 'react-router-dom'
 import WeddingLogistics from './components/WeddingLogistics'
 import { useState, useEffect } from 'react'
