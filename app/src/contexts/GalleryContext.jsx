@@ -34,10 +34,10 @@ const GalleryProvider = ({ children }) => {
         try {
             const imageListRef = ref(storage);
             const response = await listAll(imageListRef);
-            
+
             const urlPromises = response.items.map((item) => getDownloadURL(item));
             const urls = await Promise.all(urlPromises);
-            
+
             setImageList(urls);
         } catch (error) {
             console.error('Error fetching images:', error);

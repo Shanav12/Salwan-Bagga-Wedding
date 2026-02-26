@@ -2,6 +2,9 @@ import { useState, useRef, useEffect, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import sadiGali from '../assets/sadi_gali.mp3';
 import EoO from "../assets/EoO.mp3";
+import enchantedBridgerton from "../assets/enchanted_bridgerton.mp3";
+import headlines from "../assets/drake_headlines.mp3";
+import dieForYou from "../assets/die_for_you_weeknd.mp3";
 
 
 
@@ -10,7 +13,7 @@ const MusicPlayer = () => {
   const [currIdx, setCurrIdx] = useState(0);
   const audioRef = useRef(null);
   const location = useLocation();
-  const songs = useMemo(() => [sadiGali, EoO], []);
+  const songs = useMemo(() => [enchantedBridgerton, dieForYou, headlines, EoO], []);
 
   useEffect(() => {
     audioRef.current = new Audio(songs[currIdx]);
@@ -51,8 +54,24 @@ const MusicPlayer = () => {
 
 
   useEffect(() => {
+    if (location.pathname === '/') {
+      setCurrIdx(0);
+      setPlaying(false);
+    }
+    if (location.pathname === '/journey') {
+      setCurrIdx(0);
+      setPlaying(true);
+    }
+    if (location.pathname === '/gallery') {
+      setCurrIdx(1);
+      setPlaying(true);
+    }
+    if (location.pathname === '/lineup') {
+      setCurrIdx(2);
+      setPlaying(true);
+    }
     if (location.pathname === '/wedding-logistics') {
-      setCurrIdx(songs.length - 1);
+      setCurrIdx(3);
       setPlaying(true);
     }
   }, [location.pathname, songs]);
