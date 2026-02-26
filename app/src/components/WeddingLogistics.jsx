@@ -2,7 +2,7 @@ import "../App.css"
 import Confetti from 'react-confetti'
 import { useWindowSize } from 'react-use'
 import { useState, useEffect } from "react"
-import saveTheDateBack from "../assets/saveTheDateBack.png"
+import saveTheDateBack from "../assets/saveTheDateBack.webp"
 
 
 const WeddingLogistics = () => {
