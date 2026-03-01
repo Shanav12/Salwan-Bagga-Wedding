@@ -40,7 +40,7 @@ const Gallery = () => {
         const totalFiles = files.length;
         
         Array.from(files).forEach((file) => {
-            const currRef = ref(storage, `${file.name}-${Date.now()}`);
+            const currRef = ref(storage, `${Date.now()}-${file.name}`);
             const upload = uploadBytesResumable(currRef, file); 
             upload.on(
                 'state_changed',
