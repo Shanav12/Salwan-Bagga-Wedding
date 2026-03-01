@@ -31,13 +31,13 @@ const timelineEvents = [
                 image: promposalPic,
                 date: "April 2019",
                 title: "Promposal!",
-                description: "With a feeling of butterflies and excitement, Sahil mustered up the courage to ask Ambika to senior prom! The begining of our journey together :)",
+                description: "With a feeling of butterflies and excitement, Sahil mustered up the courage to ask Ambika to senior prom! The beginning of our journey together :)",
             },
             {
                 image: promPic,
                 date: "April 2019",
                 title: "Prom Night",
-                description: "After endless waiting, the big night finally arrived! Our first nice outing together, we arrvied in style in a pickup truck Uber.",
+                description: "After endless waiting, the big night finally arrived! Our first nice outing together, we arrived in style in a pickup truck Uber.",
             },
             {
                 image: firstDatePic,
@@ -61,7 +61,7 @@ const timelineEvents = [
                 image: lollaPic,
                 date: "August 2019",
                 title: "Lollapalooza",
-                description: "Chicago summer! We got to experience our first big festivial together, dancing and singing along to our favorite artists in the best city in the world!",
+                description: "Chicago summer! We got to experience our first big festival together, dancing and singing along to our favorite artists in the best city in the world!",
             },
         ]
     },
@@ -141,7 +141,7 @@ const timelineEvents = [
                 image: madridPic,
                 date: "July 2025",
                 title: "Madrid",
-                description: "Next stop, Madrid! This city was spectular in every way, one of our favorite moments was touring the storied royal Madrid palace.",
+                description: "Next stop, Madrid! This city was spectacular in every way, one of our favorite moments was touring the storied royal Madrid palace.",
             },
             {
                 image: florencePic,
@@ -153,19 +153,19 @@ const timelineEvents = [
                 image: rokaBackyardPic,
                 date: "August 2025",
                 title: "Roka",
-                description: "The start of the wedding festivies! A roka is a traditional Punjabi ceremony done for the bride and groom to begin joining the families together.",
+                description: "The start of the wedding festivities! A roka is a traditional Punjabi ceremony done for the bride and groom to begin joining the families together.",
             },
             {
                 image: engagementPartyPic,
                 date: "August 2025",
                 title: "Engagement Party",
-                description: "Time to party! A night filled with laughs, smiles, and unlimited happniess surrounded by the best people.",
+                description: "Time to party! A night filled with laughs, smiles, and unlimited happinessiess surrounded by the best people.",
             },
             {
                 image: centralParkPicPosing,
                 date: "September 2025",
                 title: "Central Park Engagement Shoot",
-                description: "Warm weather, lush greenery, iconic NYC skyscrapers, and a whismical photo shoot in Central Park to capture the love and excitement of our engagement.",
+                description: "Warm weather, lush greenery, iconic NYC skyscrapers, and a whimsical photo shoot in Central Park to capture the love and excitement of our engagement.",
             },
             {
                 image: centralParkPicCarry,
@@ -180,7 +180,7 @@ const Journey = () => {
     return (
         <div className="min-h-full bg-[#faf0e6] py-16 px-4 overflow-x-hidden">
             <div className="text-center mb-16">
-                <h1 className="font-prata text-5xl md:text-7xl text-[#4a4a4a] mb-4">Our Journey</h1>
+                <h1 className="font-prata text-5xl md:text-6xl text-[#4a4a4a] mb-4">Our Journey</h1>
                 <div className="flex items-center justify-center gap-4">
                     <span className="h-px w-12 md:w-16 bg-[#691700]"></span>
                     <span className="text-[#991D00] text-2xl md:text-3xl">♥</span>

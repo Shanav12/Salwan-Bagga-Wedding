@@ -34,6 +34,7 @@ const MusicPlayer = () => {
     audio.pause();
     audio.src = songs[currIdx];
     audio.load();
+    audio.currentTime = (location.pathname === '/gallery' && currIdx === 1) ? 14 : 0;
     if (wasPlaying) {
       audio.play().catch(console.error);
     }
@@ -79,7 +80,7 @@ const MusicPlayer = () => {
     <div className="flex items-center gap-3 px-5 py-2.5 text-[#5C2C1D]">
       <button
         onClick={() => setPlaying(p => !p)}
-        className="w-10 h-10 rounded-full border border-[#5C2C1D] flex items-center justify-center"
+        className="w-8 h-8 rounded-full border border-[#5C2C1D] flex items-center justify-center"
       >
         {playing ? (
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">

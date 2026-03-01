@@ -1,5 +1,5 @@
 import { ref, uploadBytesResumable } from 'firebase/storage';
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { storage } from '../firebase_config';
 import { useGallery } from '../contexts/GalleryContext';
 
@@ -12,6 +12,8 @@ const Gallery = () => {
     const [uploadProgress, setUploadProgress] = useState(0);
     const [showSuccess, setShowSuccess] = useState(false);
     const [currIdx, setCurrIdx] = useState(0);
+    const intervalRef = useRef(null);
+
 
     useEffect(() => {
         if (showSuccess) {
@@ -64,27 +66,33 @@ const Gallery = () => {
         })
     }
 
+    const startInterval = () => {
+        if (imageList.length > 1) {
+            clearInterval(intervalRef.current);
+            intervalRef.current = setInterval(() => {
+                setCurrIdx(prev => (prev + 1) % imageList.length);
+            }, 2500);
+        }
+    };
+
+    useEffect(() => {
+        startInterval();
+        return () => clearInterval(intervalRef.current);
+    }, [imageList.length]);
+
     const handlePrevious = () => {
         setCurrIdx((prev) => {
             return prev === 0 ? imageList.length - 1 : prev - 1;
         });
+        startInterval();
     };
 
     const handleNext = () => {
         setCurrIdx((prev) => {
             return prev === imageList.length - 1 ? 0 : prev + 1;
         });
+        startInterval();
     };
-
-    useEffect(() => {
-        if (imageList.length > 1) {
-            const interval = setInterval(() => {
-                setCurrIdx(prev => (prev + 1) % imageList.length)
-            }, 3000);
-            
-            return () => clearInterval(interval);
-        }
-    }, [imageList.length])
 
 
     return (
@@ -99,7 +107,7 @@ const Gallery = () => {
             )}
 
             <header className="pt-8 md:pt-16 pb-6 md:pb-8 text-center px-4">
-                <h1 className="font-prata text-5xl md:text-7xl text-[#3B3B3B] mb-2">
+                <h1 className="font-prata text-5xl md:text-6xl text-[#3B3B3B] mb-2">
                     Photo Gallery
                 </h1>
                 <div className="flex items-center justify-center gap-3 md:gap-4 mt-4 md:mt-6">

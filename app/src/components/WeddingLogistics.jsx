@@ -41,7 +41,7 @@ const WeddingLogistics = () => {
                 />
             )}
             <div className="text-center mb-16">
-                <h1 className="font-prata text-5xl md:text-7xl text-[#4a4a4a] mb-4">Wedding Logistics</h1>
+                <h1 className="font-prata text-5xl md:text-6xl text-[#4a4a4a] mb-4">Wedding Logistics</h1>
                 <div className="flex items-center justify-center gap-4">
                     <span className="h-px w-12 md:w-16 bg-[#691700]"></span>
                     <span className="text-[#991D00] text-2xl md:text-3xl">♥</span>
