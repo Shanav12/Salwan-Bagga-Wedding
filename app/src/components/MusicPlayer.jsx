@@ -34,7 +34,7 @@ const MusicPlayer = () => {
     audio.pause();
     audio.src = songs[currIdx];
     audio.load();
-    audio.currentTime = (location.pathname === '/gallery' && currIdx === 1) ? 14 : 0;
+    audio.currentTime = (location.pathname === '/gallery' && currIdx === 1) ? 15 : 0;
     if (wasPlaying) {
       audio.play().catch(console.error);
     }

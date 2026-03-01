@@ -96,7 +96,7 @@ const NavBar = () => {
             </div>
 
             {isMenuOpen && (
-                <nav className="md:hidden mt-4 pb-2 flex flex-col items-center gap-3">
+                <nav className="md:hidden mt-4 pb-2 flex flex-col items-center gap-1.5">
                     <Link 
                         to="/" 
                         onClick={() => setIsMenuOpen(false)}

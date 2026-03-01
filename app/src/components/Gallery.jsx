@@ -71,7 +71,7 @@ const Gallery = () => {
             clearInterval(intervalRef.current);
             intervalRef.current = setInterval(() => {
                 setCurrIdx(prev => (prev + 1) % imageList.length);
-            }, 2500);
+            }, 3000);
         }
     };
 
