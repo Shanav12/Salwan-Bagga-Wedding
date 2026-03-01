@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ref, listAll, getDownloadURL } from 'firebase/storage';
+import { ref, listAll, getDownloadURL, getMetadata } from 'firebase/storage';
 import { storage, auth } from '../firebase_config';
 import { signInAnonymously } from 'firebase/auth';
 import { GalleryContext } from './GalleryContext';
@@ -21,8 +21,19 @@ const GalleryProvider = ({ children }) => {
         setLoading(true);
         try {
             const response = await listAll(ref(storage));
-            const urls = await Promise.all(response.items.map(getDownloadURL));
-            setImageList(urls);
+            const itemsWithMetadata = await Promise.all(
+                response.items.map(async (item) => {
+                    const [url, metadata] = await Promise.all([
+                        getDownloadURL(item),
+                        getMetadata(item),
+                    ]);
+                    return { url, timeCreated: metadata.timeCreated };
+                })
+            );
+            const sortedImages = itemsWithMetadata
+                .sort((a, b) => new Date(b.timeCreated) - new Date(a.timeCreated))
+                .map(({ url }) => url);
+            setImageList(sortedImages);
         } catch (error) {
             console.error('Error fetching images:', error);
         } finally {
