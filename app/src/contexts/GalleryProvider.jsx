@@ -21,7 +21,7 @@ const GalleryProvider = ({ children }) => {
         setLoading(true);
         try {
             const response = await listAll(ref(storage));
-            const itemsWithMetadata = await Promise.all(
+            const imagesWithMetadata = await Promise.all(
                 response.items.map(async (item) => {
                     const [url, metadata] = await Promise.all([
                         getDownloadURL(item),
@@ -30,8 +30,8 @@ const GalleryProvider = ({ children }) => {
                     return { url, timeCreated: metadata.timeCreated };
                 })
             );
-            const sortedImages = itemsWithMetadata
-                .sort((a, b) => new Date(b.timeCreated) - new Date(a.timeCreated))
+            const sortedImages = imagesWithMetadata
+                .sort((image1, image2) => new Date(image1.timeCreated) - new Date(image2.timeCreated))
                 .map(({ url }) => url);
             setImageList(sortedImages);
         } catch (error) {
