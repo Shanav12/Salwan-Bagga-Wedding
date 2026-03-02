@@ -96,7 +96,7 @@ const Gallery = () => {
 
 
     return (
-        <div className="min-h-screen bg-[#faf0e6]">
+        <div className="min-h-full bg-[#faf0e6] py-14 px-4 overflow-x-hidden">
             {showSuccess && (
                 <div className="fixed top-4 md:top-8 left-1/2 transform -translate-x-1/2 z-50 animate-fade-in-down px-4 w-full max-w-md">
                     <div className="bg-[#fdfbf7] border-2 border-[#991D00] rounded-lg px-4 md:px-6 py-3 md:py-4 shadow-xl flex items-center gap-2 md:gap-3">
@@ -106,10 +106,8 @@ const Gallery = () => {
                 </div>
             )}
 
-            <header className="pt-8 md:pt-14 pb-6 md:pb-8 text-center px-4">
-                <h1 className="font-prata text-5xl md:text-6xl text-[#3B3B3B] mb-2">
-                    Photo Gallery
-                </h1>
+            <div className="text-center mb-8">
+                <h1 className="font-prata text-5xl md:text-6xl text-[#4a4a4a] mb-4">Photo Gallery</h1>
                 <div className="flex items-center justify-center gap-3 md:gap-4 mt-4 md:mt-6">
                     <span className="h-px w-12 md:w-16 bg-[#691700]"></span>
                     <span className="text-[#991D00] text-xl md:text-2xl">♥</span>
@@ -118,7 +116,7 @@ const Gallery = () => {
                 <p className="font-prata mt-4 md:mt-6 text-lg md:text-xl text-[#5a5a5a] tracking-wide">
                     Share pictures of your favorite memories with us!
                 </p>
-            </header>
+            </div>
 
             <section className="max-w-2xl mx-auto px-4 md:px-6 py-3 md:py-4">
                 <div className="bg-[#fdfbf7] border-2 border-[#691700] rounded-lg p-4 md:p-6 shadow-md">

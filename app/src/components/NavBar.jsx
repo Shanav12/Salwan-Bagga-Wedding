@@ -28,7 +28,7 @@ const NavBar = () => {
 
     return (
         <header 
-            className={`w-full py-2 md:py-3 px-3.25 sticky top-0 z-50 bg-gray-100 border-b border-[#691700] transition-transform duration-300 ${
+            className={`w-full py-2 md:py-3.5 px-3.25 sticky top-0 z-50 bg-gray-100 border-b border-[#691700] transition-transform duration-300 ${
                 isVisible ? 'translate-y-0' : '-translate-y-full md:translate-y-0'
             }`}
         >
