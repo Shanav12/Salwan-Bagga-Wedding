@@ -28,7 +28,7 @@ const WeddingLogistics = () => {
 
 
     return (
-         <div className="min-h-full bg-[#faf0e6] py-16 px-4 overflow-x-hidden">
+         <div className="min-h-full bg-[#faf0e6] py-12 px-4 overflow-x-hidden">
             {showConfetti && (
                 <Confetti
                     width={width}
@@ -40,7 +40,7 @@ const WeddingLogistics = () => {
                     }}
                 />
             )}
-            <div className="text-center mb-16">
+            <div className="text-center mb-4">
                 <h1 className="font-prata text-5xl md:text-6xl text-[#4a4a4a] mb-4">Wedding Logistics</h1>
                 <div className="flex items-center justify-center gap-4">
                     <span className="h-px w-12 md:w-16 bg-[#691700]"></span>

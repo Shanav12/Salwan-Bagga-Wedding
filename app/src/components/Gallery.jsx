@@ -106,7 +106,7 @@ const Gallery = () => {
                 </div>
             )}
 
-            <header className="pt-8 md:pt-16 pb-6 md:pb-8 text-center px-4">
+            <header className="pt-8 md:pt-12 pb-6 md:pb-8 text-center px-4">
                 <h1 className="font-prata text-5xl md:text-6xl text-[#3B3B3B] mb-2">
                     Photo Gallery
                 </h1>
@@ -120,7 +120,7 @@ const Gallery = () => {
                 </p>
             </header>
 
-            <section className="max-w-2xl mx-auto px-4 md:px-6 py-6 md:py-8">
+            <section className="max-w-2xl mx-auto px-4 md:px-6 py-3 md:py-4">
                 <div className="bg-[#fdfbf7] border-2 border-[#691700] rounded-lg p-4 md:p-6 shadow-md">
                     <h2 className="font-prata text-2xl md:text-3xl text-[#4a4a4a] mb-3 md:mb-4 text-center">
                         Upload Photos

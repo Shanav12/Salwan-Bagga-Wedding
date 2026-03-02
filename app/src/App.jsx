@@ -48,7 +48,7 @@ const App = () => {
       )}
       <HashRouter>
         <NavBar />
-        <div className="fixed top-1.5 right-6 z-50">
+        <div className="fixed top-0.5 right-6 z-50">
             <MusicPlayer />
         </div>
         <Routes>

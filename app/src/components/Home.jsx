@@ -16,41 +16,41 @@ const HomePage = () => {
                 {days >= 365 ? 
                 <>
                 <div className="flex flex-col items-center">
-                    <div className="bg-[#fdfbf7] border-2 border-[#691700] rounded-lg w-14 h-14 md:w-20 md:h-20 flex items-center justify-center shadow-md">
+                    <div className="bg-[#fdfbf7] border-2 border-[#691700] rounded-lg w-14 h-14 md:w-18 md:h-18 flex items-center justify-center shadow-md">
                         <span className="text-2xl md:text-3xl font-bold text-[#991D00]">{years}</span>
                     </div>
                     <span className="font-prata text-xs text-[#5a5a5a] mt-2 uppercase tracking-widest">Year</span>
                 </div>
                 <div className="flex flex-col items-center">
-                    <div className="bg-[#fdfbf7] border-2 border-[#691700] rounded-lg w-14 h-14 md:w-20 md:h-20 flex items-center justify-center shadow-md">
+                    <div className="bg-[#fdfbf7] border-2 border-[#691700] rounded-lg w-14 h-14 md:w-18 md:h-18 flex items-center justify-center shadow-md">
                         <span className="text-2xl md:text-3xl font-bold text-[#991D00]">{adjustedDays}</span>
                     </div>
                     <span className="font-prata text-xs text-[#5a5a5a] mt-2 uppercase tracking-widest">Days</span>
                 </div>
                 </> : 
                 <div className="flex flex-col items-center">
-                    <div className="bg-[#fdfbf7] border-2 border-[#691700] rounded-lg w-14 h-14 md:w-20 md:h-20 flex items-center justify-center shadow-md">
+                    <div className="bg-[#fdfbf7] border-2 border-[#691700] rounded-lg w-14 h-14 md:w-18 md:h-18 flex items-center justify-center shadow-md">
                         <span className="text-2xl md:text-3xl font-bold text-[#991D00]">{days}</span>
                     </div>
                     <span className="font-prata text-xs text-[#5a5a5a] mt-2 uppercase tracking-widest">Days</span>
                 </div>}
                 
                 <div className="flex flex-col items-center">
-                    <div className="bg-[#fdfbf7] border-2 border-[#691700] rounded-lg w-14 h-14 md:w-20 md:h-20 flex items-center justify-center shadow-md">
+                    <div className="bg-[#fdfbf7] border-2 border-[#691700] rounded-lg w-14 h-14 md:w-18 md:h-18 flex items-center justify-center shadow-md">
                         <span className="text-2xl md:text-3xl font-bold text-[#991D00]">{hours}</span>
                     </div>
                     <span className="font-prata text-xs text-[#5a5a5a] mt-2 uppercase tracking-widest">Hours</span>
                 </div>
                 
                 <div className="flex flex-col items-center">
-                    <div className="bg-[#fdfbf7] border-2 border-[#691700] rounded-lg w-14 h-14 md:w-20 md:h-20 flex items-center justify-center shadow-md">
+                    <div className="bg-[#fdfbf7] border-2 border-[#691700] rounded-lg w-14 h-14 md:w-18 md:h-18 flex items-center justify-center shadow-md">
                         <span className="text-2xl md:text-3xl font-bold text-[#991D00]">{minutes}</span>
                     </div>
                     <span className="font-prata text-xs text-[#5a5a5a] mt-2 uppercase tracking-widest">Mins</span>
                 </div>
                 
                 <div className="flex flex-col items-center">
-                    <div className="bg-[#fdfbf7] border-2 border-[#691700] rounded-lg w-14 h-14 md:w-20 md:h-20 flex items-center justify-center shadow-md">
+                    <div className="bg-[#fdfbf7] border-2 border-[#691700] rounded-lg w-14 h-14 md:w-18 md:h-18 flex items-center justify-center shadow-md">
                         <span className="text-2xl md:text-3xl font-bold text-[#991D00]">{seconds}</span>
                     </div>
                     <span className="font-prata text-xs text-[#5a5a5a] mt-2 uppercase tracking-widest">Secs</span>
@@ -61,7 +61,7 @@ const HomePage = () => {
 
     return (
         <div className="justify-center min-h-screen bg-[#faf0e6]">
-            <header className="pt-16 pb-8 text-center items-center justify-center px-4">
+            <header className="pt-8 pb-8 text-center items-center justify-center px-4">
                 <div className="flex justify-center mb-6">
                     <img 
                         src={ambikaSahil} 
@@ -80,7 +80,7 @@ const HomePage = () => {
                 <Countdown date={date} renderer={renderer}/>
             </header>
 
-            <div className="flex justify-center px-6 py-8">
+            <div className="flex justify-center px-6 py-2 md:py-4">
                 <div className="relative">
                     <div className="absolute inset-0 bg-[#691700] rounded-lg transform rotate-3"></div>
                     <img
@@ -93,7 +93,7 @@ const HomePage = () => {
 
             <section className="max-w-2xl md:max-w-3xl mx-auto px-4 py-6 text-center">
                 <h2 className="font-prata text-4xl md:text-5xl text-[#4a4a4a] mb-2">Our Story</h2>
-                <div className="flex items-center justify-center gap-3 mb-8">
+                <div className="flex items-center justify-center gap-3 mb-6">
                     <span className="h-px w-12 bg-[#691700]"></span>
                     <span className="text-[#991D00]">✦</span>
                     <span className="h-px w-12 bg-[#691700]"></span>
