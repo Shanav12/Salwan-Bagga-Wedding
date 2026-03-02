@@ -106,7 +106,7 @@ const Gallery = () => {
                 </div>
             )}
 
-            <header className="pt-8 md:pt-12 pb-6 md:pb-8 text-center px-4">
+            <header className="pt-8 md:pt-14 pb-6 md:pb-8 text-center px-4">
                 <h1 className="font-prata text-5xl md:text-6xl text-[#3B3B3B] mb-2">
                     Photo Gallery
                 </h1>

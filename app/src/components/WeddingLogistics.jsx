@@ -28,7 +28,7 @@ const WeddingLogistics = () => {
 
 
     return (
-         <div className="min-h-full bg-[#faf0e6] py-12 px-4 overflow-x-hidden">
+         <div className="min-h-full bg-[#faf0e6] py-14 px-4 overflow-x-hidden">
             {showConfetti && (
                 <Confetti
                     width={width}
