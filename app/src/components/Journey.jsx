@@ -135,7 +135,7 @@ const timelineEvents = [
                 image: barcelonaPic,
                 date: "July 2025",
                 title: "Barcelona",
-                description: "Time the celebrate the engagement! Our first times traveling across Europe as adults, Florence was historical, adventurous, and full of character.",
+                description: "Time to celebrate the engagement! Our first times traveling across Europe as adults, Florence was historical, adventurous, and full of character.",
             },
             {
                 image: madridPic,
