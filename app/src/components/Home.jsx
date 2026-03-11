@@ -98,19 +98,19 @@ const HomePage = () => {
                     <span className="text-[#991D00]">✦</span>
                     <span className="h-px w-12 bg-[#691700]"></span>
                 </div>
-                <p className="font-prata text-[#5a5a5a] leading-relaxed text-md md:text-xl">
+                <p className="font-prata text-[#5a5a5a] leading-relaxed text-md md:text-lg">
                     We met at eighteen, before careers and before adulthood really made sense, and somehow life kept choosing us for each other. We’ve grown up side by side, learning who we are while learning how to love one another. From late-night drives and simple dates to big milestones and new cities, every season has shaped our story.
                 </p>
-                <p className="font-prata text-[#5a5a5a] leading-relaxed text-md md:text-xl mt-6">
+                <p className="font-prata text-[#5a5a5a] leading-relaxed text-md md:text-lg mt-6">
                     Our journey hasn’t been perfect or easy. We’ve celebrated incredible highs and also stood together through moments of real loss and challenge. For years, we navigated long distance between Detroit and New York, planning weekends around flight schedules, late-night airport pickups, and quick trips that never felt long enough. We learned how to make ordinary moments special and how much effort love is worth. Those years taught us patience, trust, and that home was never a place, but each other.
                 </p>
-                <p className="font-prata text-[#5a5a5a] leading-relaxed text-md md:text-xl mt-6">
+                <p className="font-prata text-[#5a5a5a] leading-relaxed text-md md:text-lg mt-6">
                     Chicago has always felt like a midpoint in our story, a city that sits between Detroit and New York and somehow feels like home to us both. It was only fitting that Sahil proposed at the London House rooftop, overlooking the skyline and the river below. In a place that represents so many shared memories and in-between chapters, we chose forever.
                 </p>
-                <p className="font-prata text-[#5a5a5a] leading-relaxed text-md md:text-xl mt-6">
+                <p className="font-prata text-[#5a5a5a] leading-relaxed text-md md:text-lg mt-6">
                     We are deeply grateful for the family and friends who have supported, encouraged, and loved us along the way. You have watched us grow from teenagers into the people standing here today, and your presence in our lives means more than we can say.
                 </p>
-                 <p className="font-prata text-[#5a5a5a] leading-relaxed text-md md:text-xl mt-6">
+                 <p className="font-prata text-[#5a5a5a] leading-relaxed text-md md:text-lg mt-6">
                    We feel incredibly lucky to have found each other so early and even luckier to still choose each other every day. We cannot wait to celebrate our love, our memories, and the beginning of our next chapter with all of you. Now, let’s get ready to party!
                 </p>
             </section>

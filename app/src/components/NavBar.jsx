@@ -32,7 +32,7 @@ const NavBar = () => {
                 isVisible ? 'translate-y-0' : '-translate-y-full md:translate-y-0'
             }`}
         >
-            <nav className="hidden md:flex justify-end items-center gap-3 pr-52">
+            <nav className="hidden md:flex justify-end items-center gap-2 pr-52">
                 <Link 
                     to="/" 
                     className="px-3.25 py-1.75 font-prata border border-[#691700] rounded text-[#5a5a5a] hover:bg-[#E0462B] hover:text-white transition-all tracking-wide text-xs uppercase"
@@ -75,6 +75,16 @@ const NavBar = () => {
                 >
                     Logistics
                 </Link>
+
+                {/* <span className="text-[#991D00]">♥</span>
+
+                <Link 
+                    to="/quiz" 
+                    className="px-3.25 py-1.75 font-prata border border-[#691700] rounded text-[#5a5a5a] hover:bg-[#E0462B] hover:text-white transition-all tracking-wide text-xs uppercase"
+                >
+                    Take The Quiz
+                </Link> */}
+
             </nav>
 
             <div className="md:hidden flex justify-between items-center">                
@@ -96,7 +106,7 @@ const NavBar = () => {
             </div>
 
             {isMenuOpen && (
-                <nav className="md:hidden mt-4 pb-2 flex flex-col items-center gap-1.5">
+                <nav className="md:hidden mt-4 pb-2 flex flex-col items-center gap-1">
                     <Link 
                         to="/" 
                         onClick={() => setIsMenuOpen(false)}
@@ -144,6 +154,17 @@ const NavBar = () => {
                     >
                         Logistics
                     </Link>
+
+                    {/* <span className="text-[#991D00]">♥</span>
+
+                    <Link 
+                        to="/quiz" 
+                        onClick={() => setIsMenuOpen(false)}
+                        className="w-full font-prata text-center px-3.25 py-1.75 border border-[#691700] rounded text-[#5a5a5a] hover:bg-[#E0462B] hover:text-white transition-all tracking-wide text-xs uppercase"
+                    >
+                        Take The Quiz
+                    </Link> */}
+
                 </nav>
             )}
         </header>

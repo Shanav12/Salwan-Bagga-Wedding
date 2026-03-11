@@ -54,7 +54,7 @@ const MusicPlayer = () => {
 
 
   useEffect(() => {
-    if (location.pathname === '/') {
+    if (location.pathname === '/' || location.pathname == '/quiz') {
       setPlaying(false);
     }
     if (location.pathname === '/journey') {
