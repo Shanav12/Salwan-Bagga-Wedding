@@ -12,6 +12,7 @@ const Gallery = () => {
     const [uploadProgress, setUploadProgress] = useState(0);
     const [showSuccess, setShowSuccess] = useState(false);
     const [currIdx, setCurrIdx] = useState(0);
+    const [galleryView, setGalleryView] = useState(false)
     const intervalRef = useRef(null);
 
 
@@ -23,6 +24,13 @@ const Gallery = () => {
             return () => clearTimeout(timer);
         }
     }, [showSuccess]);
+
+    useEffect(() => {
+        imageList.forEach(src => {
+            const img = new Image();
+            img.src = src;
+        });
+    }, [imageList]);
 
     const handleFileChange = (e) => {
         if (e.target.files) {
@@ -173,17 +181,27 @@ const Gallery = () => {
                 <h2 className="font-prata text-3xl md:text-4xl lg:text-5xl text-[#4a4a4a] mb-2 text-center">
                     Memories
                 </h2>
-                <div className="flex items-center justify-center gap-2 md:gap-3 mb-6 md:mb-8">
+                <div className="flex items-center justify-center gap-2 md:gap-3 mb-4 md:mb-6">
                     <span className="h-px w-8 md:w-12 bg-[#691700]"></span>
                     <span className="text-[#991D00] text-sm md:text-base">✦</span>
                     <span className="h-px w-8 md:w-12 bg-[#691700]"></span>
                 </div>
 
+                <button 
+                    className={`font-prata flex items-center gap-2 mx-auto mb-8 px-5 md:px-7 py-2.5 md:py-3 rounded-lg border-2 transition-all duration-300 shadow-sm text-sm md:text-base bg-[#fdfbf7] 
+                    text-[#991D00] border-[#691700] hover:bg-[#691700] hover:text-[#fdfbf7]`}
+                    onClick={() => setGalleryView(prev => !prev)}>
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                    </svg>
+                    {galleryView ? 'Slideshow View' : 'Gallery View'}
+                </button>
+
                 {loading ? (
                     <p className="font-prata text-center text-[#5a5a5a] text-lg md:text-xl">Loading photos...</p>
                 ) : imageList.length === 0 ? (
                     <p className="font-prata text-center text-[#5a5a5a] text-lg md:text-xl px-4">No photos yet. Be the first to share!</p>
-                ) : (
+                ) : !galleryView ? (
                     <div className="relative">
                         <div className="flex justify-center mb-6">
                             <div className="relative w-half max-w-4xl">
@@ -235,6 +253,19 @@ const Gallery = () => {
                                 />
                             ))}
                         </div>
+                    </div>
+                ) : (
+                    <div className="columns-2 sm:columns-3 lg:columns-4 gap-3 md:gap-4 space-y-3 md:space-y-4">
+                        {imageList.map((img, index) => (
+                            <div key={index} className="break-inside-avoid relative group">
+                                <div className="absolute inset-0 bg-[#691700] rounded-lg transform translate-x-0.5 translate-y-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+                                <img 
+                                    src={img}
+                                    alt={`Memory ${index + 1}`}
+                                    className="relative w-full rounded-lg shadow-md object-cover transition-transform duration-200 group-hover:-translate-x-0.5 group-hover:-translate-y-0.5"
+                                />
+                            </div>
+                        ))}
                     </div>
                 )}
             </section>

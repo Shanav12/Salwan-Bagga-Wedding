@@ -12,6 +12,7 @@ const MusicPlayer = () => {
   const [currIdx, setCurrIdx] = useState(0);
   const audioRef = useRef(null);
   const location = useLocation();
+  const [showPlay, setShowPlay] = useState(false)
   const songs = useMemo(() => [teriOre, dieForYou, headlines, EoO], []);
 
   useEffect(() => {
@@ -56,6 +57,9 @@ const MusicPlayer = () => {
   useEffect(() => {
     if (location.pathname === '/' || location.pathname == '/quiz') {
       setPlaying(false);
+      setShowPlay(false)
+    } else {
+      setShowPlay(true)
     }
     if (location.pathname === '/journey') {
       setCurrIdx(0);
@@ -78,24 +82,27 @@ const MusicPlayer = () => {
 
   return (
     <div className="flex items-center gap-3 px-5 py-2.5 text-[#5C2C1D]">
-      <button
-        onClick={() => setPlaying(p => !p)}
-        className="w-8 h-8 rounded-full border border-[#5C2C1D] flex items-center justify-center"
-      >
-        {playing ? (
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-            <rect x="6" y="4" width="3" height="16" />
-            <rect x="15" y="4" width="3" height="16" />
-          </svg>
-        ) : (
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M5 3l14 9-14 9V3z" />
-          </svg>
-        )}
-      </button>
-      <span className="text-xs tracking-[0.15em] uppercase font-prata opacity-80">
-        {playing ? 'Pause Music' : 'Play Music'}
-      </span>
+      {showPlay && 
+      <>
+        <button
+          onClick={() => setPlaying(p => !p)}
+          className="w-8 h-8 rounded-full border border-[#5C2C1D] flex items-center justify-center"
+        >
+          {playing ? (
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+              <rect x="6" y="4" width="3" height="16" />
+              <rect x="15" y="4" width="3" height="16" />
+            </svg>
+          ) : (
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M5 3l14 9-14 9V3z" />
+            </svg>
+          )}
+        </button>
+        <span className="text-xs tracking-[0.15em] uppercase font-prata opacity-80">
+          {playing ? 'Pause Music' : 'Play Music'}
+        </span>
+      </>}
     </div>
   );
 };

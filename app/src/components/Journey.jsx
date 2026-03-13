@@ -170,7 +170,7 @@ const timelineEvents = [
             {
                 image: centralParkPicCarry,
                 date: "September 2025",
-                description: "A candid moment from the engagement shoot, venturing into a restricted area of the park to capture photos with beautiful scenery in our own bubble.",
+                description: "A candid moment as we escape from the New York City buzz into our own world and Sahil carries Ambika into the next monumental chapter of our lives.\n\nAaja Mexico chaliye!",
             },
         ]
     }
@@ -251,7 +251,7 @@ const TimelineContent = ({ event, align }) => (
         <span className="font-prata inline-block px-3 py-1 bg-[#A32100] text-[#d4b896] rounded-full text-sm md:text-base font-medium tracking-wide mb-3">
             {event.date}
         </span>
-        <p className="font-prata text-[#4a4a4a] text-base leading-relaxed max-w-sm">
+        <p className="font-prata text-[#4a4a4a] text-base leading-relaxed max-w-sm whitespace-pre-line">
             {event.description}
         </p>
     </div>
