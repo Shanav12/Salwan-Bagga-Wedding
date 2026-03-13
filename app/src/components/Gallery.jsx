@@ -12,8 +12,10 @@ const Gallery = () => {
     const [uploadProgress, setUploadProgress] = useState(0);
     const [showSuccess, setShowSuccess] = useState(false);
     const [currIdx, setCurrIdx] = useState(0);
-    const [galleryView, setGalleryView] = useState(false)
+    const [galleryView, setGalleryView] = useState(false);
     const intervalRef = useRef(null);
+    const focusRef = useRef(null);
+    const [focusedImg, setFocusedImg] = useState(null);
 
 
     useEffect(() => {
@@ -101,6 +103,12 @@ const Gallery = () => {
         });
         startInterval();
     };
+
+    const handleFocus = () => {
+        if (focusRef.current) {
+            focusRef.current.focus()
+        }
+    }
 
 
     return (
@@ -256,12 +264,35 @@ const Gallery = () => {
                     </div>
                 ) : (
                     <div className="columns-2 sm:columns-3 lg:columns-4 gap-3 md:gap-4 space-y-3 md:space-y-4">
+                        {focusedImg && (
+                            <div
+                                className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4"
+                                onClick={() => setFocusedImg(null)}
+                            >
+                                <div
+                                    className="relative max-w-5xl max-h-[90vh]"
+                                    onClick={(e) => e.stopPropagation()}
+                                >
+                                    <img
+                                        src={focusedImg}
+                                        className="max-w-full max-h-[90vh] rounded-lg shadow-2xl object-contain"
+                                    />
+                                    <button
+                                        onClick={() => setFocusedImg(null)}
+                                        className="absolute -top-4 -right-4 bg-[#fdfbf7] border-2 border-[#691700] text-[#991D00] w-9 h-9 rounded-full flex items-center justify-center hover:bg-[#691700] hover:text-[#fdfbf7] transition-colors shadow-md text-lg font-bold"
+                                    >
+                                        ✕
+                                    </button>
+                                </div>
+                            </div>
+                        )}
                         {imageList.map((img, index) => (
-                            <div key={index} className="break-inside-avoid relative group">
+                            <div key={index} className="break-inside-avoid relative group cursor-pointer">
                                 <div className="absolute inset-0 bg-[#691700] rounded-lg transform translate-x-0.5 translate-y-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-                                <img 
+                                <img
                                     src={img}
                                     alt={`Memory ${index + 1}`}
+                                    onClick={() => setFocusedImg(img)}
                                     className="relative w-full rounded-lg shadow-md object-cover transition-transform duration-200 group-hover:-translate-x-0.5 group-hover:-translate-y-0.5"
                                 />
                             </div>
