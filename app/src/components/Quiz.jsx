@@ -40,13 +40,14 @@ const Toast = ({ result, onClose }) => {
         return () => clearTimeout(timer);
     }, [result, onClose]);
 
-    if (!result) return null;
-
+    if (!result) {
+        return null;
+    }
     const isIncomplete = result.type === "incomplete";
     const isPass = result.type === "pass";
 
     return (
-        <div className="fixed inset-0 flex items-center justify-center z-50 pointer-events-none">
+        <div className="fixed inset-x-0 top-24 flex justify-center z-50 pointer-events-none">
             <div
                 className={`pointer-events-auto mx-4 max-w-sm w-full px-6 py-5 rounded-md shadow-xl border text-center
                     animate-[fadeSlideIn_0.3s_ease_forwards]
