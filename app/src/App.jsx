@@ -18,6 +18,7 @@ const App = () => {
     return !sessionStorage.getItem('splashShown');
   });
   const [splashOpacity, setSplashOpacity] = useState(1);
+  const [showPlay, setShowPlay] = useState(false)
 
   useEffect(() => {
       if (!splashVisible) {
@@ -48,9 +49,9 @@ const App = () => {
           </div>
       )}
       <HashRouter>
-        <NavBar />
+        <NavBar showPlay={showPlay} setShowPlay={setShowPlay}/>
         <div className="fixed top-1 right-6 z-50">
-            <MusicPlayer />
+            <MusicPlayer showPlay={showPlay} setShowPlay={setShowPlay}/>
         </div>
         <Routes>
             <Route path="/" element={<HomePage />} />

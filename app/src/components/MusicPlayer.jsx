@@ -4,16 +4,16 @@ import EoO from "../assets/EoO.mp3";
 import teriOre from "../assets/teri_ore.mp3";
 import headlines from "../assets/drake_headlines.mp3";
 import dieForYou from "../assets/die_for_you_weeknd.mp3";
+import jeopardyThemeSong from "../assets/jeopardyThemeSong.mp3"
+import wiiThemeSong from "../assets/wiiThemeSong.mp3"
 
 
-
-const MusicPlayer = () => {
+const MusicPlayer = ({showPlay, setShowPlay}) => {
   const [playing, setPlaying] = useState(false);
   const [currIdx, setCurrIdx] = useState(0);
   const audioRef = useRef(null);
   const location = useLocation();
-  const [showPlay, setShowPlay] = useState(false)
-  const songs = useMemo(() => [teriOre, dieForYou, headlines, EoO], []);
+  const songs = useMemo(() => [teriOre, dieForYou, headlines, EoO, jeopardyThemeSong, wiiThemeSong], []);
 
   useEffect(() => {
     audioRef.current = new Audio(songs[currIdx]);
@@ -27,19 +27,26 @@ const MusicPlayer = () => {
 
 
   useEffect(() => {
-    if (!audioRef.current) {
-      return;
-    }
+    if (!audioRef.current) return;
     const audio = audioRef.current;
-    const wasPlaying = !audio.paused;
-    audio.pause();
+    const isQuiz = location.pathname === '/quiz';
+    audio.pause(); 
     audio.src = songs[currIdx];
+    audio.loop = !isQuiz;
     audio.load();
-    audio.currentTime = (location.pathname === '/gallery' && currIdx === 1) ? 15 : 0;
-    if (wasPlaying) {
+    let cleanup = () => {};
+    if (isQuiz) {
+      const handleEnded = () => {
+        setCurrIdx(prev => (prev === 4 ? 5 : 4));
+      };
+      audio.addEventListener('ended', handleEnded);
+      cleanup = () => audio.removeEventListener('ended', handleEnded);
+    }
+    if (playing) {
       audio.play().catch(console.error);
     }
-  }, [currIdx]);
+    return cleanup;
+  }, [currIdx, location.pathname, playing]);
 
 
   useEffect(() => {
@@ -55,7 +62,7 @@ const MusicPlayer = () => {
 
 
   useEffect(() => {
-    if (location.pathname === '/' || location.pathname == '/quiz') {
+    if (location.pathname === '/') {
       setPlaying(false);
       setShowPlay(false)
     } else {
@@ -75,6 +82,10 @@ const MusicPlayer = () => {
     }
     if (location.pathname === '/wedding-logistics') {
       setCurrIdx(3);
+      setPlaying(true);
+    }
+    if (location.pathname === '/quiz') {
+      setCurrIdx(4)
       setPlaying(true);
     }
   }, [location.pathname, songs]);

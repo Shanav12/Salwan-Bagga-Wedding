@@ -1,29 +1,34 @@
 import { Link } from 'react-router-dom'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 
 
-const NavBar = () => {
+const NavBar = ({showPlay, setShowPlay}) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const [isVisible, setIsVisible] = useState(true)
-    const [lastScrollY, setLastScrollY] = useState(0)
+    const lastScrollY = useRef(0);
 
     useEffect(() => {
         const handleScroll = () => {
-            const currentScrollY = window.scrollY
-            
-            if (currentScrollY > lastScrollY && currentScrollY > 25) {
-                setIsVisible(false)
-                setIsMenuOpen(false)
-            } else {
-                setIsVisible(true)
-            }
-            
-            setLastScrollY(currentScrollY)
-        }
+            const currentScrollY = window.scrollY;
+            const mobile = window.innerWidth < 768;
 
-        window.addEventListener('scroll', handleScroll, { passive: true })
-    }, [lastScrollY])
+            if (mobile && !isMenuOpen) {
+                if (currentScrollY > lastScrollY.current && currentScrollY > 25) {
+                    setIsVisible(false);
+                    setShowPlay(false)
+                } else if (lastScrollY.current - currentScrollY > 10) {
+                    setIsVisible(true);
+                    setShowPlay(true)
+                }
+            }
+
+            lastScrollY.current = currentScrollY;
+        };
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, [isMenuOpen]);
 
 
     return (
@@ -32,7 +37,7 @@ const NavBar = () => {
                 isVisible ? 'translate-y-0' : '-translate-y-full md:translate-y-0'
             }`}
         >
-            <nav className="hidden md:flex justify-end items-center gap-2 pr-52">
+            <nav className={`hidden md:flex justify-end items-center gap-2 ${showPlay ? "pr-52" : "pr-26"}`}>
                 <Link 
                     to="/" 
                     className="px-3.25 py-1.75 font-prata border border-[#691700] rounded text-[#5a5a5a] hover:bg-[#E0462B] hover:text-white transition-all tracking-wide text-xs uppercase"
