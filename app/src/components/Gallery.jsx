@@ -14,7 +14,6 @@ const Gallery = () => {
     const [currIdx, setCurrIdx] = useState(0);
     const [galleryView, setGalleryView] = useState(false);
     const intervalRef = useRef(null);
-    const focusRef = useRef(null);
     const [focusedImg, setFocusedImg] = useState(null);
 
 
@@ -104,12 +103,6 @@ const Gallery = () => {
         startInterval();
     };
 
-    const handleFocus = () => {
-        if (focusRef.current) {
-            focusRef.current.focus()
-        }
-    }
-
 
     return (
         <div className="min-h-full bg-[#faf0e6] py-14 px-4 overflow-x-hidden">
@@ -197,7 +190,7 @@ const Gallery = () => {
 
                 <button 
                     className={`font-prata flex items-center gap-2 mx-auto mb-8 px-5 md:px-7 py-2.5 md:py-3 rounded-lg border-2 transition-all duration-300 shadow-sm text-sm md:text-base bg-[#fdfbf7] 
-                    text-[#991D00] border-[#691700] hover:bg-[#691700] hover:text-[#fdfbf7]`}
+                    text-[#991D00] border-[#691700] hover:bg-[#691700] hover:text-[#fdfbf7] cursor-pointer`}
                     onClick={() => setGalleryView(prev => !prev)}>
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
@@ -279,7 +272,7 @@ const Gallery = () => {
                                     />
                                     <button
                                         onClick={() => setFocusedImg(null)}
-                                        className="absolute -top-4 -right-4 bg-[#fdfbf7] border-2 border-[#691700] text-[#991D00] w-9 h-9 rounded-full flex items-center justify-center hover:bg-[#691700] hover:text-[#fdfbf7] transition-colors shadow-md text-lg font-bold"
+                                        className="absolute -top-4 -right-4 bg-[#fdfbf7] border-2 border-[#691700] text-[#991D00] w-9 h-9 rounded-full flex items-center justify-center hover:bg-[#691700] hover:text-[#fdfbf7] transition-colors shadow-md text-lg font-bold cursor-pointer"
                                     >
                                         ✕
                                     </button>

@@ -1,3 +1,4 @@
+import { useState } from "react"
 import promposalPic from "../assets/sahilambika0.webp"
 import promPic from "../assets/sahilambika2.webp"
 import hsGradPic from "../assets/sahilambika3.webp"
@@ -177,8 +178,31 @@ const timelineEvents = [
 ]
 
 const Journey = () => {
+    const [focusedImg, setFocusedImg] = useState(null);
     return (
         <div className="min-h-full bg-[#faf0e6] py-14 px-4 overflow-x-hidden">
+            {focusedImg && (
+                <div
+                    className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4"
+                    onClick={() => setFocusedImg(null)}
+                >
+                    <div
+                        className="relative max-w-5xl max-h-[90vh]"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <img
+                            src={focusedImg}
+                            className="max-w-full max-h-[90vh] rounded-lg shadow-2xl object-contain"
+                        />
+                        <button
+                            onClick={() => setFocusedImg(null)}
+                            className="absolute -top-4 -right-4 bg-[#fdfbf7] border-2 border-[#691700] text-[#991D00] w-9 h-9 rounded-full flex items-center justify-center hover:bg-[#691700] hover:text-[#fdfbf7] transition-colors shadow-md text-lg font-bold cursor-pointer"
+                        >
+                            ✕
+                        </button>
+                    </div>
+                </div>
+            )}
             <div className="text-center mb-16">
                 <h1 className="font-prata text-5xl md:text-6xl text-[#4a4a4a] mb-4">Our Journey</h1>
                 <div className="flex items-center justify-center gap-4">
@@ -211,7 +235,11 @@ const Journey = () => {
 
                                         {/* Left Side Container (Always Image) */}
                                         <div className="w-full md:w-1/2 pl-12 pr-4 md:px-8 mb-6 md:mb-0 md:flex md:justify-end">
-                                            <TimelineImage image={event.image} title={event.title} />
+                                            <TimelineImage
+                                                image={event.image}
+                                                title={event.title}
+                                                onClick={() => setFocusedImg(event.image)}
+                                            />
                                         </div>
 
                                         {/* Right Side Container (Always Text) */}
@@ -230,14 +258,14 @@ const Journey = () => {
 };
 
 // Helper component for the styled image
-const TimelineImage = ({ image, title }) => (
-    <div className="relative inline-block">
+const TimelineImage = ({ image, title, onClick }) => (
+    <div className="relative inline-block group cursor-pointer" onClick={onClick}>
         <div className="absolute inset-0 bg-[#691700] rounded-lg transform rotate-2"></div>
         <img
             src={image}
             alt={title}
             loading="lazy"
-            className="relative rounded-lg shadow-lg w-full max-w-[320px] h-96 object-cover"
+            className="relative rounded-lg shadow-lg w-full max-w-[320px] h-96 object-cover transition-transform duration-200 group-hover:scale-[1.02]"
         />
     </div>
 );

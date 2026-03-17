@@ -95,7 +95,7 @@ const NavBar = ({showPlay, setShowPlay}) => {
             <div className="md:hidden flex justify-between items-center">                
                 <button 
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
-                    className="p-2 text-[#5a5a5a] focus:outline-none"
+                    className="p-2 text-[#5a5a5a] focus:outline-none cursor-pointer"
                     aria-label="Toggle menu"
                 >
                     {isMenuOpen ? (

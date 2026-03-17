@@ -91,13 +91,18 @@ const MusicPlayer = ({showPlay, setShowPlay}) => {
   }, [location.pathname, songs]);
 
 
+  useEffect(() => {
+
+  }, )
+
+
   return (
     <div className="flex items-center gap-3 px-5 py-2.5 text-[#5C2C1D]">
       {showPlay && 
       <>
         <button
           onClick={() => setPlaying(p => !p)}
-          className="w-8 h-8 rounded-full border border-[#5C2C1D] flex items-center justify-center"
+          className="w-8 h-8 rounded-full border border-[#5C2C1D] flex items-center justify-center cursor-pointer"
         >
           {playing ? (
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
