@@ -205,7 +205,7 @@ const Quiz = () => {
                                     {rank === 1 ? "♛" : `#${rank}`}
                                 </span>
                                 <span className="font-prata text-[#4a4a4a] flex-1">{doc.data().name}</span>
-                                <span className="font-prata text-[#991D00] text-md">
+                                <span className="font-prata text-[#991D00] text-sm md:text-md">
                                     {doc.data().numCorrect}/{questions.length}
                                 </span>
                             </div>

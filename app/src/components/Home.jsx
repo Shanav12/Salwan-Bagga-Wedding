@@ -6,7 +6,7 @@ import saveTheDate from "../assets/saveTheDate.png"
 
 
 const HomePage = () => {
-    const date = new Date('2027-05-21T00:00:00-07:00');
+    const date = new Date('2027-06-03T00:00:00-07:00');
 
     const renderer = ({ days, hours, minutes, seconds }) => {
         const years = Math.floor(days / 365);
@@ -75,7 +75,7 @@ const HomePage = () => {
                     <span className="h-px w-16 bg-[#691700]"></span>
                 </div>
                 <p className="font-prata mt-6 text-2xl md:text-3xl text-bold text-[#3B3B3B] tracking-wide">
-                    May 2027 
+                    June 2027 
                 </p>
                 <Countdown date={date} renderer={renderer}/>
             </header>

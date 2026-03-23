@@ -205,11 +205,34 @@ const Gallery = () => {
                 ) : !galleryView ? (
                     <div className="relative">
                         <div className="flex justify-center mb-6">
-                            <div className="relative w-half max-w-4xl">
+                            <div className="relative w-half max-w-4xl cursor-pointer">
                                 <div className="absolute inset-0 bg-[#691700] rounded-lg transform rotate-1"></div>
+                                {focusedImg && (
+                                    <div
+                                        className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4"
+                                        onClick={() => setFocusedImg(null)}
+                                    >
+                                        <div
+                                            className="relative max-w-5xl max-h-[90vh]"
+                                            onClick={(e) => e.stopPropagation()}
+                                        >
+                                            <img
+                                                src={focusedImg}
+                                                className="max-w-full max-h-[90vh] rounded-lg shadow-2xl object-contain"
+                                            />
+                                            <button
+                                                onClick={() => setFocusedImg(null)}
+                                                className="absolute -top-4 -right-4 bg-[#fdfbf7] border-2 border-[#691700] text-[#991D00] w-9 h-9 rounded-full flex items-center justify-center hover:bg-[#691700] hover:text-[#fdfbf7] transition-colors shadow-md text-lg font-bold cursor-pointer"
+                                            >
+                                                ✕
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
                                 <img 
                                     src={imageList[currIdx]} 
-                                    className="relative rounded-lg shadow-xl w-half h-[350px] sm:h-[400px] md:h-[500px] lg:h-[500px] object-cover"
+                                    onClick={() => setFocusedImg(imageList[currIdx])}
+                                    className="relative rounded-lg shadow-xl w-half h-[350px] sm:h-[400px] md:h-[500px] lg:h-[500px] object-cover transition-transform duration-200 group-hover:-translate-x-0.5 group-hover:-translate-y-0.5"
                                 />
                             </div>
                         </div>
