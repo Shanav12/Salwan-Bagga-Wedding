@@ -84,14 +84,14 @@ const NavBar = ({showPlay, setShowPlay}) => {
                     Logistics
                 </Link>
 
-                {/* <span className="text-[#991D00]">♥</span>
+                <span className="text-[#991D00]">♥</span>
 
                 <Link 
                     to="/quiz" 
                     className="px-3.25 py-1.75 font-prata border border-[#691700] rounded text-[#5a5a5a] hover:bg-[#E0462B] hover:text-white transition-all tracking-wide text-xs uppercase"
                 >
                     Take The Quiz
-                </Link> */}
+                </Link>
 
             </nav>
 
@@ -163,7 +163,7 @@ const NavBar = ({showPlay, setShowPlay}) => {
                         Logistics
                     </Link>
 
-                    {/* <span className="text-[#991D00]">♥</span>
+                    <span className="text-[#991D00]">♥</span>
 
                     <Link 
                         to="/quiz" 
@@ -171,7 +171,7 @@ const NavBar = ({showPlay, setShowPlay}) => {
                         className="w-full font-prata text-center px-3.25 py-1.75 border border-[#691700] rounded text-[#5a5a5a] hover:bg-[#E0462B] hover:text-white transition-all tracking-wide text-xs uppercase"
                     >
                         Take The Quiz
-                    </Link> */}
+                    </Link>
 
                 </nav>
             )}
