@@ -265,7 +265,7 @@ const TimelineImage = ({ image, title, onClick }) => (
             src={image}
             alt={title}
             loading="lazy"
-            className="relative rounded-lg shadow-lg w-full max-w-[320px] h-96 object-cover transition-transform duration-200 group-hover:scale-[1.02]"
+            className="relative rounded-lg shadow-lg w-full max-w-[420px] h-96 object-cover transition-transform duration-200 group-hover:scale-[1.02]"
         />
     </div>
 );

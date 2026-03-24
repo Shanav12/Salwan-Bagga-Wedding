@@ -21,15 +21,50 @@ const questions = [
         options: [{ val: "a", label: "A) Delta" }, { val: "b", label: "B) United" }, { val: "c", label: "C) American" }, { val: "d", label: "D) Spirit" }]
     },
     {
-        key: "q7",
+        key: "q4",
         text: "4. What usually determined their weekend plans during long distance?",
         options: [{ val: "a", label: "A) The weather" }, { val: "b", label: "B) Restaurant reservations" }, { val: "c", label: "C) Ambika's exam schedule" }, { val: "d", label: "D) Flight prices" }]
     },
     {
-        key: "q11",
+        key: "q5",
         text: '5. Who said "I love you" first?',
         options: [{ val: "a", label: "A) Ambika" }, { val: "b", label: "B) Sahil" }, { val: "c", label: "C) They said it at the same time" }, { val: "d", label: "D) They still haven't" }]
     },
+    {
+        key: "q6",
+        text: '6. What song does Sahil famously dance to?',
+        options: [{ val: "a", label: "A) Saki saki" }, { val: "b", label: "B) Headlines" }, { val: "c", label: "C) Desi Girl" }, { val: "d", label: "D) Hips Don't Lie" }]
+    },
+    {
+        key: "q7",
+        text: '7. Who is more likely to fall asleep during a movie?',
+        options: [{ val: "a", label: "A) Sahil" }, { val: "b", label: "B) Ambika" }]
+    },
+    {
+        key: "q8",
+        text: '8. Where was their original wedding location supposed to be?',
+        options: [{ val: "a", label: "A) Portugal" }, { val: "b", label: "B) San Diego" }, { val: "c", label: "C) Cancun" }, { val: "d", label: "D) Napa Valley" }]
+    },
+    {
+        key: "q9",
+        text: '9. Who is more likely to sleep through their alarm?',
+        options: [{ val: "a", label: "A) Sahil" }, { val: "b", label: "B) Ambika" }]
+    },
+    {
+        key: "q10",
+        text: '10. What is their favorite fast food spot?',
+        options: [{ val: "a", label: "A) McDonald's" }, { val: "b", label: "B) Taco Bell" }, { val: "c", label: "C) Jimmy John's" }, { val: "d", label: "D) Burger King" }]
+    },
+    {
+        key: "q11",
+        text: '11. What is their favorite cocktail bar?',
+        options: [{ val: "a", label: "A) Pearl Club, Chicago" }, { val: "b", label: "B) Obvio Manhattan, NYC" }, { val: "c", label: "C) Candy Bar, Detroit MI" }, { val: "d", label: "D) The Aviary, Chicago" }]
+    },
+    {
+        key: "q12",
+        text: '12. How many dogs do they want?',
+        options: [{ val: "a", label: "A) 1" }, { val: "b", label: "B) 3" }, { val: "c", label: "C) 2" }, { val: "d", label: "D) 0" }]
+    }
 ];
 
 
@@ -68,14 +103,14 @@ const Toast = ({ result, onClose }) => {
                     <>
                         <p className="font-prata text-xl tracking-wide mb-1">CONGRATS YOU PASSED!</p>
                         <p className="font-prata text-base tracking-wide">
-                            You scored a {result.score}/5 <span className="text-[#991D00]">♥</span>
+                            You scored a {result.score}/{questions.length} <span className="text-[#991D00]">♥</span>
                         </p>
                     </>
                 )}
                 {result.type === "fail" && (
                     <>
                         <p className="font-prata text-xl tracking-wide mb-1">
-                            You scored a {result.score}/5
+                            You scored a {result.score}/{questions.length}
                         </p>
                         <p className="font-prata text-sm tracking-wide text-[#6b5c4e]">
                             Much for you to learn before the wedding...
@@ -121,8 +156,15 @@ const Quiz = () => {
         if (answers?.q1 === 'b') numCorrect++;
         if (answers?.q2 === 'c') numCorrect++;
         if (answers?.q3 === 'd') numCorrect++;
-        if (answers?.q7 === 'c') numCorrect++;
-        if (answers?.q11 === 'b') numCorrect++;
+        if (answers?.q4 === 'c') numCorrect++;
+        if (answers?.q5 === 'b') numCorrect++;
+        if (answers?.q6 === 'a') numCorrect++;
+        if (answers?.q7 === 'b') numCorrect++;
+        if (answers?.q8 === 'd') numCorrect++;
+        if (answers?.q9 === 'a') numCorrect++;
+        if (answers?.q10 === 'b') numCorrect++;
+        if (answers?.q11 === 'c') numCorrect++;
+        if (answers?.q12 === 'c') numCorrect++;
 
         setResult({ type: numCorrect / questions.length >= 0.5 ? "pass" : "fail", score: numCorrect });
         await addDoc(collection(db, 'quizleaderboard'), {
