@@ -144,7 +144,6 @@ const Quiz = () => {
     const [showQuiz, setShowQuiz] = useState(false);
     const [name, setName] = useState('');
     const [docs, setDocs] = useState([]);
-    const [showLeaderboard, setShowLeaderboard] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -173,7 +172,6 @@ const Quiz = () => {
         });
         const querySnapshot = await getDocs(collection(db, "quizleaderboard"));
         setDocs(querySnapshot.docs);
-        setShowLeaderboard(true);
         setShowQuiz(false)
         setName('')
         setAnswers({});
@@ -183,6 +181,11 @@ const Quiz = () => {
         signInAnonymously(auth)
             .catch(err => console.error('Auth error:', err))
             .finally();
+        const fetchDocs = async () => {
+            const querySnapshot = await getDocs(collection(db, "quizleaderboard"));
+            setDocs(querySnapshot.docs)
+        };
+        fetchDocs();
     }, []);
 
     const onAnswerChange = (question, answer) => {
@@ -228,7 +231,7 @@ const Quiz = () => {
                 <p className="text-[#6b5c4e] font-prata font-light tracking-wide md:text-lg">Answer the following questions to see!</p>
             </div>
 
-            {showLeaderboard && (
+            {(
                 <div className="max-w-2xl mx-auto mb-18">
                     <div className="text-center mb-3">
                         <h2 className="font-prata text-3xl md:text-4xl text-[#4a4a4a] mb-3">Leaderboard</h2>
@@ -257,6 +260,9 @@ const Quiz = () => {
             )}
 
             <form onSubmit={handleSubmit} className="max-w-2xl mx-auto space-y-7.5">
+                <div className="text-center mb-3">
+                    <h2 className="font-prata text-3xl md:text-4xl text-[#4a4a4a] mb-3">Questions</h2>
+                </div>
                 <div className="bg-[#f3ede3] border border-[#d9ccc0] rounded-sm p-4 md:p-5 shadow-sm">
                     {!showQuiz &&
                     <div className="flex flex-col items-center gap-6">
