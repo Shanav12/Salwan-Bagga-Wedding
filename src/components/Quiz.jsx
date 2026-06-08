@@ -197,18 +197,23 @@ const Quiz = () => {
     };
 
     const rankedDocs = [...docs]
-        .sort((a, b) => b.data().numCorrect - a.data().numCorrect)
-        .map((doc, idx, arr) => {
-            const rank = idx === 0 ? 1 :
-                arr[idx - 1].data().numCorrect === doc.data().numCorrect
-                    ? null
-                    : idx + 1;
-            return { doc, rank };
+        .sort((a, b) => {
+            const scoreDiff = b.data().numCorrect - a.data().numCorrect;
+            if (scoreDiff !== 0) {
+                return scoreDiff;
+            }
+            return a.data().timestamp - b.data().timestamp;
+        })
+        .map((doc) => {
+            return { doc, rank: null };
         });
 
     let lastRank = 1;
     rankedDocs.forEach((entry, idx) => {
-        if (idx === 0) { entry.rank = 1; return; }
+        if (idx === 0) { 
+            entry.rank = 1; 
+            return; 
+        }
         if (entry.doc.data().numCorrect === rankedDocs[idx - 1].doc.data().numCorrect) {
             entry.rank = lastRank;
         } else {

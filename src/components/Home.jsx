@@ -12,45 +12,45 @@ const HomePage = () => {
         const years = Math.floor(days / 365);
         const adjustedDays = days - (365 * Math.floor(days / 365));
         return (
-            <div className="flex justify-center gap-3 md:gap-4 mt-6">
+            <div className="flex justify-center gap-3.5 md:gap-4.5 mt-6">
                 {days >= 365 ? 
                 <>
                 <div className="flex flex-col items-center">
-                    <div className="bg-[#fdfbf7] border-2 border-[#691700] rounded-lg w-14 h-14 md:w-18 md:h-18 flex items-center justify-center shadow-md">
+                    <div className="bg-[#fdfbf7] border-2 border-[#691700] rounded-lg w-16 h-16 md:w-18 md:h-18 flex items-center justify-center shadow-md">
                         <span className="text-2xl md:text-3xl font-bold text-[#991D00]">{years}</span>
                     </div>
                     <span className="font-prata text-xs text-[#5a5a5a] mt-2 uppercase tracking-widest">Year</span>
                 </div>
                 <div className="flex flex-col items-center">
-                    <div className="bg-[#fdfbf7] border-2 border-[#691700] rounded-lg w-14 h-14 md:w-18 md:h-18 flex items-center justify-center shadow-md">
+                    <div className="bg-[#fdfbf7] border-2 border-[#691700] rounded-lg w-16 h-16 md:w-18 md:h-18 flex items-center justify-center shadow-md">
                         <span className="text-2xl md:text-3xl font-bold text-[#991D00]">{adjustedDays}</span>
                     </div>
                     <span className="font-prata text-xs text-[#5a5a5a] mt-2 uppercase tracking-widest">Days</span>
                 </div>
                 </> : 
                 <div className="flex flex-col items-center">
-                    <div className="bg-[#fdfbf7] border-2 border-[#691700] rounded-lg w-14 h-14 md:w-18 md:h-18 flex items-center justify-center shadow-md">
+                    <div className="bg-[#fdfbf7] border-2 border-[#691700] rounded-lg w-16 h-16 md:w-18 md:h-18 flex items-center justify-center shadow-md">
                         <span className="text-2xl md:text-3xl font-bold text-[#991D00]">{days}</span>
                     </div>
                     <span className="font-prata text-xs text-[#5a5a5a] mt-2 uppercase tracking-widest">Days</span>
                 </div>}
                 
                 <div className="flex flex-col items-center">
-                    <div className="bg-[#fdfbf7] border-2 border-[#691700] rounded-lg w-14 h-14 md:w-18 md:h-18 flex items-center justify-center shadow-md">
+                    <div className="bg-[#fdfbf7] border-2 border-[#691700] rounded-lg w-16 h-16 md:w-18 md:h-18 flex items-center justify-center shadow-md">
                         <span className="text-2xl md:text-3xl font-bold text-[#991D00]">{hours}</span>
                     </div>
                     <span className="font-prata text-xs text-[#5a5a5a] mt-2 uppercase tracking-widest">Hours</span>
                 </div>
                 
                 <div className="flex flex-col items-center">
-                    <div className="bg-[#fdfbf7] border-2 border-[#691700] rounded-lg w-14 h-14 md:w-18 md:h-18 flex items-center justify-center shadow-md">
+                    <div className="bg-[#fdfbf7] border-2 border-[#691700] rounded-lg w-16 h-16 md:w-18 md:h-18 flex items-center justify-center shadow-md">
                         <span className="text-2xl md:text-3xl font-bold text-[#991D00]">{minutes}</span>
                     </div>
                     <span className="font-prata text-xs text-[#5a5a5a] mt-2 uppercase tracking-widest">Mins</span>
                 </div>
                 
                 <div className="flex flex-col items-center">
-                    <div className="bg-[#fdfbf7] border-2 border-[#691700] rounded-lg w-14 h-14 md:w-18 md:h-18 flex items-center justify-center shadow-md">
+                    <div className="bg-[#fdfbf7] border-2 border-[#691700] rounded-lg w-16 h-16 md:w-18 md:h-18 flex items-center justify-center shadow-md">
                         <span className="text-2xl md:text-3xl font-bold text-[#991D00]">{seconds}</span>
                     </div>
                     <span className="font-prata text-xs text-[#5a5a5a] mt-2 uppercase tracking-widest">Secs</span>
