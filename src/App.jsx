@@ -7,11 +7,21 @@ import MusicPlayer from './components/MusicPlayer'
 import Lineup from './components/Lineup'
 import GalleryProvider from "./contexts/GalleryProvider"
 import Quiz from './components/Quiz'
-import { Routes, Route, HashRouter } from 'react-router-dom'
+import { Routes, Route, HashRouter, useLocation } from 'react-router-dom'
 import WeddingLogistics from './components/WeddingLogistics'
 import { useState, useEffect } from 'react'
 import saveTheDate from "../src/assets/saveTheDate.png"
 
+
+const ScrollToTop = () => {
+  const { pathname } = useLocation()
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pathname])
+
+  return null
+}
 
 const App = () => {
   const [splashVisible, setSplashVisible] = useState(() => {
@@ -49,6 +59,7 @@ const App = () => {
           </div>
       )}
       <HashRouter>
+        <ScrollToTop />
         <NavBar showPlay={showPlay} setShowPlay={setShowPlay}/>
         <div className="fixed top-1 right-6 z-50">
             <MusicPlayer showPlay={showPlay} setShowPlay={setShowPlay}/>
