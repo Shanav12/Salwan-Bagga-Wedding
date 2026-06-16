@@ -23,12 +23,39 @@ const ScrollToTop = () => {
   return null
 }
 
+const AppContent = () => {
+  const { pathname } = useLocation()
+  const [scrollHidesControls, setScrollHidesControls] = useState(false)
+  const showPlay = pathname !== '/' && !scrollHidesControls
+
+  useEffect(() => {
+    setScrollHidesControls(false)
+  }, [pathname])
+
+  return (
+    <>
+      <ScrollToTop />
+      <NavBar showPlay={showPlay} setScrollHidesControls={setScrollHidesControls} />
+      <div className="fixed top-1 right-6 z-50">
+        <MusicPlayer showPlay={showPlay} />
+      </div>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/journey" element={<Journey />} />
+        <Route path='/gallery' element={<Gallery />} />
+        <Route path='/wedding-logistics' element={<WeddingLogistics />} />
+        <Route path='/lineup' element={<Lineup />}/>
+        <Route path='/quiz' element={<Quiz />} />
+      </Routes>
+    </>
+  )
+}
+
 const App = () => {
   const [splashVisible, setSplashVisible] = useState(() => {
     return !sessionStorage.getItem('splashShown');
   });
   const [splashOpacity, setSplashOpacity] = useState(1);
-  const [showPlay, setShowPlay] = useState(false)
 
   useEffect(() => {
       if (!splashVisible) {
@@ -41,7 +68,7 @@ const App = () => {
           clearTimeout(fadeTimer);
           clearTimeout(removeTimer);
       };
-  }, []);
+  }, [splashVisible]);
 
   return (
     <GalleryProvider>
@@ -59,19 +86,7 @@ const App = () => {
           </div>
       )}
       <HashRouter>
-        <ScrollToTop />
-        <NavBar showPlay={showPlay} setShowPlay={setShowPlay}/>
-        <div className="fixed top-1 right-6 z-50">
-            <MusicPlayer showPlay={showPlay} setShowPlay={setShowPlay}/>
-        </div>
-        <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/journey" element={<Journey />} />
-            <Route path='/gallery' element={<Gallery />} />
-            <Route path='/wedding-logistics' element={<WeddingLogistics />} />
-            <Route path='/lineup' element={<Lineup />}/>
-            <Route path='/quiz' element={<Quiz />} />
-        </Routes>
+        <AppContent />
       </HashRouter>
     </GalleryProvider>
   )

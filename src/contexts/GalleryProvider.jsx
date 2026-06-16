@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { ref, listAll, getDownloadURL, getMetadata } from 'firebase/storage';
 import { storage, auth } from '../firebase_config';
 import { signInAnonymously } from 'firebase/auth';
@@ -17,7 +17,7 @@ const GalleryProvider = ({ children }) => {
             .finally(() => setAuthReady(true));
     }, []);
 
-    const fetchImages = async () => {
+    const fetchImages = useCallback(async () => {
         setLoading(true);
         try {
             const response = await listAll(ref(storage));
@@ -39,14 +39,19 @@ const GalleryProvider = ({ children }) => {
         } finally {
             setLoading(false);
         }
-    };
+    }, []);
 
     useEffect(() => {
         if (authReady) fetchImages();
-    }, [authReady]);
+    }, [authReady, fetchImages]);
+
+    const value = useMemo(
+        () => ({ imageList, loading, authReady, fetchImages }),
+        [imageList, loading, authReady, fetchImages]
+    );
 
     return (
-        <GalleryContext.Provider value={{ imageList, loading, authReady, fetchImages }}>
+        <GalleryContext.Provider value={value}>
             {children}
         </GalleryContext.Provider>
     );

@@ -1,5 +1,5 @@
 import { ref, uploadBytesResumable } from 'firebase/storage';
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { storage } from '../firebase_config';
 import { useGallery } from '../contexts/GalleryContext';
 
@@ -75,19 +75,32 @@ const Gallery = () => {
         })
     }
 
-    const startInterval = () => {
+    useEffect(() => {
+        if (imageList.length === 0) {
+            setCurrIdx(0);
+            return;
+        }
+        setCurrIdx(prev => (prev >= imageList.length ? imageList.length - 1 : prev));
+    }, [imageList.length]);
+
+    const startInterval = useCallback(() => {
         if (imageList.length > 1) {
             clearInterval(intervalRef.current);
             intervalRef.current = setInterval(() => {
                 setCurrIdx(prev => (prev + 1) % imageList.length);
             }, 3000);
         }
-    };
+    }, [imageList.length]);
 
     useEffect(() => {
         startInterval();
         return () => clearInterval(intervalRef.current);
-    }, [imageList.length]);
+    }, [startInterval]);
+
+    const handleDotClick = (index) => {
+        setCurrIdx(index);
+        startInterval();
+    };
 
     const handlePrevious = () => {
         setCurrIdx((prev) => {
@@ -267,7 +280,7 @@ const Gallery = () => {
                             {imageList.map((_, index) => (
                                 <button
                                     key={index}
-                                    onClick={() => setCurrIdx(index)}
+                                    onClick={() => handleDotClick(index)}
                                     className={`w-2 h-2 font-prata rounded-full transition-all duration-200 ${
                                         index === currIdx 
                                             ? 'bg-[#991D00] w-6 md:w-8' 

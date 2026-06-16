@@ -1,8 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { db, auth } from "../firebase_config"
-import { collection, addDoc, getDocs } from "firebase/firestore";
-import { signInAnonymously } from 'firebase/auth';
+import {
+    collection,
+    addDoc,
+    query,
+    orderBy,
+    limit,
+    onSnapshot,
+    serverTimestamp,
+} from "firebase/firestore";
+import { onAuthStateChanged } from 'firebase/auth';
 
+const LEADERBOARD_LIMIT = 100;
 
 const questions = [
     {
@@ -67,6 +76,13 @@ const questions = [
     }
 ];
 
+const getEntryTimestamp = (entry) => {
+    if (!entry.timestamp) return 0;
+    if (typeof entry.timestamp.toMillis === 'function') {
+        return entry.timestamp.toMillis();
+    }
+    return entry.timestamp;
+};
 
 const Toast = ({ result, onClose }) => {
     useEffect(() => {
@@ -143,7 +159,44 @@ const Quiz = () => {
     const [qIdx, setQIdx] = useState(0);
     const [showQuiz, setShowQuiz] = useState(false);
     const [name, setName] = useState('');
-    const [docs, setDocs] = useState([]);
+    const [entries, setEntries] = useState([]);
+    const [leaderboardLoading, setLeaderboardLoading] = useState(true);
+
+    useEffect(() => {
+        let unsubscribeSnapshot = () => {};
+
+        const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
+            unsubscribeSnapshot();
+
+            if (!user) {
+                setLeaderboardLoading(true);
+                return;
+            }
+
+            const leaderboardQuery = query(
+                collection(db, 'quizleaderboard'),
+                orderBy('numCorrect', 'desc'),
+                limit(LEADERBOARD_LIMIT)
+            );
+
+            unsubscribeSnapshot = onSnapshot(
+                leaderboardQuery,
+                (snapshot) => {
+                    setEntries(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+                    setLeaderboardLoading(false);
+                },
+                (err) => {
+                    console.error('Leaderboard error:', err);
+                    setLeaderboardLoading(false);
+                }
+            );
+        });
+
+        return () => {
+            unsubscribeAuth();
+            unsubscribeSnapshot();
+        };
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -166,27 +219,29 @@ const Quiz = () => {
         if (answers?.q12 === 'c') numCorrect++;
 
         setResult({ type: numCorrect / questions.length >= 0.5 ? "pass" : "fail", score: numCorrect });
-        await addDoc(collection(db, 'quizleaderboard'), {
-            name: name,
-            numCorrect: numCorrect
-        });
-        const querySnapshot = await getDocs(collection(db, "quizleaderboard"));
-        setDocs(querySnapshot.docs);
-        setShowQuiz(false)
-        setName('')
-        setAnswers({});
-    };
 
-    useEffect(() => {
-        signInAnonymously(auth)
-            .catch(err => console.error('Auth error:', err))
-            .finally();
-        const fetchDocs = async () => {
-            const querySnapshot = await getDocs(collection(db, "quizleaderboard"));
-            setDocs(querySnapshot.docs)
-        };
-        fetchDocs();
-    }, []);
+        const submittedName = name;
+        setEntries(prev => [
+            ...prev,
+            { id: `pending-${Date.now()}`, name: submittedName, numCorrect, timestamp: Date.now() },
+        ]);
+
+        setShowQuiz(false);
+        setQIdx(0);
+        setName('');
+        setAnswers({});
+
+        try {
+            await addDoc(collection(db, 'quizleaderboard'), {
+                name: submittedName,
+                numCorrect,
+                timestamp: serverTimestamp(),
+            });
+        } catch (err) {
+            console.error('Submit error:', err);
+            setEntries(prev => prev.filter(entry => !entry.id.startsWith('pending-')));
+        }
+    };
 
     const onAnswerChange = (question, answer) => {
         setAnswers(prev => ({ ...prev, [question]: answer }));
@@ -196,35 +251,33 @@ const Quiz = () => {
         setName(e.target.value);
     };
 
-    const rankedDocs = [...docs]
-        .sort((a, b) => {
-            const scoreDiff = b.data().numCorrect - a.data().numCorrect;
-            if (scoreDiff !== 0) {
-                return scoreDiff;
-            }
-            return a.data().timestamp - b.data().timestamp;
-        })
-        .map((doc) => {
-            return { doc, rank: null };
+    const dismissResult = useCallback(() => setResult(null), []);
+
+    const rankedEntries = useMemo(() => {
+        const sorted = [...entries].sort((a, b) => {
+            const scoreDiff = b.numCorrect - a.numCorrect;
+            if (scoreDiff !== 0) return scoreDiff;
+            return getEntryTimestamp(a) - getEntryTimestamp(b);
         });
 
-    let lastRank = 1;
-    rankedDocs.forEach((entry, idx) => {
-        if (idx === 0) { 
-            entry.rank = 1; 
-            return; 
-        }
-        if (entry.doc.data().numCorrect === rankedDocs[idx - 1].doc.data().numCorrect) {
-            entry.rank = lastRank;
-        } else {
-            entry.rank = idx + 1;
-            lastRank = idx + 1;
-        }
-    });
+        let lastRank = 1;
+        return sorted.map((entry, idx) => {
+            let rank;
+            if (idx === 0) {
+                rank = 1;
+            } else if (entry.numCorrect === sorted[idx - 1].numCorrect) {
+                rank = lastRank;
+            } else {
+                rank = idx + 1;
+                lastRank = idx + 1;
+            }
+            return { entry, rank };
+        });
+    }, [entries]);
 
     return (
         <div className="min-h-full bg-[#faf0e6] py-14 px-4 overflow-x-hidden">
-            <Toast result={result} onClose={() => setResult(null)} />
+            <Toast result={result} onClose={dismissResult} />
 
             <div className="text-center mb-16">
                 <h1 className="font-prata text-5xl md:text-6xl text-[#4a4a4a] mb-4">How Well Do You Know Us?</h1>
@@ -236,15 +289,23 @@ const Quiz = () => {
                 <p className="text-[#6b5c4e] font-prata font-light tracking-wide md:text-lg">Answer the following questions to see!</p>
             </div>
 
-            {(
-                <div className="max-w-2xl mx-auto mb-18">
-                    <div className="text-center mb-3">
-                        <h2 className="font-prata text-3xl md:text-4xl text-[#4a4a4a] mb-3">Leaderboard</h2>
-                    </div>
-                    <div className="bg-[#f3ede3] border border-[#d9ccc0] rounded-sm shadow-sm overflow-hidden">
-                        {rankedDocs.map(({ doc, rank }, idx) => (
+            <div className="max-w-2xl mx-auto mb-18">
+                <div className="text-center mb-3">
+                    <h2 className="font-prata text-3xl md:text-4xl text-[#4a4a4a] mb-3">Leaderboard</h2>
+                </div>
+                <div className="bg-[#f3ede3] border border-[#d9ccc0] rounded-sm shadow-sm overflow-hidden">
+                    {leaderboardLoading ? (
+                        <div className="px-5 py-8 text-center">
+                            <p className="font-prata text-[#6b5c4e] animate-pulse">Loading scores...</p>
+                        </div>
+                    ) : rankedEntries.length === 0 ? (
+                        <div className="px-5 py-8 text-center">
+                            <p className="font-prata text-[#6b5c4e]">No scores yet — be the first!</p>
+                        </div>
+                    ) : (
+                        rankedEntries.map(({ entry, rank }, idx) => (
                             <div
-                                key={doc.id}
+                                key={entry.id}
                                 className={`flex items-center gap-4 px-5 py-4 border-b border-[#d9ccc0] last:border-b-0 ${
                                     idx % 2 === 0 ? "bg-[#f3ede3]" : "bg-[#ede7db]"
                                 }`}
@@ -254,15 +315,15 @@ const Quiz = () => {
                                 }`}>
                                     {rank === 1 ? "♛" : `#${rank}`}
                                 </span>
-                                <span className="font-prata text-[#4a4a4a] flex-1">{doc.data().name}</span>
+                                <span className="font-prata text-[#4a4a4a] flex-1">{entry.name}</span>
                                 <span className="font-prata text-[#991D00] text-sm md:text-md">
-                                    {doc.data().numCorrect}/{questions.length}
+                                    {entry.numCorrect}/{questions.length}
                                 </span>
                             </div>
-                        ))}
-                    </div>
+                        ))
+                    )}
                 </div>
-            )}
+            </div>
 
             <form onSubmit={handleSubmit} className="max-w-2xl mx-auto space-y-7.5">
                 <div className="text-center mb-3">

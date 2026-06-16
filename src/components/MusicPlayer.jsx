@@ -7,33 +7,45 @@ import dieForYou from "../assets/die_for_you_weeknd.mp3";
 import jeopardyThemeSong from "../assets/jeopardyThemeSong.mp3"
 import wiiThemeSong from "../assets/wiiThemeSong.mp3"
 
+const ROUTE_SONG_INDEX = {
+  '/journey': 0,
+  '/gallery': 1,
+  '/lineup': 2,
+  '/wedding-logistics': 3,
+  '/quiz': 4,
+};
 
-const MusicPlayer = ({showPlay, setShowPlay}) => {
+const MusicPlayer = ({ showPlay }) => {
   const [playing, setPlaying] = useState(false);
   const [currIdx, setCurrIdx] = useState(0);
   const audioRef = useRef(null);
+  const playingRef = useRef(playing);
   const location = useLocation();
   const songs = useMemo(() => [teriOre, dieForYou, headlines, EoO, jeopardyThemeSong, wiiThemeSong], []);
 
+  playingRef.current = playing;
+
   useEffect(() => {
-    audioRef.current = new Audio(songs[currIdx]);
+    audioRef.current = new Audio(songs[0]);
     audioRef.current.loop = true;
     return () => {
-      audioRef.current.pause();
-      audioRef.current.src = "";
+      audioRef.current?.pause();
+      if (audioRef.current) {
+        audioRef.current.src = "";
+      }
       audioRef.current = null;
     };
-  }, []);
-
+  }, [songs]);
 
   useEffect(() => {
     if (!audioRef.current) return;
     const audio = audioRef.current;
     const isQuiz = location.pathname === '/quiz';
-    audio.pause(); 
+    audio.pause();
     audio.src = songs[currIdx];
     audio.loop = !isQuiz;
     audio.load();
+
     let cleanup = () => {};
     if (isQuiz) {
       const handleEnded = () => {
@@ -42,17 +54,16 @@ const MusicPlayer = ({showPlay, setShowPlay}) => {
       audio.addEventListener('ended', handleEnded);
       cleanup = () => audio.removeEventListener('ended', handleEnded);
     }
-    if (playing) {
+
+    if (playingRef.current) {
       audio.play().catch(console.error);
     }
-    return cleanup;
-  }, [currIdx, location.pathname, playing]);
 
+    return cleanup;
+  }, [currIdx, location.pathname, songs]);
 
   useEffect(() => {
-    if (!audioRef.current) {
-      return;
-    }
+    if (!audioRef.current) return;
     if (playing) {
       audioRef.current.play().catch(() => setPlaying(false));
     } else {
@@ -60,45 +71,21 @@ const MusicPlayer = ({showPlay, setShowPlay}) => {
     }
   }, [playing]);
 
-
   useEffect(() => {
+    const songIdx = ROUTE_SONG_INDEX[location.pathname];
     if (location.pathname === '/') {
       setPlaying(false);
-      setShowPlay(false)
-    } else {
-      setShowPlay(true)
+      return;
     }
-    if (location.pathname === '/journey') {
-      setCurrIdx(0);
+    if (songIdx !== undefined) {
+      setCurrIdx(songIdx);
       setPlaying(true);
     }
-    if (location.pathname === '/gallery') {
-      setCurrIdx(1);
-      setPlaying(true);
-    }
-    if (location.pathname === '/lineup') {
-      setCurrIdx(2);
-      setPlaying(true);
-    }
-    if (location.pathname === '/wedding-logistics') {
-      setCurrIdx(3);
-      setPlaying(true);
-    }
-    if (location.pathname === '/quiz') {
-      setCurrIdx(4)
-      setPlaying(true);
-    }
-  }, [location.pathname, songs]);
-
-
-  useEffect(() => {
-
-  }, )
-
+  }, [location.pathname]);
 
   return (
     <div className="flex items-center gap-3 px-5 py-2.5 text-[#5C2C1D]">
-      {showPlay && 
+      {showPlay &&
       <>
         <button
           onClick={() => setPlaying(p => !p)}

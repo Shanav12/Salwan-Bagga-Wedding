@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
 
 
-const NavBar = ({showPlay, setShowPlay}) => {
+const NavBar = ({ showPlay, setScrollHidesControls }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const [isVisible, setIsVisible] = useState(true)
     const lastScrollY = useRef(0);
@@ -17,11 +17,11 @@ const NavBar = ({showPlay, setShowPlay}) => {
             if (mobile && !isMenuOpen) {
                 if (currentScrollY > lastScrollY.current && currentScrollY > 25) {
                     setIsVisible(false);
-                    setShowPlay(false);
+                    setScrollHidesControls(true);
                 } else if (lastScrollY.current - currentScrollY > 10) {
                     setIsVisible(true);
                     if (location.pathname !== '/') {
-                        setShowPlay(true);
+                        setScrollHidesControls(false);
                     }
                 }
             }
@@ -31,7 +31,7 @@ const NavBar = ({showPlay, setShowPlay}) => {
 
         window.addEventListener('scroll', handleScroll, { passive: true });
         return () => window.removeEventListener('scroll', handleScroll);
-    }, [isMenuOpen, location]);
+    }, [isMenuOpen, location.pathname, setScrollHidesControls]);
 
 
     return (
