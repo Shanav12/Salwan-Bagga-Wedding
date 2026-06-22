@@ -5,3 +5,51 @@
 .font-prata {
   font-family: 'Prata', serif !important;
 }
+
+.phone-input-wedding {
+  display: flex;
+  align-items: center;
+  background: white;
+  border: 1px solid rgba(105, 23, 0, 0.3);
+  border-radius: 0.5rem;
+  padding: 0 0.75rem;
+  transition: border-color 0.15s;
+  width: 100%;
+}
+
+.phone-input-wedding:focus-within {
+  border-color: #691700;
+}
+
+.phone-input-wedding .PhoneInputCountry {
+  display: flex;
+  align-items: center;
+  margin-right: 0.5rem;
+}
+
+.phone-input-wedding .PhoneInputCountrySelect {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+  border: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.phone-input-wedding .PhoneInputInput {
+  font-family: 'Prata', serif;
+  color: #4a4a4a;
+  background: transparent;
+  border: none;
+  padding: 0.625rem 0;
+  outline: none;
+  flex: 1;
+  width: 100%;
+}
+
+.phone-input-wedding .PhoneInputInput::placeholder {
+  color: #aaa;
+}

@@ -12,7 +12,7 @@ const HomePage = () => {
         const years = Math.floor(days / 365);
         const adjustedDays = days - (365 * Math.floor(days / 365));
         return (
-            <div className="flex justify-center gap-3.5 md:gap-4.5 mt-6">
+            <div className="flex justify-center gap-4.5 md:gap-6.5 mt-6">
                 {days >= 365 ? 
                 <>
                 <div className="flex flex-col items-center">

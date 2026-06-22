@@ -1,4 +1,6 @@
 import "../App.css"
+import PhoneInput, { parsePhoneNumber } from 'react-phone-number-input'
+import 'react-phone-number-input/style.css'
 import Confetti from 'react-confetti'
 import { useWindowSize } from 'react-use'
 import { useState, useEffect } from "react"
@@ -78,10 +80,14 @@ const WeddingLogistics = () => {
         querySnapshot.forEach((doc) => {
             setNumGuests(doc.data().guestCount);
         });
+        const parsed = phoneNumber ? parsePhoneNumber(phoneNumber) : null;
+        const formattedPhone = parsed
+            ? `+${parsed.countryCallingCode} ${parsed.nationalNumber}`
+            : phoneNumber;
         await addDoc(collection(db, 'rsvpInitializations'), {
             firstName: firstName,
             lastName: lastName,
-            phoneNumber: phoneNumber
+            phoneNumber: formattedPhone,
         });
         setConfirmed(true);
     };
@@ -90,7 +96,7 @@ const WeddingLogistics = () => {
     const handleContinue = () => {
         if (confirmed) {
             handleClose();
-            window.open("https://forms.gle/qixYebebCixsndzD7", "_blank", "noopener,noreferrer");
+            window.open("https://www.shaadidestinations.com/ambika-and-sahil", "_blank", "noopener,noreferrer");
         } else {
             handleNameInput();
         }
@@ -137,13 +143,12 @@ const WeddingLogistics = () => {
                                     onKeyDown={e => e.key === "Enter" && handleNameInput()}
                                     className="font-prata text-[#4a4a4a] bg-white border border-[#691700]/30 rounded-lg px-4 py-2.5 outline-none focus:border-[#691700] transition-colors placeholder:text-[#aaa] w-full"
                                 />
-                                <input
-                                    type="text"
-                                    placeholder="Phone Number"
+                                <PhoneInput
+                                    defaultCountry="US"
                                     value={phoneNumber}
-                                    onChange={e => setPhoneNumber(e.target.value)}
-                                    onKeyDown={e => e.key === "Enter" && handleNameInput()}
-                                    className="font-prata text-[#4a4a4a] bg-white border border-[#691700]/30 rounded-lg px-4 py-2.5 outline-none focus:border-[#691700] transition-colors placeholder:text-[#aaa] w-full"
+                                    onChange={setPhoneNumber}
+                                    placeholder="Phone number"
+                                    className="phone-input-wedding"
                                 />
                             </div>
                         )}
@@ -156,7 +161,7 @@ const WeddingLogistics = () => {
                            <div className="font-prata text-[#5a5a5a] text-sm md:text-lg text-center leading-relaxed space-y-2.5">
                                 <p>Hi {firstName}!</p>
                                 <p>We've reserved <span className="text-[#691700]">{numGuests} {numGuests === 1 ? "guest" : "guests"}</span> for you!</p>
-                                <p>Press <span className="italic">Continue</span> to be taken to the RSVP form.</p>
+                                <p>Press <span className="italic">Continue</span> to be taken to the Hotel Booking website.</p>
                             </div>
                         )}
 
@@ -212,7 +217,10 @@ const WeddingLogistics = () => {
 
                 <div className="font-prata text-[#5a5a5a] text-md md:text-lg mt-2 space-y-2.5 md:space-y-3">
                     <p className="leading-relaxed">
-                        We have a discounted rate on rooms from <span className="text-[#691700]">May 31 – June 7</span>, with wedding events taking place <span className="text-[#691700]">June 3 – 5</span>.
+                        Please note that we have secured a heavily discounted room rate for our guests from May 31 through June 7, 2027.
+                    </p>
+                    <p className="leading-relaxed">
+                        The wedding events will take place June 3–5.
                     </p>
                     <p className="leading-relaxed">
                         Per venue policy, the RSVP must be made using the link below.
@@ -226,7 +234,7 @@ const WeddingLogistics = () => {
                     onClick={() => setShowModal(true)}
                     className="mt-5 inline-block font-prata text-lg text-white bg-[#691700] px-6 py-2 rounded-lg transition-all duration-200 hover:bg-[#4a1000] hover:-translate-y-0.5 cursor-pointer"
                 >
-                    Hotel Booking
+                    RSVP Link
                 </button>
             </section>
         </div>
