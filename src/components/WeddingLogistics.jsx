@@ -159,7 +159,17 @@ const WeddingLogistics = () => {
 
                         {confirmed && (
                            <div className="font-prata text-[#5a5a5a] text-sm md:text-lg text-center leading-relaxed space-y-2.5">
-                                <p>Hi {firstName}!</p>
+                                <p>Hi {(
+                                    {
+                                        sia: "Maid of Honor",
+                                        ambika: "Bride",
+                                        sahil: "Groom",
+                                        shanav: "Best Man",
+                                        arun: "Father of the Bride",
+                                        priyanka: "Mother of the Bride",
+                                        chandan: "Father of the Groom",
+                                    }[firstName.toLowerCase()] ?? firstName
+                                )}!</p>
                                 <p>We've reserved <span className="text-[#691700]">{numGuests} {numGuests === 1 ? "guest" : "guests"}</span> for you!</p>
                                 <p>Press <span className="italic">Continue</span> to be taken to the Hotel Booking website.</p>
                             </div>
