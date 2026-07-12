@@ -1,12 +1,12 @@
-import "../App.css"
 import PhoneInput, { parsePhoneNumber } from 'react-phone-number-input'
-import 'react-phone-number-input/style.css'
 import Confetti from 'react-confetti'
 import { useWindowSize } from 'react-use'
 import { useState, useEffect } from "react"
 import saveTheDateBack from "../assets/saveTheDateBack.png"
 import { query, collection, where, getDocs, addDoc } from "firebase/firestore";
 import { db } from "../firebase_config"
+import 'react-phone-number-input/style.css'
+import "../App.css"
 
 
 
@@ -159,8 +159,8 @@ const WeddingLogistics = () => {
 
                         {confirmed && (
                            <div className="font-prata text-[#5a5a5a] text-sm md:text-lg text-center leading-relaxed space-y-2.5">
-                                <p>Hi {(
-                                    {
+                                {(() => {
+                                    const specialTitle = {
                                         sia: "Maid of Honor",
                                         ambika: "Bride",
                                         sahil: "Groom",
@@ -168,8 +168,11 @@ const WeddingLogistics = () => {
                                         arun: "Father of the Bride",
                                         priyanka: "Mother of the Bride",
                                         chandan: "Father of the Groom",
-                                    }[firstName.toLowerCase()] ?? firstName
-                                )}!</p>
+                                    }[firstName.toLowerCase()];
+                                    return specialTitle
+                                        ? <p className='italic'>Hi <span className="text-[#691700]">{specialTitle}</span>!</p>
+                                        : <p>Hi {firstName}!</p>;
+                                })()}
                                 <p>We've reserved <span className="text-[#691700]">{numGuests} {numGuests === 1 ? "guest" : "guests"}</span> for you!</p>
                                 <p>Press <span className="italic">Continue</span> to be taken to the Hotel Booking website.</p>
                             </div>

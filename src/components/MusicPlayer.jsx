@@ -23,7 +23,9 @@ const MusicPlayer = ({ showPlay }) => {
   const location = useLocation();
   const songs = useMemo(() => [teriOre, dieForYou, headlines, EoO, jeopardyThemeSong, wiiThemeSong], []);
 
-  playingRef.current = playing;
+  useEffect(() => {
+    playingRef.current = playing;
+  }, [playing]);
 
   useEffect(() => {
     audioRef.current = new Audio(songs[0]);
@@ -74,6 +76,7 @@ const MusicPlayer = ({ showPlay }) => {
   useEffect(() => {
     const songIdx = ROUTE_SONG_INDEX[location.pathname];
     if (location.pathname === '/') {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setPlaying(false);
       return;
     }
