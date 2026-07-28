@@ -170,7 +170,7 @@ const WeddingLogistics = () => {
                                         chandan: "Father of the Groom",
                                     }[firstName.toLowerCase()];
                                     return specialTitle
-                                        ? <p className='italic'>Hi <span className="text-[#691700]">{specialTitle}</span>!</p>
+                                        ? <p>Hi <span className="italic text-[#691700]">{specialTitle}</span><span className="italic">!</span></p>
                                         : <p>Hi {firstName}!</p>;
                                 })()}
                                 <p>We've reserved <span className="text-[#691700]">{numGuests} {numGuests === 1 ? "guest" : "guests"}</span> for you!</p>
