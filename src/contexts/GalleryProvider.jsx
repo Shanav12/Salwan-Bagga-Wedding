@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import { ref, listAll, getDownloadURL, getMetadata } from 'firebase/storage';
-import { storage, auth } from '../firebase_config';
+import { collection, getDocs, query, orderBy } from 'firebase/firestore';
+import { db, auth } from '../firebase_config';
 import { signInAnonymously } from 'firebase/auth';
 import { GalleryContext } from './GalleryContext';
 
@@ -42,21 +42,11 @@ const GalleryProvider = ({ children }) => {
     const fetchImages = useCallback(async () => {
         setLoading(true);
         try {
-            const response = await listAll(ref(storage));
-            const imagesWithMetadata = await Promise.all(
-                response.items.map(async (item) => {
-                    const [url, metadata] = await Promise.all([
-                        getDownloadURL(item),
-                        getMetadata(item),
-                    ]);
-                    return { url, timeCreated: metadata.timeCreated };
-                })
-            );
-            const sortedImages = imagesWithMetadata
-                .sort((image1, image2) => new Date(image1.timeCreated) - new Date(image2.timeCreated))
-                .map(({ url }) => url);
-            setImageList(sortedImages);
-            writeCache(sortedImages);
+            const q = query(collection(db, 'galleryPhotoURLs'), orderBy('timeCreated', 'asc'));
+            const snapshot = await getDocs(q);
+            const urls = snapshot.docs.map(doc => doc.data().url).filter(Boolean);
+            setImageList(urls);
+            writeCache(urls);
         } catch (error) {
             console.error('Error fetching images:', error);
         } finally {

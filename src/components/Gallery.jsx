@@ -1,6 +1,7 @@
-import { ref, uploadBytesResumable } from 'firebase/storage';
+import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+import { collection, addDoc, Timestamp } from 'firebase/firestore';
 import { useState, useEffect, useRef, useCallback } from "react";
-import { storage } from '../firebase_config';
+import { storage, db } from '../firebase_config';
 import { useGallery } from '../contexts/GalleryContext';
 
 
@@ -61,7 +62,20 @@ const Gallery = () => {
                     console.error('Upload error:', error);
                     setUploading(false);
                 },
-                () => {
+                async () => {
+                    try {
+                        const downloadURL = await getDownloadURL(currRef);
+                        await addDoc(collection(db, 'galleryPhotoURLs'), {
+                            url: downloadURL,
+                            storagePath: currRef.name,
+                            contentType: file.type,
+                            size: file.size,
+                            timeCreated: Timestamp.now(),
+                            createdAt: Timestamp.now(),
+                        });
+                    } catch (err) {
+                        console.error('Error saving photo record:', err);
+                    }
                     completedUploads++;
                     if (completedUploads === totalFiles) {
                         setUploading(false);
