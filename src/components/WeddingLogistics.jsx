@@ -22,7 +22,7 @@ const WeddingLogistics = () => {
     const [error, setError] = useState("");
     const [confirmed, setConfirmed] = useState(false);
     const [numGuests, setNumGuests] = useState(0);
-    const [selectedDay, setSelectedDay] = useState("");
+    const [openDays, setOpenDays] = useState(new Set());
     useEffect(() => {
         const fadeTimer = setTimeout(() => setOpacity(0), 3000);
         const removeTimer = setTimeout(() => setShowConfetti(false), 5000);
@@ -303,7 +303,11 @@ const WeddingLogistics = () => {
                 ].map((day, i, arr) => (
                     <div key={day.key} className={i < arr.length - 1 ? "border-b border-[#691700]/15" : ""}>
                         <button
-                            onClick={() => setSelectedDay(s => s === day.key ? "" : day.key)}
+                            onClick={() => setOpenDays(prev => {
+                                const next = new Set(prev);
+                                next.has(day.key) ? next.delete(day.key) : next.add(day.key);
+                                return next;
+                            })}
                             className="w-full flex items-center justify-between py-5 cursor-pointer"
                         >
                             <div className="flex items-baseline gap-3">
@@ -311,13 +315,13 @@ const WeddingLogistics = () => {
                                 <span className="font-prata text-black text-sm">— {day.weekday}</span>
                             </div>
                             <svg
-                                className={`text-[#691700] transition-transform duration-200 ${selectedDay === day.key ? "rotate-180" : ""}`}
+                                className={`text-[#691700] transition-transform duration-200 ${openDays.has(day.key) ? "rotate-180" : ""}`}
                                 width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
                             >
                                 <polyline points="6 9 12 15 18 9" />
                             </svg>
                         </button>
-                        {selectedDay === day.key && (
+                        {openDays.has(day.key) && (
                             <div className="flex flex-col gap-6 pb-8">
                                 {day.events.map((event, j) => (
                                     <EventCard key={j} {...event} />
