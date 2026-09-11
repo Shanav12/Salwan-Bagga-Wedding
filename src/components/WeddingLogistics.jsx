@@ -288,7 +288,7 @@ const WeddingLogistics = () => {
 
                 {[
                     { key: "june3", label: "June 3", weekday: "Thursday", events: [
-                        { time: "10:00 am", name: "Haldi", location: "Retune Terrace" },
+                        { time: "10:00 am", name: "Ganesh Pooja and Haldi", location: "Retune Terrace" },
                         { time: "5:30 pm", name: "Sangeet", location: "Serenade Terrace" },
                     ]},
                     { key: "june4", label: "June 4", weekday: "Friday", events: [
