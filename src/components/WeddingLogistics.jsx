@@ -308,7 +308,7 @@ const WeddingLogistics = () => {
                         >
                             <div className="flex items-baseline gap-3">
                                 <span className="font-prata text-xl md:text-2xl text-[#1a1a1a]">{day.label}</span>
-                                <span className="font-prata text-[#9a9a9a] text-sm">— {day.weekday}</span>
+                                <span className="font-prata text-black text-sm">— {day.weekday}</span>
                             </div>
                             <svg
                                 className={`text-[#691700] transition-transform duration-200 ${selectedDay === day.key ? "rotate-180" : ""}`}
