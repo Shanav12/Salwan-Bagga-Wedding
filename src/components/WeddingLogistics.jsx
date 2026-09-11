@@ -4,6 +4,7 @@ import { useWindowSize } from 'react-use'
 import { useState, useEffect } from "react"
 import saveTheDateBack from "../assets/saveTheDateBack.png"
 import { query, collection, where, getDocs, addDoc } from "firebase/firestore";
+import EventCard from "./EventCard";
 import { db } from "../firebase_config"
 import 'react-phone-number-input/style.css'
 import "../App.css"
@@ -21,14 +22,13 @@ const WeddingLogistics = () => {
     const [error, setError] = useState("");
     const [confirmed, setConfirmed] = useState(false);
     const [numGuests, setNumGuests] = useState(0);
-
-
+    const [selectedDay, setSelectedDay] = useState("");
     useEffect(() => {
         const fadeTimer = setTimeout(() => setOpacity(0), 3000);
         const removeTimer = setTimeout(() => setShowConfetti(false), 5000);
-        return () => { 
-            clearTimeout(fadeTimer); 
-            clearTimeout(removeTimer); 
+        return () => {
+            clearTimeout(fadeTimer);
+            clearTimeout(removeTimer);
         };
     }, []);
 
@@ -77,9 +77,33 @@ const WeddingLogistics = () => {
             setError("Unfortunately the first and last name can't be found. Please try again!");
             return;
         }
-        querySnapshot.forEach((doc) => {
-            setNumGuests(doc.data().guestCount);
-        });
+
+        const docs = [];
+        querySnapshot.forEach((doc) => docs.push(doc));
+
+        let matchedDoc = docs[0];
+        if (docs.length > 1) {
+            const docsWithPhone = docs.filter((doc) => doc.data().phoneNumber);
+            if (docsWithPhone.length > 0) {
+                const enteredDigits = phoneNumber ? phoneNumber.replace(/\D/g, "") : "";
+                if (!enteredDigits) {
+                    setError("Multiple guests share this name. Please enter your phone number to continue.");
+                    return;
+                }
+                const phoneMatch = docsWithPhone.find((doc) =>
+                    doc.data().phoneNumber.replace(/\D/g, "").endsWith(enteredDigits) ||
+                    enteredDigits.endsWith(doc.data().phoneNumber.replace(/\D/g, ""))
+                );
+                if (!phoneMatch) {
+                    setError("Multiple guests share this name and the phone number didn't match. Please double-check and try again.");
+                    return;
+                }
+                matchedDoc = phoneMatch;
+            }
+        }
+
+        setNumGuests(matchedDoc.data().guestCount);
+
         const parsed = phoneNumber ? parsePhoneNumber(phoneNumber) : null;
         const formattedPhone = parsed
             ? `+${parsed.countryCallingCode} ${parsed.nationalNumber}`
@@ -104,7 +128,7 @@ const WeddingLogistics = () => {
 
 
     return (
-        <div className="min-h-full bg-[#faf0e6] py-14 px-4 overflow-x-hidden">
+        <div className="min-h-full bg-[#faf0e6] py-14 px-4">
             {showConfetti && (
                 <Confetti
                     width={width}
@@ -249,6 +273,59 @@ const WeddingLogistics = () => {
                 >
                     RSVP Link
                 </button>
+            </section>
+
+            {/* Events by Day */}
+            <section className="max-w-2xl md:max-w-3xl mx-auto px-4 py-6 mb-10">
+                <h2 className="font-prata text-3xl md:text-4xl text-[#4a4a4a] text-center mb-2">
+                    Events
+                </h2>
+                <div className="flex items-center justify-center gap-2 md:gap-3 mb-6">
+                    <span className="h-px w-8 md:w-12 bg-[#691700]"></span>
+                    <span className="text-[#991D00] text-sm md:text-base">✦</span>
+                    <span className="h-px w-8 md:w-12 bg-[#691700]"></span>
+                </div>
+
+                {[
+                    { key: "june3", label: "June 3", weekday: "Thursday", events: [
+                        { time: "10:00 am", name: "Haldi", location: "Retune Terrace" },
+                        { time: "5:30 pm", name: "Sangeet", location: "Serenade Terrace" },
+                    ]},
+                    { key: "june4", label: "June 4", weekday: "Friday", events: [
+                        { time: "3:00 pm", name: "Baraat" },
+                        { time: "4:00 pm", name: "Wedding Ceremony", location: "Coda Gardens" },
+                        { time: "7:00 pm", name: "Cocktail & Dinner", location: "Moonlight Terrace" },
+                    ]},
+                    { key: "june5", label: "June 5", weekday: "Saturday", events: [
+                        { time: "6:00 pm", name: "Cocktail Hour", location: "Harmony Ballroom" },
+                        { time: "7:30 pm", name: "Dinner", location: "Harmony Ballroom" },
+                    ]},
+                ].map((day, i, arr) => (
+                    <div key={day.key} className={i < arr.length - 1 ? "border-b border-[#691700]/15" : ""}>
+                        <button
+                            onClick={() => setSelectedDay(s => s === day.key ? "" : day.key)}
+                            className="w-full flex items-center justify-between py-5 cursor-pointer"
+                        >
+                            <div className="flex items-baseline gap-3">
+                                <span className="font-prata text-xl md:text-2xl text-[#1a1a1a]">{day.label}</span>
+                                <span className="font-prata text-[#9a9a9a] text-sm">— {day.weekday}</span>
+                            </div>
+                            <svg
+                                className={`text-[#691700] transition-transform duration-200 ${selectedDay === day.key ? "rotate-180" : ""}`}
+                                width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+                            >
+                                <polyline points="6 9 12 15 18 9" />
+                            </svg>
+                        </button>
+                        {selectedDay === day.key && (
+                            <div className="flex flex-col gap-6 pb-8">
+                                {day.events.map((event, j) => (
+                                    <EventCard key={j} {...event} />
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                ))}
             </section>
         </div>
     );
