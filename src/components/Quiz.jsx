@@ -201,6 +201,8 @@ const Quiz = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (Object.keys(answers).length !== questions.length) {
+            const firstUnansweredIdx = questions.findIndex(q => !answers[q.key]);
+            setQIdx(firstUnansweredIdx);
             setResult({ type: "incomplete" });
             return;
         }
@@ -362,7 +364,7 @@ const Quiz = () => {
                     {showQuiz &&
                     <div key={questions[qIdx].key}>
                         <p className="font-prata text-[#4a4a4a] text-lg mb-5">{questions[qIdx].text}</p>
-                        <div className="space-y-3">
+                        <div className="space-y-3 min-h-[244px]">
                             {questions[qIdx].options.map((opt) => (
                                 <label
                                     key={opt.val}
