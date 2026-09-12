@@ -1,0 +1,37 @@
+@startuml rsvp-data-model
+
+hide circle
+
+class Guest {
+  id: string
+  firstName: string
+  lastName: string
+  phoneNumber: string
+  partyMembers: string[]
+}
+
+class RSVP {
+  id: string
+  name: string
+  submittedBy: string
+  phoneNumber: string
+  dietaryRestrictions: string
+  submittedAt: timestamp
+  events: Events
+}
+
+class Events {
+  ganeshPooja: boolean
+  sangeet: boolean
+  baraat: boolean
+  weddingCeremony: boolean
+  cocktailDinner: boolean
+  cocktailHour: boolean
+  dinner: boolean
+}
+
+Guest "1" --> "0..*" RSVP : has one RSVP per member
+Guest "0..*" o-- Guest : partyMembers
+RSVP "1" *-- "1" Events : embeds
+
+@enduml
