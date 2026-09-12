@@ -1,95 +1,100 @@
-import './App.css'
-import HomePage from "./components/Home"
-import Journey from './components/Journey'
-import NavBar from './components/NavBar'
-import Gallery from './components/Gallery'
-import MusicPlayer from './components/MusicPlayer'
-import Lineup from './components/Lineup'
-import GalleryProvider from "./contexts/GalleryProvider"
-import Quiz from './components/Quiz'
-import { Routes, Route, HashRouter, useLocation } from 'react-router-dom'
-import WeddingLogistics from './components/WeddingLogistics'
-import { useState, useEffect } from 'react'
-import saveTheDate from "../src/assets/saveTheDate.png"
-
+import "./App.css";
+import HomePage from "./components/Home";
+import Journey from "./components/Journey";
+import NavBar from "./components/NavBar";
+import Gallery from "./components/Gallery";
+import MusicPlayer from "./components/MusicPlayer";
+import Lineup from "./components/Lineup";
+import GalleryProvider from "./contexts/GalleryProvider";
+import Quiz from "./components/Quiz";
+import { Routes, Route, HashRouter, useLocation } from "react-router-dom";
+import WeddingLogistics from "./components/WeddingLogistics";
+import { useState, useEffect } from "react";
+import saveTheDate from "../src/assets/saveTheDate.png";
 
 const ScrollToTop = () => {
-  const { pathname } = useLocation()
+  const { pathname } = useLocation();
 
   useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [pathname])
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
-  return null
-}
+  return null;
+};
 
 const AppContent = () => {
-  const { pathname } = useLocation()
-  const [scrollHidesControls, setScrollHidesControls] = useState(false)
-  const showPlay = pathname !== '/' && !scrollHidesControls
+  const { pathname } = useLocation();
+  const [scrollHidesControls, setScrollHidesControls] = useState(false);
+  const showPlay = pathname !== "/" && !scrollHidesControls;
 
   useEffect(() => {
-    setScrollHidesControls(false)
-  }, [pathname])
+    setScrollHidesControls(false);
+  }, [pathname]);
 
   return (
     <>
       <ScrollToTop />
-      <NavBar showPlay={showPlay} setScrollHidesControls={setScrollHidesControls} />
+      <NavBar
+        showPlay={showPlay}
+        setScrollHidesControls={setScrollHidesControls}
+      />
       <div className="fixed top-1 right-6 z-50">
         <MusicPlayer showPlay={showPlay} />
       </div>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/journey" element={<Journey />} />
-        <Route path='/gallery' element={<Gallery />} />
-        <Route path='/wedding-logistics' element={<WeddingLogistics />} />
-        <Route path='/lineup' element={<Lineup />}/>
-        <Route path='/quiz' element={<Quiz />} />
+        <Route path="/gallery" element={<Gallery />} />
+        <Route path="/wedding-logistics" element={<WeddingLogistics />} />
+        <Route path="/lineup" element={<Lineup />} />
+        <Route path="/quiz" element={<Quiz />} />
       </Routes>
     </>
-  )
-}
+  );
+};
 
 const App = () => {
   const [splashVisible, setSplashVisible] = useState(() => {
-    return !sessionStorage.getItem('splashShown');
+    return !sessionStorage.getItem("splashShown");
   });
   const [splashOpacity, setSplashOpacity] = useState(1);
 
   useEffect(() => {
-      if (!splashVisible) {
-        return;
-      }
-      sessionStorage.setItem('splashShown', 'true');
-      const fadeTimer = setTimeout(() => setSplashOpacity(0), 2000);
-      const removeTimer = setTimeout(() => setSplashVisible(false), 3000);
-      return () => {
-          clearTimeout(fadeTimer);
-          clearTimeout(removeTimer);
-      };
+    if (!splashVisible) {
+      return;
+    }
+    sessionStorage.setItem("splashShown", "true");
+    const fadeTimer = setTimeout(() => setSplashOpacity(0), 2000);
+    const removeTimer = setTimeout(() => setSplashVisible(false), 3000);
+    return () => {
+      clearTimeout(fadeTimer);
+      clearTimeout(removeTimer);
+    };
   }, [splashVisible]);
 
   return (
     <GalleryProvider>
       {splashVisible && (
-          <div
-              className="fixed inset-0 z-50 flex items-center justify-center px-6 py-8"
-              style={{ 
-                  transition: "opacity 1s ease-out", 
-                  opacity: splashOpacity,
-                  background: "radial-gradient(ellipse at center, #fdfbf7 0%, #f0dfd0 50%, #d4a882 100%)"}}>
-              <img 
-                  src={saveTheDate} 
-                  className="h-96 md:h-128 rounded-lg object-cover shadow-2xl border-2 border-[#691700]" 
-              />
-          </div>
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center px-6 py-8"
+          style={{
+            transition: "opacity 1s ease-out",
+            opacity: splashOpacity,
+            background:
+              "radial-gradient(ellipse at center, #fdfbf7 0%, #f0dfd0 50%, #d4a882 100%)",
+          }}
+        >
+          <img
+            src={saveTheDate}
+            className="h-96 md:h-128 rounded-lg object-cover shadow-2xl border-2 border-[#691700]"
+          />
+        </div>
       )}
       <HashRouter>
         <AppContent />
       </HashRouter>
     </GalleryProvider>
-  )
-}
+  );
+};
 
 export default App;

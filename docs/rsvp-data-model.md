@@ -24,7 +24,7 @@ class RSVP {
 }
 
 class Events {
-  ganeshPooja: boolean
+  haldi: boolean
   sangeet: boolean
   baraat: boolean
   weddingCeremony: boolean
@@ -59,7 +59,7 @@ One document per person, keyed by `name` (lowercase full name). `events` is a ma
 
 | Key | Label | Date |
 |-----|-------|------|
-| `ganeshPooja` | Ganesh Pooja & Haldi | June 3 — Thursday |
+| `haldi` | Ganesh Pooja & Haldi | June 3 — Thursday |
 | `sangeet` | Sangeet | June 3 — Thursday |
 | `baraat` | Baraat | June 4 — Friday |
 | `weddingCeremony` | Wedding Ceremony | June 4 — Friday |

@@ -21,7 +21,7 @@ class RSVP {
 }
 
 class Events {
-  ganeshPooja: boolean
+  haldi: boolean
   sangeet: boolean
   baraat: boolean
   weddingCeremony: boolean
