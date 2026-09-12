@@ -337,6 +337,7 @@ const Quiz = () => {
                             <input
                                 type="text"
                                 onChange={onNameChange}
+                                onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); if (name.trim()) setShowQuiz(true); } }}
                                 placeholder="Your Name..."
                                 value={name}
                                 className="w-full px-4 py-3 border border-[#d9ccc0] bg-white rounded-sm font-prata text-[#4a4a4a] placeholder-[#b0a090] focus:outline-none focus:border-[#991D00] transition-colors duration-200"
@@ -345,6 +346,13 @@ const Quiz = () => {
                         <button
                             type="button"
                             onClick={() => name.trim() && setShowQuiz(true)}
+                            onKeyDown={(e) => { 
+                                if (e.key === 'Enter') { 
+                                        e.preventDefault(); 
+                                        if (name.trim()) setShowQuiz(true); 
+                                    } 
+                                }
+                            }
                             disabled={!name.trim()}
                             className="px-6 py-2 border border-[#691700] text-[#691700] font-prata font-light tracking-widest uppercase text-sm hover:bg-[#691700] hover:text-white transition-all duration-300 rounded-md cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-[#691700]"
                         >
