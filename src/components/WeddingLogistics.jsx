@@ -49,6 +49,16 @@ const HOTEL_URL = "https://www.shaadidestinations.com/ambika-and-sahil";
 const toTitleCase = (str) =>
     str.replace(/\b\w/g, c => c.toUpperCase());
 
+const NAME_ROLES = {
+    "shanav bagga":    "Best Man",
+    "sahil bagga":     "Groom",
+    "chandan bagga":   "Father of the Groom",
+    "ambika salwan":   "Bride",
+    "sia salwan":      "Maid of Honor",
+    "arun salwan":     "Father of the Bride",
+    "priyanka salwan": "Mother of the Bride",
+};
+
 const initAttendance = (members) =>
     Object.fromEntries(
         members.map(m => [m, Object.fromEntries(EVENTS.map(e => [e.key, null]))])
@@ -113,7 +123,7 @@ const ModalStep1 = ({ firstName, lastName, phoneNumber, error, onFirstNameChange
     <>
         <h3 className="font-prata text-2xl text-[#691700]">RSVP</h3>
         <p className="font-prata text-[#5a5a5a] text-sm text-center leading-relaxed">
-            Enter your name so we can pull up your party.
+            Please enter your name so we can pull up your party!
         </p>
         <div className="flex flex-col gap-3 w-full">
             <input
@@ -150,11 +160,14 @@ const ModalStep1 = ({ firstName, lastName, phoneNumber, error, onFirstNameChange
     </>
 );
 
-const ModalStep2 = ({ firstName, onModify, onClose }) => (
+const ModalStep2 = ({ firstName, lastName, onModify, onClose }) => {
+    const fullKey = `${firstName.trim()} ${lastName.trim()}`.toLowerCase();
+    const displayName = NAME_ROLES[fullKey] ?? toTitleCase(firstName);
+    return (
     <>
         <h3 className="font-prata text-2xl text-[#691700] text-center">Thank You!</h3>
         <div className="font-prata text-[#5a5a5a] text-sm md:text-base text-center leading-relaxed space-y-3">
-            <p>Hi {toTitleCase(firstName)}! We already have your RSVP on file.</p>
+            <p>Hi {displayName}! We already have your RSVP on file.</p>
             <p>Click below to book your hotel, or modify your response if anything has changed.</p>
         </div>
         <div className="flex flex-col gap-3 w-full">
@@ -167,7 +180,8 @@ const ModalStep2 = ({ firstName, onModify, onClose }) => (
             </button>
         </div>
     </>
-);
+    );
+};
 
 const ModalStep3 = ({ partyMembers, attendance, dietary, error, submitting, onAttendanceChange, onDietaryChange, onSubmit, onClose }) => (
     <>
@@ -179,9 +193,14 @@ const ModalStep3 = ({ partyMembers, attendance, dietary, error, submitting, onAt
         <div className="flex flex-col gap-8 w-full">
             {partyMembers.map(member => (
                 <div key={member} className="flex flex-col gap-4">
-                    <h4 className="font-prata text-lg text-[#1a1a1a] border-b border-[#691700]/20 pb-2">
-                        {toTitleCase(member)}
-                    </h4>
+                    <div className="border-b border-[#691700]/20 pb-2">
+                        <h4 className="font-prata text-lg text-[#1a1a1a]">
+                            {toTitleCase(member)}
+                        </h4>
+                        {NAME_ROLES[member] && (
+                            <span className="font-prata text-xs text-[#691700]">{NAME_ROLES[member]}</span>
+                        )}
+                    </div>
 
                     <div className="flex flex-col gap-3">
                         {EVENTS.map(event => (
@@ -426,6 +445,7 @@ const WeddingLogistics = () => {
                         {step === 2 && !submitted && (
                             <ModalStep2
                                 firstName={firstName}
+                                lastName={lastName}
                                 onModify={() => setStep(3)}
                                 onClose={handleClose}
                             />
