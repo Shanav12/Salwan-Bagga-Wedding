@@ -1,6 +1,12 @@
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
-import { collection, addDoc, Timestamp } from 'firebase/firestore'
+import { collection, addDoc, getDocs, query, orderBy, Timestamp } from 'firebase/firestore'
 import { storage, db } from '../firebase_config'
+
+export async function fetchGalleryImages() {
+    const q = query(collection(db, 'galleryPhotoURLs'), orderBy('timeCreated', 'asc'));
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map(doc => doc.data().url).filter(Boolean);
+}
 
 export async function savePhotoRecord(file, storageRef) {
     const downloadURL = await getDownloadURL(storageRef);

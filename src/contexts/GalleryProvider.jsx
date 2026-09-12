@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import { collection, getDocs, query, orderBy } from 'firebase/firestore';
-import { db, auth } from '../firebase_config';
+import { auth } from '../firebase_config';
 import { signInAnonymously } from 'firebase/auth';
+import { fetchGalleryImages } from '../api/gallery';
 import { GalleryContext } from './GalleryContext';
 
 const CACHE_KEY = 'galleryImageCache';
@@ -28,9 +28,8 @@ const writeCache = (imageList) => {
 };
 
 const GalleryProvider = ({ children }) => {
-    const cachedImages = readCache();
-    const [imageList, setImageList] = useState(cachedImages ?? []);
-    const [loading, setLoading] = useState(!cachedImages);
+    const [imageList, setImageList] = useState(() => readCache() ?? []);
+    const [loading, setLoading] = useState(() => readCache() === null);
     const [authReady, setAuthReady] = useState(false);
 
     useEffect(() => {
@@ -42,9 +41,7 @@ const GalleryProvider = ({ children }) => {
     const fetchImages = useCallback(async () => {
         setLoading(true);
         try {
-            const q = query(collection(db, 'galleryPhotoURLs'), orderBy('timeCreated', 'asc'));
-            const snapshot = await getDocs(q);
-            const urls = snapshot.docs.map(doc => doc.data().url).filter(Boolean);
+            const urls = await fetchGalleryImages();
             setImageList(urls);
             writeCache(urls);
         } catch (error) {
@@ -55,8 +52,8 @@ const GalleryProvider = ({ children }) => {
     }, []);
 
     useEffect(() => {
-        if (authReady && !cachedImages) fetchImages();
-    }, [authReady, fetchImages, cachedImages]);
+        if (authReady && loading) fetchImages();
+    }, [authReady, fetchImages, loading]);
 
     const value = useMemo(
         () => ({ imageList, loading, authReady, fetchImages }),
