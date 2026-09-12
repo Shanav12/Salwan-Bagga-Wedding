@@ -1,17 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { db, auth } from "../firebase_config"
-import {
-    collection,
-    addDoc,
-    query,
-    orderBy,
-    limit,
-    onSnapshot,
-    serverTimestamp,
-} from "firebase/firestore";
-import { onAuthStateChanged } from 'firebase/auth';
+import { submitQuizScore, subscribeToLeaderboard } from "../api/quiz";
 
-const LEADERBOARD_LIMIT = 100;
 
 const questions = [
     {
@@ -75,6 +64,11 @@ const questions = [
         options: [{ val: "a", label: "A) 1" }, { val: "b", label: "B) 3" }, { val: "c", label: "C) 2" }, { val: "d", label: "D) 0" }]
     }
 ];
+
+const CORRECT_ANSWERS = {
+    q1: 'b', q2: 'c', q3: 'd', q4: 'c', q5: 'b', q6: 'a',
+    q7: 'b', q8: 'd', q9: 'a', q10: 'b', q11: 'c', q12: 'c',
+};
 
 const getEntryTimestamp = (entry) => {
     if (!entry.timestamp) return 0;
@@ -161,41 +155,14 @@ const Quiz = () => {
     const [name, setName] = useState('');
     const [entries, setEntries] = useState([]);
     const [leaderboardLoading, setLeaderboardLoading] = useState(true);
+    const [submittedAnswers, setSubmittedAnswers] = useState(null);
 
     useEffect(() => {
-        let unsubscribeSnapshot = () => {};
-
-        const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
-            unsubscribeSnapshot();
-
-            if (!user) {
-                setLeaderboardLoading(true);
-                return;
-            }
-
-            const leaderboardQuery = query(
-                collection(db, 'quizleaderboard'),
-                orderBy('numCorrect', 'desc'),
-                limit(LEADERBOARD_LIMIT)
-            );
-
-            unsubscribeSnapshot = onSnapshot(
-                leaderboardQuery,
-                (snapshot) => {
-                    setEntries(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
-                    setLeaderboardLoading(false);
-                },
-                (err) => {
-                    console.error('Leaderboard error:', err);
-                    setLeaderboardLoading(false);
-                }
-            );
+        const unsubscribe = subscribeToLeaderboard({
+            onData: (data) => { setEntries(data); setLeaderboardLoading(false); },
+            onError: (err) => { console.error('Leaderboard error:', err); setLeaderboardLoading(false); },
         });
-
-        return () => {
-            unsubscribeAuth();
-            unsubscribeSnapshot();
-        };
+        return unsubscribe;
     }, []);
 
     const handleSubmit = async (e) => {
@@ -204,21 +171,10 @@ const Quiz = () => {
             setResult({ type: "incomplete" });
             return;
         }
-        let numCorrect = 0;
-        if (answers?.q1 === 'b') numCorrect++;
-        if (answers?.q2 === 'c') numCorrect++;
-        if (answers?.q3 === 'd') numCorrect++;
-        if (answers?.q4 === 'c') numCorrect++;
-        if (answers?.q5 === 'b') numCorrect++;
-        if (answers?.q6 === 'a') numCorrect++;
-        if (answers?.q7 === 'b') numCorrect++;
-        if (answers?.q8 === 'd') numCorrect++;
-        if (answers?.q9 === 'a') numCorrect++;
-        if (answers?.q10 === 'b') numCorrect++;
-        if (answers?.q11 === 'c') numCorrect++;
-        if (answers?.q12 === 'c') numCorrect++;
+        const numCorrect = questions.filter(q => answers[q.key] === CORRECT_ANSWERS[q.key]).length;
 
         setResult({ type: numCorrect / questions.length >= 0.5 ? "pass" : "fail", score: numCorrect });
+        setSubmittedAnswers({ ...answers });
 
         const submittedName = name;
         setEntries(prev => [
@@ -232,11 +188,7 @@ const Quiz = () => {
         setAnswers({});
 
         try {
-            await addDoc(collection(db, 'quizleaderboard'), {
-                name: submittedName,
-                numCorrect,
-                timestamp: serverTimestamp(),
-            });
+            await submitQuizScore(submittedName, numCorrect);
         } catch (err) {
             console.error('Submit error:', err);
             setEntries(prev => prev.filter(entry => !entry.id.startsWith('pending-')));
@@ -260,17 +212,10 @@ const Quiz = () => {
             return getEntryTimestamp(a) - getEntryTimestamp(b);
         });
 
-        let lastRank = 1;
         return sorted.map((entry, idx) => {
-            let rank;
-            if (idx === 0) {
-                rank = 1;
-            } else if (entry.numCorrect === sorted[idx - 1].numCorrect) {
-                rank = lastRank;
-            } else {
-                rank = idx + 1;
-                lastRank = idx + 1;
-            }
+            const rank = idx === 0 || entry.numCorrect !== sorted[idx - 1].numCorrect
+                ? idx + 1
+                : sorted.findIndex(e => e.numCorrect === entry.numCorrect) + 1;
             return { entry, rank };
         });
     }, [entries]);
@@ -325,7 +270,7 @@ const Quiz = () => {
                 </div>
             </div>
 
-            <form onSubmit={handleSubmit} className="max-w-2xl mx-auto space-y-7.5">
+            {!submittedAnswers && <form onSubmit={handleSubmit} className="max-w-2xl mx-auto space-y-7.5">
                 <div className="text-center mb-3">
                     <h2 className="font-prata text-3xl md:text-4xl text-[#4a4a4a] mb-3">Questions</h2>
                 </div>
@@ -425,7 +370,45 @@ const Quiz = () => {
                         )}
                     </div>}
                 </div>
-            </form>
+            </form>}
+
+            {submittedAnswers && (
+                <div className="max-w-2xl mx-auto mt-10 space-y-4">
+                    <div className="text-center mb-6">
+                        <h2 className="font-prata text-3xl md:text-4xl text-[#4a4a4a] mb-3">Your Answers</h2>
+                        <div className="flex items-center justify-center gap-2 md:gap-3">
+                            <span className="h-px w-8 md:w-12 bg-[#691700]"></span>
+                            <span className="text-[#991D00] text-sm md:text-base">✦</span>
+                            <span className="h-px w-8 md:w-12 bg-[#691700]"></span>
+                        </div>
+                    </div>
+
+                    {questions.map(q => (
+                        <div key={q.key} className="bg-[#f3ede3] rounded-sm p-4 md:p-5 shadow-sm">
+                            <p className="font-prata text-[#4a4a4a] text-base mb-3">{q.text}</p>
+                            <div className="space-y-2">
+                                {q.options.map(opt => {
+                                    const isCorrect = CORRECT_ANSWERS[q.key] === opt.val;
+                                    const isSelected = submittedAnswers[q.key] === opt.val;
+                                    let className = "flex items-center gap-3 px-4 py-2.5 rounded-sm border text-sm font-prata ";
+                                    if (isCorrect) {
+                                        className += "bg-green-100/40 border-green-300/40 text-green-900/50 shadow-sm shadow-green-100";
+                                    } else if (isSelected) {
+                                        className += "bg-red-100/40 border-red-300/40 text-red-900/50 shadow-sm shadow-red-100";
+                                    } else {
+                                        className += "bg-white/50 border-[#d9ccc0]/30 text-[#4a4a4a]/50";
+                                    }
+                                    return (
+                                        <div key={opt.val} className={className}>
+                                            <span>{opt.label}</span>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            )}
         </div>
     );
 };

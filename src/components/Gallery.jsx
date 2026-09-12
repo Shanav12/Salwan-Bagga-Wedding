@@ -1,8 +1,6 @@
-import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
-import { collection, addDoc, Timestamp } from 'firebase/firestore';
 import { useState, useEffect, useRef, useCallback } from "react";
-import { storage, db } from '../firebase_config';
 import { useGallery } from '../contexts/GalleryContext';
+import { uploadPhoto, savePhotoRecord } from '../api/gallery';
 
 
 
@@ -50,29 +48,15 @@ const Gallery = () => {
         const totalFiles = files.length;
         
         Array.from(files).forEach((file) => {
-            const currRef = ref(storage, `${Date.now()}-${file.name}`);
-            const upload = uploadBytesResumable(currRef, file); 
-            upload.on(
-                'state_changed',
-                (snapshot) => {
-                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                    setUploadProgress(progress);
-                },
-                (error) => {
+            uploadPhoto(file, {
+                onProgress: (progress) => setUploadProgress(progress),
+                onError: (error) => {
                     console.error('Upload error:', error);
                     setUploading(false);
                 },
-                async () => {
+                onComplete: async (storageRef) => {
                     try {
-                        const downloadURL = await getDownloadURL(currRef);
-                        await addDoc(collection(db, 'galleryPhotoURLs'), {
-                            url: downloadURL,
-                            storagePath: currRef.name,
-                            contentType: file.type,
-                            size: file.size,
-                            timeCreated: Timestamp.now(),
-                            createdAt: Timestamp.now(),
-                        });
+                        await savePhotoRecord(file, storageRef);
                     } catch (err) {
                         console.error('Error saving photo record:', err);
                     }
@@ -84,8 +68,8 @@ const Gallery = () => {
                         setShowSuccess(true);
                         fetchImages();
                     }
-                }
-            )
+                },
+            });
         })
     }
 
