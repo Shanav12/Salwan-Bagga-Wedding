@@ -144,9 +144,16 @@ const WeddingLogistics = () => {
                     onClick={handleClose}
                 >
                     <div
-                        className="bg-[#faf0e6] rounded-xl px-10 py-10 w-full max-w-lg flex flex-col items-center gap-6 shadow-xl"
+                        className="bg-[#faf0e6] rounded-xl px-10 py-10 w-full max-w-lg flex flex-col items-center gap-6 shadow-xl relative"
                         onClick={e => e.stopPropagation()}
                     >
+                        <button
+                            onClick={handleClose}
+                            className="absolute top-3 right-4 text-2xl text-[#691700]/50 hover:text-[#691700] border border-[#691700]/30 hover:border-[#691700] rounded-md w-8 h-8 flex items-center justify-center transition-colors cursor-pointer"
+                            aria-label="Close"
+                        >
+                            &times;
+                        </button>
                         <h3 className="font-prata text-2xl text-[#691700]">Hotel Booking</h3>
 
                         {!confirmed && (
