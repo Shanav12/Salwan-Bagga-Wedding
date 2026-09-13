@@ -525,16 +525,16 @@ const Quiz = () => {
                   const isCorrect = CORRECT_ANSWERS[q.key] === opt.val;
                   const isSelected = submittedAnswers[q.key] === opt.val;
                   let className =
-                    "flex items-center gap-3 px-4 py-2.5 rounded-sm border text-sm font-prata ";
+                    "flex items-center justify-between px-4 py-3 border-l-2 text-sm font-prata tracking-wide ";
                   if (isCorrect) {
                     className +=
-                      "bg-green-100/40 border-green-300/40 text-green-900/50 shadow-sm shadow-green-100";
+                      "border-l-[#67A660] bg-[#67A660]/10 text-[#3d6e38]";
                   } else if (isSelected) {
                     className +=
-                      "bg-red-100/40 border-red-300/40 text-red-900/50 shadow-sm shadow-red-100";
+                      "border-l-[#BD7E73] bg-[#BD7E73]/10 text-[#8b4a40]";
                   } else {
                     className +=
-                      "bg-white/50 border-[#d9ccc0]/30 text-[#4a4a4a]/50";
+                      "border-l-transparent bg-white text-[#4a4a4a]/40";
                   }
                   return (
                     <div key={opt.val} className={className}>
