@@ -1,7 +1,7 @@
 import { query, collection, where, getDocs, addDoc, setDoc, doc, serverTimestamp } from "firebase/firestore"
 import { db } from "../firebase_config"
 
-const SHEETS_URL = "https://script.google.com/macros/s/AKfycbyDvuX5UDcrly8_HiKNOygB5gZxQVxEnFsowberPjJjacbK9ETd-RKzA-CZvVnPlzts8g/exec";
+const SHEETS_URL = "https://script.google.com/macros/s/AKfycbyIXHCHnBBIII6d8r6Ksq5vcnmpsGLWmTz9Nh9zQtJYjZtsP_BVEGdO6T1voxfvGqu-vQ/exec";
 
 
 
