@@ -253,25 +253,22 @@ const WeddingLogistics = () => {
                 </div>
 
                 <div className="font-prata text-[#5a5a5a] text-sm md:text-base lg:text-lg mt-2 space-y-2 md:space-y-3">
-                    <p className="leading-relaxed">
-                        Please note that we have secured a heavily discounted room rate for our guests from May 31 through June 7, 2027.
-                    </p>
-                    <p className="leading-relaxed">
-                        The wedding events will take place June 3–5.
-                    </p>
-                    <p className="leading-relaxed">
-                        Per venue policy, the RSVP must be made using the link below.
-                    </p>
-                    <p className="leading-relaxed">
-                        We appreciate your understanding and can't wait to celebrate with you!
-                    </p>
+                  <p className="leading-relaxed">
+                    Please note that we have secured a heavily discounted room rate for our guests from May 31 through June 7, 2027.
+                  </p>
+                  <p className="leading-relaxed">
+                    Per venue policy, the RSVP must be made using the link displayed after submitting the form below.
+                  </p>
+                  <p className="leading-relaxed">
+                    We appreciate your understanding and can't wait to celebrate with you!
+                  </p>
                 </div>
 
                 <button
                     onClick={() => setShowModal(true)}
                     className="mt-5 inline-block font-prata text-lg text-white bg-[#691700] px-6 py-2 rounded-lg transition-all duration-200 hover:bg-[#4a1000] hover:-translate-y-0.5 cursor-pointer"
                 >
-                    RSVP Link
+                    RSVP Form
                 </button>
             </section>
 
