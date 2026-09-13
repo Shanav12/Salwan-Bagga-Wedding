@@ -145,57 +145,24 @@ const getEntryTimestamp = (entry) => {
 
 const Toast = ({ result, onClose }) => {
   useEffect(() => {
-    if (!result) return;
-    const timer = setTimeout(onClose, 3000);
+    if (!result || result.type !== "incomplete") return;
+    const timer = setTimeout(onClose, 5000);
     return () => clearTimeout(timer);
   }, [result, onClose]);
 
-  if (!result) {
+  if (!result || result.type !== "incomplete") {
     return null;
   }
-  const isIncomplete = result.type === "incomplete";
-  const isPass = result.type === "pass";
 
   return (
     <div className="fixed inset-x-0 top-24 flex justify-center z-50 pointer-events-none">
       <div
-        className={`pointer-events-auto mx-4 max-w-sm w-full px-6 py-5 rounded-md shadow-xl border text-center
-                    animate-[fadeSlideIn_0.3s_ease_forwards]
-                    ${
-                      isIncomplete
-                        ? "bg-white border-[#991D00] text-[#991D00]"
-                        : isPass
-                          ? "bg-white border-[#4a7c59] text-[#4a7c59]"
-                          : "bg-white border-[#991D00] text-[#4a4a4a]"
-                    }`}
+        className="pointer-events-auto mx-4 max-w-sm w-full px-6 py-5 rounded-md shadow-xl border text-center bg-white border-[#991D00] text-[#991D00]"
         style={{ animation: "fadeSlideIn 0.3s ease forwards" }}
       >
-        {isIncomplete && (
-          <p className="font-prata text-base tracking-wide">
-            Please answer all questions before submitting.
-          </p>
-        )}
-        {isPass && (
-          <>
-            <p className="font-prata text-xl tracking-wide mb-1">
-              CONGRATS YOU PASSED!
-            </p>
-            <p className="font-prata text-base tracking-wide">
-              You scored a {result.score}/{questions.length}{" "}
-              <span className="text-[#991D00]">♥</span>
-            </p>
-          </>
-        )}
-        {result.type === "fail" && (
-          <>
-            <p className="font-prata text-xl tracking-wide mb-1">
-              You scored a {result.score}/{questions.length}
-            </p>
-            <p className="font-prata text-sm tracking-wide text-[#6b5c4e]">
-              Much for you to learn before the wedding...
-            </p>
-          </>
-        )}
+        <p className="font-prata text-base tracking-wide">
+          Please answer all questions before submitting.
+        </p>
 
         <button
           onClick={onClose}
@@ -511,6 +478,36 @@ const Quiz = () => {
               <span className="h-px w-8 md:w-12 bg-[#691700]"></span>
             </div>
           </div>
+
+          {result && result.type !== "incomplete" && (
+            <div
+              className={`rounded-sm px-6 py-5 text-center border ${
+                result.type === "pass"
+                  ? "bg-white border-[#4a7c59] text-[#4a7c59]"
+                  : "bg-white border-[#991D00] text-[#4a4a4a]"
+              }`}
+            >
+              {result.type === "pass" ? (
+                <>
+                  <p className="font-prata text-xl tracking-wide mb-1">
+                    CONGRATS YOU PASSED!
+                  </p>
+                  <p className="font-prata text-base tracking-wide">
+                    You scored a {result.score}/{questions.length}{" "}
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p className="font-prata text-xl tracking-wide mb-1">
+                    You scored a {result.score}/{questions.length}
+                  </p>
+                  <p className="font-prata text-sm tracking-wide text-[#6b5c4e]">
+                    Much for you to learn before the wedding...
+                  </p>
+                </>
+              )}
+            </div>
+          )}
 
           {questions.map((q) => (
             <div
