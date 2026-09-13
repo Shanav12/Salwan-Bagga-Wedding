@@ -10,357 +10,47 @@ import {
   saveRsvps,
   notifyGoogleSheets,
 } from "../api/rsvp";
+import {
+  EVENTS,
+  EVENT_DAYS,
+  NAME_ROLES,
+  initAttendance,
+} from "../weddingConstants";
+import {
+  ModalStep1,
+  ModalStep2,
+  ModalStep3,
+  ModalConfirmation,
+} from "./RsvpModal";
 import "react-phone-number-input/style.css";
 import "../App.css";
 
-const EVENTS = [
-  { key: "haldi", label: "Ganesh Pooja & Haldi", date: "June 3 — Thursday" },
-  { key: "sangeet", label: "Sangeet", date: "June 3 — Thursday" },
-  { key: "baraat", label: "Baraat", date: "June 4 — Friday" },
-  {
-    key: "weddingCeremony",
-    label: "Wedding Ceremony",
-    date: "June 4 — Friday",
-  },
-  {
-    key: "cocktailDinner",
-    label: "Cocktail & Dinner",
-    date: "June 4 — Friday",
-  },
-  { key: "cocktailHour", label: "Cocktail Hour", date: "June 5 — Saturday" },
-  { key: "dinner", label: "Dinner", date: "June 5 — Saturday" },
-];
-
-const EVENT_DAYS = [
-  {
-    key: "june3",
-    label: "June 3",
-    weekday: "Thursday",
-    events: [
-      {
-        time: "10:00 am",
-        name: "Ganesh Pooja and Haldi",
-        location: "Retune Terrace",
-      },
-      { time: "5:30 pm", name: "Sangeet", location: "Serenade Terrace" },
-    ],
-  },
-  {
-    key: "june4",
-    label: "June 4",
-    weekday: "Friday",
-    events: [
-      { time: "3:00 pm", name: "Baraat" },
-      { time: "4:00 pm", name: "Wedding Ceremony", location: "Coda Gardens" },
-      {
-        time: "7:00 pm",
-        name: "Cocktail & Dinner",
-        location: "Moonlight Terrace",
-      },
-    ],
-  },
-  {
-    key: "june5",
-    label: "June 5",
-    weekday: "Saturday",
-    events: [
-      { time: "6:00 pm", name: "Cocktail Hour", location: "Harmony Ballroom" },
-      { time: "7:30 pm", name: "Dinner", location: "Harmony Ballroom" },
-    ],
-  },
-];
-
-const HOTEL_URL = "https://www.shaadidestinations.com/ambika-and-sahil";
-
-const toTitleCase = (str) => str.replace(/\b\w/g, (c) => c.toUpperCase());
-
-const NAME_ROLES = {
-  "shanav bagga": "Best Man",
-  "sahil bagga": "Groom",
-  "chandan bagga": "Father of the Groom",
-  "ambika salwan": "Bride",
-  "sia salwan": "Maid of Honor",
-  "arun salwan": "Father of the Bride",
-  "priyanka salwan": "Mother of the Bride",
-};
-
-const initAttendance = (members) =>
-  Object.fromEntries(
-    members.map((m) => [
-      m,
-      Object.fromEntries(EVENTS.map((e) => [e.key, null])),
-    ]),
-  );
-
 const Divider = ({ large = false }) => (
   <div className="flex items-center justify-center gap-2 md:gap-3">
-    <span
-      className={`h-px bg-[#691700] ${large ? "w-12 md:w-16" : "w-8 md:w-12"}`}
-    ></span>
-    <span
-      className={`text-[#991D00] ${large ? "text-2xl md:text-3xl" : "text-sm md:text-base"}`}
-    >
+    <span className={`h-px bg-[#691700] ${large ? "w-12 md:w-16" : "w-8 md:w-12"}`} />
+    <span className={`text-[#991D00] ${large ? "text-2xl md:text-3xl" : "text-sm md:text-base"}`}>
       {large ? "♥" : "✦"}
     </span>
-    <span
-      className={`h-px bg-[#691700] ${large ? "w-12 md:w-16" : "w-8 md:w-12"}`}
-    ></span>
+    <span className={`h-px bg-[#691700] ${large ? "w-12 md:w-16" : "w-8 md:w-12"}`} />
   </div>
 );
 
-const PrimaryButton = ({ onClick, disabled, children, className = "" }) => (
-  <button
-    onClick={onClick}
-    disabled={disabled}
-    className={`font-prata text-lg text-white bg-[#691700] px-3 py-2 rounded-lg transition-all duration-200 hover:bg-[#4a1000] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer ${className}`}
+const ChevronIcon = ({ open }) => (
+  <svg
+    className={`text-[#691700] transition-transform duration-200 flex-shrink-0 ${open ? "rotate-180" : ""}`}
+    width="14"
+    height="14"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
   >
-    {children}
-  </button>
+    <polyline points="6 9 12 15 18 9" />
+  </svg>
 );
 
-const SecondaryButton = ({ onClick, children, className = "" }) => (
-  <button
-    onClick={onClick}
-    className={`font-prata text-[#691700] border border-[#691700]/30 px-3 py-2 rounded-lg transition-all duration-200 hover:border-[#691700] cursor-pointer ${className}`}
-  >
-    {children}
-  </button>
-);
-
-const AttendanceToggle = ({ value, onChange }) => (
-  <div className="flex gap-2">
-    <button
-      onClick={() => onChange(true)}
-      className={`flex-1 font-prata text-xs px-3 py-2 rounded-lg border transition-all duration-150 cursor-pointer ${
-        value === true
-          ? "bg-[#691700]/85 text-white border-[#691700]/85"
-          : "bg-white text-[#4a4a4a] border-[#691700]/30 hover:border-[#691700]"
-      }`}
-    >
-      Will be in attendance
-    </button>
-    <button
-      onClick={() => onChange(false)}
-      className={`flex-1 font-prata text-xs px-3 py-2 rounded-lg border transition-all duration-150 cursor-pointer ${
-        value === false
-          ? "bg-[#691700]/85 text-white border-[#691700]/85"
-          : "bg-white text-[#4a4a4a] border-[#691700]/30 hover:border-[#691700]"
-      }`}
-    >
-      Unfortunately can't make it
-    </button>
-  </div>
-);
-
-const ModalStep1 = ({
-  firstName,
-  lastName,
-  phoneNumber,
-  error,
-  onFirstNameChange,
-  onLastNameChange,
-  onPhoneChange,
-  onContinue,
-  onClose,
-}) => (
-  <>
-    <h3 className="font-prata text-2xl text-[#691700]">RSVP</h3>
-    <p className="font-prata text-[#5a5a5a] text-sm text-center leading-relaxed">
-      Please enter your name so we can pull up your party!
-    </p>
-    <div className="flex flex-col gap-3 w-full">
-      <input
-        type="text"
-        placeholder="First name"
-        value={firstName}
-        onChange={(e) => onFirstNameChange(e.target.value)}
-        onKeyDown={(e) => e.key === "Enter" && onContinue()}
-        className="font-prata text-[#4a4a4a] bg-white border border-[#691700]/30 rounded-lg px-4 py-2.5 outline-none focus:border-[#691700] transition-colors placeholder:text-[#aaa] w-full"
-      />
-      <input
-        type="text"
-        placeholder="Last name"
-        value={lastName}
-        onChange={(e) => onLastNameChange(e.target.value)}
-        onKeyDown={(e) => e.key === "Enter" && onContinue()}
-        className="font-prata text-[#4a4a4a] bg-white border border-[#691700]/30 rounded-lg px-4 py-2.5 outline-none focus:border-[#691700] transition-colors placeholder:text-[#aaa] w-full"
-      />
-      <PhoneInput
-        defaultCountry="US"
-        value={phoneNumber}
-        onChange={onPhoneChange}
-        placeholder="Phone number"
-        className="phone-input-wedding"
-      />
-    </div>
-    {error && (
-      <p className="font-prata text-[#691700] text-sm text-center">{error}</p>
-    )}
-    <div className="flex gap-3 w-full">
-      <SecondaryButton onClick={onClose} className="flex-1">
-        Cancel
-      </SecondaryButton>
-      <PrimaryButton
-        onClick={onContinue}
-        disabled={!firstName.trim() || !lastName.trim()}
-        className="flex-1"
-      >
-        Continue
-      </PrimaryButton>
-    </div>
-  </>
-);
-
-const ModalStep2 = ({ firstName, lastName, onModify, onClose }) => {
-  const fullKey = `${firstName.trim()} ${lastName.trim()}`.toLowerCase();
-  const displayName = NAME_ROLES[fullKey] ?? toTitleCase(firstName);
-  return (
-    <>
-      <h3 className="font-prata text-2xl text-[#691700] text-center">
-        Thank You!
-      </h3>
-      <div className="font-prata text-[#5a5a5a] text-sm md:text-base text-center leading-relaxed space-y-3">
-        <p>Hi {displayName}! We already have your RSVP on file.</p>
-        <p>
-          Click below to book your hotel, or modify your response if anything
-          has changed.
-        </p>
-      </div>
-      <div className="flex flex-col gap-3 w-full">
-        <PrimaryButton
-          onClick={() =>
-            window.open(HOTEL_URL, "_blank", "noopener,noreferrer")
-          }
-          className="w-full"
-        >
-          Book Hotel
-        </PrimaryButton>
-        <SecondaryButton onClick={onModify} className="w-full">
-          Modify RSVP
-        </SecondaryButton>
-        <button
-          onClick={onClose}
-          className="w-full font-prata text-sm text-[#888] px-3 py-1 cursor-pointer hover:text-[#691700] transition-colors"
-        >
-          Close
-        </button>
-      </div>
-    </>
-  );
-};
-
-const ModalStep3 = ({
-  partyMembers,
-  attendance,
-  dietary,
-  error,
-  submitting,
-  onAttendanceChange,
-  onDietaryChange,
-  onSubmit,
-  onClose,
-}) => (
-  <>
-    <h3 className="font-prata text-2xl text-[#691700] text-center">
-      Party RSVP
-    </h3>
-    <p className="font-prata text-[#5a5a5a] text-sm text-center leading-relaxed">
-      Let us know who from your party will be attending each event!
-    </p>
-
-    <div className="flex flex-col gap-8 w-full">
-      {partyMembers.map((member) => (
-        <div key={member} className="flex flex-col gap-4">
-          <div className="border-b border-[#691700]/20 pb-2">
-            <h4 className="font-prata text-lg text-[#1a1a1a]">
-              {toTitleCase(member)}
-            </h4>
-            {NAME_ROLES[member] && (
-              <span className="font-prata text-xs text-[#691700]">
-                {NAME_ROLES[member]}
-              </span>
-            )}
-          </div>
-
-          <div className="flex flex-col gap-3">
-            {EVENTS.map((event) => (
-              <div key={event.key} className="flex flex-col gap-1.5">
-                <div className="flex flex-col">
-                  <span className="font-prata text-sm text-[#691700]">
-                    {event.label}
-                  </span>
-                  <span className="font-prata text-xs text-[#888]">
-                    {event.date}
-                  </span>
-                </div>
-                <AttendanceToggle
-                  value={attendance[member]?.[event.key]}
-                  onChange={(val) => onAttendanceChange(member, event.key, val)}
-                />
-              </div>
-            ))}
-          </div>
-
-          <div className="flex flex-col gap-1.5">
-            <label className="font-prata text-sm text-[#1a1a1a]">
-              Dietary Restrictions
-            </label>
-            <textarea
-              rows={2}
-              placeholder="Please list any dietary restrictions or allergies (leave blank if none)"
-              value={dietary[member] ?? ""}
-              onChange={(e) => onDietaryChange(member, e.target.value)}
-              className="font-prata text-sm text-[#4a4a4a] bg-white border border-[#691700]/30 rounded-lg px-4 py-2.5 outline-none focus:border-[#691700] transition-colors placeholder:text-[#aaa] w-full resize-none"
-            />
-          </div>
-        </div>
-      ))}
-    </div>
-
-    {error && (
-      <p className="font-prata text-[#691700] text-sm text-center">{error}</p>
-    )}
-
-    <div className="flex gap-3 w-full">
-      <SecondaryButton onClick={onClose} className="flex-1">
-        Cancel
-      </SecondaryButton>
-      <PrimaryButton
-        onClick={onSubmit}
-        disabled={submitting}
-        className="flex-1"
-      >
-        {submitting ? "Submitting…" : "Submit RSVP"}
-      </PrimaryButton>
-    </div>
-  </>
-);
-
-const ModalConfirmation = ({ onClose }) => (
-  <>
-    <h3 className="font-prata text-2xl text-[#691700] text-center">
-      Thank You!
-    </h3>
-    <div className="font-prata text-[#5a5a5a] text-sm md:text-base text-center leading-relaxed space-y-3">
-      <p>Your RSVP has been received!</p>
-      <p>Please click on the button to continue and book your hotel.</p>
-      <p>We can't wait to celebrate with you!</p>
-    </div>
-    <div className="flex gap-3 w-full">
-      <SecondaryButton onClick={onClose} className="flex-1">
-        Close
-      </SecondaryButton>
-      <PrimaryButton
-        onClick={() => window.open(HOTEL_URL, "_blank", "noopener,noreferrer")}
-        className="flex-1"
-      >
-        Book Hotel
-      </PrimaryButton>
-    </div>
-  </>
-);
-
-// ─── Main Component ───────────────────────────────────────────────────────────
 
 const WeddingLogistics = () => {
   const { width, height } = useWindowSize();
@@ -372,6 +62,7 @@ const WeddingLogistics = () => {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [showCloseConfirm, setShowCloseConfirm] = useState(false);
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -408,6 +99,17 @@ const WeddingLogistics = () => {
   };
 
   const handleClose = () => {
+    if (step === 3 && !submitted) {
+      setShowCloseConfirm(true);
+      return;
+    }
+    setShowModal(false);
+    resetModal();
+  };
+
+  const handleConfirmClose = async (save) => {
+    setShowCloseConfirm(false);
+    if (save) await handleSave();
     setShowModal(false);
     resetModal();
   };
@@ -418,9 +120,7 @@ const WeddingLogistics = () => {
 
     const guestSnap = await lookupGuest(firstName, lastName);
     if (!guestSnap) {
-      setError(
-        "Unfortunately the first and last name can't be found. Please try again!",
-      );
+      setError("Unfortunately the first and last name can't be found. Please try again!");
       return;
     }
 
@@ -432,21 +132,15 @@ const WeddingLogistics = () => {
       if (docsWithPhone.length > 0) {
         const enteredDigits = phoneNumber ? phoneNumber.replace(/\D/g, "") : "";
         if (!enteredDigits) {
-          setError(
-            "Multiple guests share this name. Please enter your phone number to continue.",
-          );
+          setError("Multiple guests share this name. Please enter your phone number to continue.");
           return;
         }
         const phoneMatch = docsWithPhone.find((d) => {
           const stored = d.data().phoneNumber.replace(/\D/g, "");
-          return (
-            stored.endsWith(enteredDigits) || enteredDigits.endsWith(stored)
-          );
+          return stored.endsWith(enteredDigits) || enteredDigits.endsWith(stored);
         });
         if (!phoneMatch) {
-          setError(
-            "Multiple guests share this name and the phone number didn't match. Please double-check and try again.",
-          );
+          setError("Multiple guests share this name and the phone number didn't match. Please double-check and try again.");
           return;
         }
         matchedDoc = phoneMatch;
@@ -481,6 +175,7 @@ const WeddingLogistics = () => {
         Object.entries(existingRsvps).map(([name, data]) => [name, data.id]),
       ),
     );
+
     setPartyMembers(members);
     setAttendance(att);
     setDietary(diet);
@@ -529,14 +224,31 @@ const WeddingLogistics = () => {
     }));
 
     await saveRsvps(memberRsvps, existingRsvpIds);
-    notifyGoogleSheets({
-      submittedBy,
-      phoneNumber: formattedPhone,
-      members: memberRsvps,
-    });
+    notifyGoogleSheets({ submittedBy, phoneNumber: formattedPhone, members: memberRsvps });
 
     setSubmitting(false);
     setSubmitted(true);
+  };
+
+  const handleSave = async () => {
+    const submittedBy = `${firstName.trim()} ${lastName.trim()}`.toLowerCase();
+    const parsed = phoneNumber ? parsePhoneNumber(phoneNumber) : null;
+    const formattedPhone = parsed
+      ? `+${parsed.countryCallingCode} ${parsed.nationalNumber}`
+      : phoneNumber;
+
+    const memberRsvps = partyMembers.map((m) => ({
+      name: m,
+      events: EVENTS.reduce(
+        (acc, e) => ({ ...acc, [e.key]: attendance[m]?.[e.key] ?? null }),
+        {},
+      ),
+      dietaryRestrictions: dietary[m]?.trim() || "",
+      submittedBy,
+      phoneNumber: formattedPhone,
+    }));
+
+    await saveRsvps(memberRsvps, existingRsvpIds, true);
   };
 
   const toggleDay = (key) => {
@@ -554,23 +266,49 @@ const WeddingLogistics = () => {
           width={width}
           height={height}
           frameRate={60}
-          style={{
-            transition: "opacity 2s ease-out",
-            opacity: confettiOpacity,
-          }}
+          style={{ transition: "opacity 2s ease-out", opacity: confettiOpacity }}
         />
       )}
 
-      {/* Modal */}
+      {/* Close confirmation dialog */}
+      {showCloseConfirm && (
+        <div className="fixed inset-0 bg-black/40 z-[60] flex items-center justify-center px-4">
+          <div className="bg-[#faf0e6] rounded-xl px-8 py-8 w-full max-w-sm flex flex-col items-center gap-5 shadow-xl">
+            <p className="font-prata text-lg text-[#1a1a1a] text-center leading-relaxed">
+              Are you sure you'd like to close?
+            </p>
+            <p className="font-prata text-sm text-[#5a5a5a] text-center -mt-2">
+              Your progress will be saved!
+            </p>
+            <div className="flex gap-3 w-full">
+              <button
+                onClick={() => setShowCloseConfirm(false)}
+                className="flex-1 font-prata text-[#691700] border border-[#691700]/30 px-3 py-2 rounded-lg transition-all duration-200 hover:border-[#691700] cursor-pointer"
+              >
+                No, stay
+              </button>
+              <button
+                onClick={() => handleConfirmClose(true)}
+                className="flex-1 font-prata text-lg text-white bg-[#691700] px-3 py-2 rounded-lg transition-all duration-200 hover:bg-[#4a1000] cursor-pointer"
+              >
+                Yes, close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* RSVP Modal */}
       {showModal && (
         <div
           className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center px-4 py-8"
           onClick={handleClose}
         >
           <div
-            className="bg-[#faf0e6] rounded-xl px-8 py-8 w-full max-w-xl flex flex-col items-center gap-5 shadow-xl max-h-[90vh] overflow-y-auto"
+            className="bg-[#faf0e6] rounded-xl px-6 md:px-8 py-8 w-full max-w-xl flex flex-col items-center gap-5 shadow-xl max-h-[90vh] overflow-y-auto animate-fade-in md:py-12"
             onClick={(e) => e.stopPropagation()}
           >
+
             {step === 1 && (
               <ModalStep1
                 firstName={firstName}
@@ -623,7 +361,7 @@ const WeddingLogistics = () => {
       {/* Photo */}
       <div className="flex justify-center px-6 py-8">
         <div className="relative">
-          <div className="absolute inset-0 bg-[#691700] rounded-lg transform rotate-3"></div>
+          <div className="absolute inset-0 bg-[#691700] rounded-lg transform rotate-3" />
           <img
             src={saveTheDateBack}
             alt="Sahil and Ambika's Engagement"
@@ -645,16 +383,12 @@ const WeddingLogistics = () => {
             Please note that we have secured a heavily discounted room rate for
             our guests from May 31 through June 7, 2027.
           </p>
-          <p className="leading-relaxed">
-            The wedding events will take place June 3–5.
-          </p>
+          <p className="leading-relaxed">The wedding events will take place June 3–5.</p>
           <p className="leading-relaxed">
             Please RSVP below so we know who from your party will be joining us
             for each event.
           </p>
-          <p className="leading-relaxed">
-            We can't wait to celebrate with you!
-          </p>
+          <p className="leading-relaxed">We can't wait to celebrate with you!</p>
         </div>
         <button
           onClick={() => setShowModal(true)}
@@ -676,9 +410,7 @@ const WeddingLogistics = () => {
         {EVENT_DAYS.map((day, i) => (
           <div
             key={day.key}
-            className={
-              i < EVENT_DAYS.length - 1 ? "border-b border-[#691700]/15" : ""
-            }
+            className={i < EVENT_DAYS.length - 1 ? "border-b border-[#691700]/15" : ""}
           >
             <button
               onClick={() => toggleDay(day.key)}
@@ -688,23 +420,9 @@ const WeddingLogistics = () => {
                 <span className="font-prata text-xl md:text-2xl text-[#1a1a1a]">
                   {day.label}
                 </span>
-                <span className="font-prata text-black text-sm">
-                  — {day.weekday}
-                </span>
+                <span className="font-prata text-black text-sm">— {day.weekday}</span>
               </div>
-              <svg
-                className={`text-[#691700] transition-transform duration-200 ${openDays.has(day.key) ? "rotate-180" : ""}`}
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <polyline points="6 9 12 15 18 9" />
-              </svg>
+              <ChevronIcon open={openDays.has(day.key)} />
             </button>
             {openDays.has(day.key) && (
               <div className="flex flex-col gap-6 pb-8">

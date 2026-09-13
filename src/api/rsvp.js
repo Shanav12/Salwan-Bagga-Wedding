@@ -36,15 +36,16 @@ export async function lookupExistingRsvps(members) {
 }
 
 
-export async function saveRsvps(memberRsvps, existingIds) {
+export async function saveRsvps(memberRsvps, existingIds, isDraft = false) {
     await Promise.all(
         memberRsvps.map(async (rsvp) => {
-            const data = { ...rsvp, submittedAt: serverTimestamp() };
+            const data = { ...rsvp, isDraft, submittedAt: serverTimestamp() };
             const existingId = existingIds[rsvp.name];
             if (existingId) {
                 await setDoc(doc(db, "rsvps", existingId), data);
             } else {
-                await addDoc(collection(db, "rsvps"), data);
+                const ref = await addDoc(collection(db, "rsvps"), data);
+                existingIds[rsvp.name] = ref.id;
             }
         })
     );
