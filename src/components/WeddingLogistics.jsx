@@ -378,17 +378,16 @@ const WeddingLogistics = () => {
         <div className="mb-2 md:mb-4">
           <Divider />
         </div>
-        <div className="font-prata text-[#5a5a5a] text-md md:text-lg mt-2 space-y-2.5 md:space-y-3">
+        <div className="font-prata text-[#5a5a5a] text-sm md:text-base lg:text-lg mt-2 space-y-2 md:space-y-3">
           <p className="leading-relaxed">
-            Please note that we have secured a heavily discounted room rate for
-            our guests from May 31 through June 7, 2027.
+            Please note that we have secured a heavily discounted room rate for our guests from May 31 through June 7, 2027.
           </p>
-          <p className="leading-relaxed">The wedding events will take place June 3–5.</p>
           <p className="leading-relaxed">
-            Please RSVP below so we know who from your party will be joining us
-            for each event.
+             Per venue policy, the RSVP must be made using the link displayed after submitting the form below.
           </p>
-          <p className="leading-relaxed">We can't wait to celebrate with you!</p>
+          <p className="leading-relaxed">
+            We appreciate your understanding and can't wait to celebrate with you!
+          </p>
         </div>
         <button
           onClick={() => setShowModal(true)}
