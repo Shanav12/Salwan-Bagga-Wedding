@@ -1,31 +1,165 @@
-# Salwan-Bagga-Wedding
+# Salwan-Bagga Wedding Website
 
-Main website for Sahil & Ambika's wedding.
+The official wedding website for **Ambika Salwan & Sahil Bagga**. Built with React + Vite and deployed to GitHub Pages via a custom domain.
 
-## Tech Stack:
-- React.js
-- Vite
+---
 
+## Features
 
-## Steps to run
-You must have node verion 20+. To use node version 22, which I used, do the following:
+| Page | Description |
+|------|-------------|
+| **Home** | Save-the-date card, countdown timer, and our story section. |
+| **Journey** | Photo timeline of Ambika & Sahil's relationship story |
+| **Gallery** | Photo gallery with full-screen lightbox |
+| **Wedding Logistics** | Event schedule across all three days with times and venue locations |
+| **Lineup** | Wedding party profiles |
+| **Quiz** | Interactive trivia game about the couple |
+| **RSVP** | Modal-based RSVP flow. guest lookup, per-event attendance, dietary restrictions |
+
+**Additional UX details:**
+- Background music player (auto-hidden on scroll, restored on navigation)
+- Save-the-date splash screen shown once per browser session
+- Confetti on RSVP submission
+- Fully responsive
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|------------|
+| UI framework | React 19 |
+| Build tool | Vite 7 |
+| Styling | Tailwind CSS 4 |
+| Routing | React Router v7 (hash-based, for GitHub Pages compatibility) |
+| Backend / DB | Firebase Firestore |
+| RSVP notifications | Google Apps Script webhook → Google Sheets |
+| Deployment | `gh-pages` → GitHub Pages |
+| Testing | Vitest + React Testing Library |
+
+---
+
+## Project Structure
 
 ```
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+.
+├── src/
+│   ├── api/
+│   │   ├── rsvp.js          # Firestore RSVP read/write + Google Sheets webhook
+│   │   ├── gallery.js       # Gallery image fetching
+│   │   └── quiz.js          # Quiz question fetching
+│   ├── components/
+│   │   ├── Home.jsx         # Landing page with countdown
+│   │   ├── Journey.jsx      # Couple's story timeline
+│   │   ├── Gallery.jsx      # Photo gallery with lightbox
+│   │   ├── WeddingLogistics.jsx  # Schedule / venue info
+│   │   ├── Lineup.jsx       # Wedding party
+│   │   ├── Quiz.jsx         # Trivia game
+│   │   ├── RsvpModal.jsx    # Multi-step RSVP form
+│   │   ├── NavBar.jsx       # Top navigation
+│   │   ├── MusicPlayer.jsx  # Floating background music player
+│   │   └── EventCard.jsx    # Reusable event card
+│   ├── contexts/
+│   │   ├── GalleryContext.jsx
+│   │   └── GalleryProvider.jsx
+│   ├── assets/              # Images, audio files
+│   ├── App.jsx              # Root component, routes, splash screen
+│   ├── firebase_config.js   # Firebase initialization
+│   └── weddingConstants.js  # Event schedule, hotel URL, name-role map
+├── docs/
+│   ├── rsvp-data-model.md   # Firestore schema documentation
+│   ├── rsvp-data-model.puml # PlantUML ERD source
+│   └── rsvp-data-model.png  # ERD diagram
+├── public/
+│   ├── CNAME                # Custom domain config for GitHub Pages
+│   └── heart.png
+├── index.html
+├── vite.config.js
+├── tailwind.config.js
+└── package.json
+```
+
+---
+
+## RSVP System
+
+RSVPs are stored in **Firebase Firestore** with two collections:
+
+**`guests`** — pre-seeded list of invited guests:
+- `firstName`, `lastName` (lowercase)
+- `phoneNumber`
+- `partyMembers` — array of lowercase full names in the same party group
+
+**`rsvps`** — one document per person:
+- `name` — lowercase full name (primary key)
+- `submittedBy` — party head who filled out the form
+- `phoneNumber`, `dietaryRestrictions`
+- `events` — flat map of event keys → `true | false | null`
+- `submittedAt` — Firestore server timestamp
+- `isDraft` — `true` while navigating, `false` on final submit
+
+On final submission a fire-and-forget POST is sent to a **Google Apps Script** webhook that writes to a Google Sheet.
+
+See [`docs/rsvp-data-model.md`](docs/rsvp-data-model.md) for the full ERD and schema details.
+
+### Events
+
+| Key | Label | Date | Time | Venue |
+|-----|-------|------|------|-------|
+| `haldi` | Ganesh Pooja & Haldi | June 3 — Thu | 10:00 am | Retune Terrace |
+| `sangeet` | Sangeet | June 3 — Thu | 5:30 pm | Serenade Terrace |
+| `baraat` | Baraat | June 4 — Fri | 3:00 pm | — |
+| `weddingCeremony` | Wedding Ceremony | June 4 — Fri | 4:00 pm | Coda Gardens |
+| `cocktailDinner` | Cocktail & Dinner | June 4 — Fri | 7:00 pm | Moonlight Terrace |
+| `cocktailHour` | Cocktail Hour | June 5 — Sat | 6:00 pm | Harmony Ballroom |
+| `dinner` | Dinner | June 5 — Sat | 7:30 pm | Harmony Ballroom |
+
+---
+
+## Prerequisites
+
+- **Node.js 20+** (Node 22 recommended)
+
+To install Node 22 via nvm:
+
+```bash
+brew install nvm
 source ~/.bashrc
 nvm install 22
 nvm use 22
 ```
 
+---
 
-To run the project:
-```
-cd src
+## Development
+
+```bash
+npm install
 npm run dev
 ```
 
+The app runs at `http://localhost:5173` by default.
 
-To deploy to github pages run the following:
+---
+
+## Testing
+
+```bash
+npm test
 ```
+
+Tests live in `src/test/` and use Vitest + React Testing Library.
+
+---
+
+## Deployment
+
+The site is deployed to GitHub Pages. The `dist/` folder is pushed to the `gh-pages` branch and served via a custom domain configured in `public/CNAME`.
+
+```bash
 npm run deploy
 ```
+
+This runs `vite build` then `gh-pages -d dist` automatically (via the `predeploy` script).
+
+> Note: routing uses `HashRouter` (`/#/journey`, `/#/gallery`, etc.) to avoid 404s on GitHub Pages' static file server.
