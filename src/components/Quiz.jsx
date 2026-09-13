@@ -210,6 +210,8 @@ const Quiz = () => {
     e.preventDefault();
     if (Object.keys(answers).length !== questions.length) {
       setResult({ type: "incomplete" });
+      const firstUnanswered = questions.findIndex((q) => !answers[q.key]);
+      if (firstUnanswered !== -1) setQIdx(firstUnanswered);
       return;
     }
     const numCorrect = questions.filter(
@@ -217,7 +219,7 @@ const Quiz = () => {
     ).length;
 
     setResult({
-      type: numCorrect / questions.length >= 0.5 ? "pass" : "fail",
+      type: numCorrect / questions.length > 0.5 ? "pass" : "fail",
       score: numCorrect,
     });
     setSubmittedAnswers({ ...answers });
