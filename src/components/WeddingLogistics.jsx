@@ -252,7 +252,7 @@ const WeddingLogistics = () => {
                     <span className="h-px w-8 md:w-12 bg-[#691700]"></span>
                 </div>
 
-                <div className="font-prata text-[#5a5a5a] text-md md:text-lg mt-2 space-y-2.5 md:space-y-3">
+                <div className="font-prata text-[#5a5a5a] text-sm md:text-base lg:text-lg mt-2 space-y-2 md:space-y-3">
                     <p className="leading-relaxed">
                         Please note that we have secured a heavily discounted room rate for our guests from May 31 through June 7, 2027.
                     </p>
