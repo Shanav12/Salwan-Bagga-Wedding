@@ -420,7 +420,7 @@ const Quiz = () => {
                 <p className="font-prata text-[#4a4a4a] text-lg mb-5">
                   {questions[qIdx].text}
                 </p>
-                <div className={`min-h-[244px] ${questions[qIdx].options.length === 2 ? "flex flex-col justify-center gap-5" : "flex flex-col justify-center space-y-3"}`}>
+                <div className="space-y-3">
                   {questions[qIdx].options.map((opt) => (
                     <label
                       key={opt.val}
