@@ -131,8 +131,12 @@ brew install nvm
 source ~/.bashrc
 nvm install 22
 nvm use 22
+node --version  # should print v22.x.x
 ```
 
+## Getting Started
+
+1. **Clone the repo**
 ---
 
 ## Development
@@ -142,28 +146,61 @@ npm install
 npm run dev
 ```
 
-The app runs at `http://localhost:5173` by default.
+   The app will be available at `http://localhost:5173`.
 
----
+## Available Scripts
 
-## Testing
+Run all scripts from the `src/` directory.
 
-```bash
-npm test
-```
-
-Tests live in `src/test/` and use Vitest + React Testing Library.
-
----
+| Script | Description |
+|---|---|
+| `npm run dev` | Start the Vite dev server with hot reload |
+| `npm run build` | Build the app for production (output: `dist/`) |
+| `npm run preview` | Locally preview the production build |
+| `npm run deploy` | Build and deploy to GitHub Pages |
+| `npm test` | Run the test suite once |
+| `npm run test:watch` | Run tests in watch mode |
 
 ## Deployment
 
-The site is deployed to GitHub Pages. The `dist/` folder is pushed to the `gh-pages` branch and served via a custom domain configured in `public/CNAME`.
+The site deploys to GitHub Pages via the `gh-pages` package. The `predeploy` script automatically runs a production build before pushing.
 
 ```bash
 npm run deploy
 ```
 
-This runs `vite build` then `gh-pages -d dist` automatically (via the `predeploy` script).
+This builds the project into `dist/` and pushes it to the `gh-pages` branch.
 
-> Note: routing uses `HashRouter` (`/#/journey`, `/#/gallery`, etc.) to avoid 404s on GitHub Pages' static file server.
+## Project Structure
+
+```
+Salwan-Bagga-Wedding/
+├── src/
+│   ├── api/              # API utilities (e.g. quiz data fetching)
+│   ├── assets/           # Images, audio files
+│   ├── components/       # Page-level and shared React components
+│   │   ├── EventCard.jsx
+│   │   ├── Gallery.jsx
+│   │   ├── Home.jsx
+│   │   ├── Journey.jsx
+│   │   ├── Lineup.jsx
+│   │   ├── MusicPlayer.jsx
+│   │   ├── NavBar.jsx
+│   │   ├── Quiz.jsx
+│   │   └── WeddingLogistics.jsx
+│   ├── contexts/         # React context providers (e.g. GalleryContext)
+│   ├── test/             # Vitest test files
+│   ├── App.jsx           # Root component and route definitions
+│   ├── firebase_config.js
+│   ├── main.jsx          # App entry point
+│   └── index.css
+├── public/
+├── index.html
+├── vite.config.js
+├── tailwind.config.js
+└── package.json
+```
+
+## Firebase Configuration
+
+Firebase is used for Firestore (RSVP data) and Storage (gallery images). The `src/firebase_config.js` file initializes the Firebase app. Ensure your Firebase project has Firestore and Storage enabled, and update the config object with your project credentials before running locally.
