@@ -1,10 +1,16 @@
 import { query, collection, where, getDocs, addDoc, setDoc, updateDoc, doc, serverTimestamp } from "firebase/firestore"
 import { db } from "../firebase_config"
+/** @import { GuestDoc, RsvpDoc, MemberRsvpPayload } from "../types" */
 
 const SHEETS_URL = "https://script.google.com/macros/s/AKfycbyIXHCHnBBIII6d8r6Ksq5vcnmpsGLWmTz9Nh9zQtJYjZtsP_BVEGdO6T1voxfvGqu-vQ/exec";
 
 
 
+/**
+ * @param {string} firstName
+ * @param {string} lastName
+ * @returns {Promise<import("firebase/firestore").QuerySnapshot | null>}
+ */
 export async function lookupGuest(firstName, lastName) {
     const fn = firstName.trim().toLowerCase();
     const ln = lastName.trim().toLowerCase();
@@ -24,6 +30,10 @@ export async function lookupGuest(firstName, lastName) {
 }
 
 
+/**
+ * @param {string[]} memberGuestIds
+ * @returns {Promise<Record<string, RsvpDoc & { id: string }>>}
+ */
 export async function lookupExistingRsvps(memberGuestIds) {
     const results = await Promise.all(
         memberGuestIds.map(async (guestId) => {
@@ -37,6 +47,12 @@ export async function lookupExistingRsvps(memberGuestIds) {
 }
 
 
+/**
+ * @param {MemberRsvpPayload[]} memberRsvps
+ * @param {Record<string, string>} existingIds - mutable map of guestId → rsvp doc id
+ * @param {boolean} [isDraft]
+ * @returns {Promise<void>}
+ */
 export async function saveRsvps(memberRsvps, existingIds, isDraft = false) {
     await Promise.all(
         memberRsvps.map(async (rsvp) => {
@@ -52,6 +68,12 @@ export async function saveRsvps(memberRsvps, existingIds, isDraft = false) {
     );
 }
 
+/**
+ * @param {string} guestDocId - Firestore document id in the guests collection
+ * @param {GuestDoc["partyMembers"]} partyMembersArray
+ * @param {GuestDoc["partyMemberIds"]} partyMemberIdsArray
+ * @returns {Promise<void>}
+ */
 export async function updateGuestPartyMembers(guestDocId, partyMembersArray, partyMemberIdsArray) {
     await updateDoc(doc(db, "guests", guestDocId), {
         partyMembers: partyMembersArray,
@@ -59,6 +81,12 @@ export async function updateGuestPartyMembers(guestDocId, partyMembersArray, par
     });
 }
 
+/**
+ * @param {string} firstName
+ * @param {string} lastName
+ * @param {number} guestCount
+ * @returns {Promise<string>} the guestId (existing or newly created)
+ */
 export async function upsertGuestForMember(firstName, lastName, guestCount) {
     const fn = firstName.trim().toLowerCase();
     const ln = lastName.trim().toLowerCase();
@@ -80,6 +108,10 @@ export async function upsertGuestForMember(firstName, lastName, guestCount) {
     return newGuestId;
 }
 
+/**
+ * @param {object} payload
+ * @returns {void}
+ */
 export function notifyGoogleSheets(payload) {
     fetch(SHEETS_URL, {
         method: "POST",
