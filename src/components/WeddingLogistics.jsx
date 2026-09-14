@@ -12,10 +12,7 @@ import {
   updateGuestPartyMembers,
   upsertGuestForMember,
 } from "../api/rsvp";
-import {
-  EVENTS,
-  EVENT_DAYS,
-} from "../weddingConstants";
+import { EVENTS, EVENT_DAYS } from "../weddingConstants";
 import {
   ModalStep1,
   ModalStep2,
@@ -28,11 +25,17 @@ import "../App.css";
 
 const Divider = ({ large = false }) => (
   <div className="flex items-center justify-center gap-2 md:gap-3">
-    <span className={`h-px bg-[#691700] ${large ? "w-12 md:w-16" : "w-8 md:w-12"}`} />
-    <span className={`text-[#991D00] ${large ? "text-2xl md:text-3xl" : "text-sm md:text-base"}`}>
+    <span
+      className={`h-px bg-[#691700] ${large ? "w-12 md:w-16" : "w-8 md:w-12"}`}
+    />
+    <span
+      className={`text-[#991D00] ${large ? "text-2xl md:text-3xl" : "text-sm md:text-base"}`}
+    >
       {large ? "♥" : "✦"}
     </span>
-    <span className={`h-px bg-[#691700] ${large ? "w-12 md:w-16" : "w-8 md:w-12"}`} />
+    <span
+      className={`h-px bg-[#691700] ${large ? "w-12 md:w-16" : "w-8 md:w-12"}`}
+    />
   </div>
 );
 
@@ -51,7 +54,6 @@ const ChevronIcon = ({ open }) => (
     <polyline points="6 9 12 15 18 9" />
   </svg>
 );
-
 
 const WeddingLogistics = () => {
   const { width, height } = useWindowSize();
@@ -129,7 +131,9 @@ const WeddingLogistics = () => {
 
     const guestSnap = await lookupGuest(firstName, lastName);
     if (!guestSnap) {
-      setError("Unfortunately the first and last name can't be found. Please try again!");
+      setError(
+        "Unfortunately the first and last name can't be found. Please try again!",
+      );
       return;
     }
 
@@ -141,15 +145,21 @@ const WeddingLogistics = () => {
       if (docsWithPhone.length > 0) {
         const enteredDigits = phoneNumber ? phoneNumber.replace(/\D/g, "") : "";
         if (!enteredDigits) {
-          setError("Multiple guests share this name. Please enter your phone number to continue.");
+          setError(
+            "Multiple guests share this name. Please enter your phone number to continue.",
+          );
           return;
         }
         const phoneMatch = docsWithPhone.find((d) => {
           const stored = d.data().phoneNumber.replace(/\D/g, "");
-          return stored.endsWith(enteredDigits) || enteredDigits.endsWith(stored);
+          return (
+            stored.endsWith(enteredDigits) || enteredDigits.endsWith(stored)
+          );
         });
         if (!phoneMatch) {
-          setError("Multiple guests share this name and the phone number didn't match. Please double-check and try again.");
+          setError(
+            "Multiple guests share this name and the phone number didn't match. Please double-check and try again.",
+          );
           return;
         }
         matchedDoc = phoneMatch;
@@ -158,9 +168,13 @@ const WeddingLogistics = () => {
 
     const data = matchedDoc.data();
     const self = `${firstName.trim()} ${lastName.trim()}`.toLowerCase();
-    const guestCount = data.guestCount ?? ((Array.isArray(data.partyMembers) ? data.partyMembers.length : 0) + 1);
+    const guestCount =
+      data.guestCount ??
+      (Array.isArray(data.partyMembers) ? data.partyMembers.length : 0) + 1;
     const rawParty = Array.isArray(data.partyMembers) ? data.partyMembers : [];
-    const rawPartyIds = Array.isArray(data.partyMemberIds) ? data.partyMemberIds : [];
+    const rawPartyIds = Array.isArray(data.partyMemberIds)
+      ? data.partyMemberIds
+      : [];
 
     const names = [self];
     const ids = [data.guestId ?? null];
@@ -192,7 +206,8 @@ const WeddingLogistics = () => {
     const idsByIndex = {};
     names.forEach((_, i) => {
       const guestId = ids[i];
-      if (guestId && existingRsvps[guestId]) idsByIndex[i] = existingRsvps[guestId].id;
+      if (guestId && existingRsvps[guestId])
+        idsByIndex[i] = existingRsvps[guestId].id;
     });
 
     setGuestDocId(matchedDoc.id);
@@ -227,7 +242,9 @@ const WeddingLogistics = () => {
     memberNames.every((name, i) => {
       if (!name.trim()) return true;
       return EVENTS.every(
-        (e) => attendance[i]?.[e.key] !== null && attendance[i]?.[e.key] !== undefined,
+        (e) =>
+          attendance[i]?.[e.key] !== null &&
+          attendance[i]?.[e.key] !== undefined,
       );
     });
 
@@ -239,13 +256,22 @@ const WeddingLogistics = () => {
       : phoneNumber;
 
     const memberRsvps = memberNames
-      .map((name, i) => ({ name: name.trim().toLowerCase(), guestId: ids[i], i }))
+      .map((name, i) => ({
+        name: name.trim().toLowerCase(),
+        guestId: ids[i],
+        i,
+      }))
       .filter(({ name }) => name)
       .map(({ name, guestId, i }) => ({
         name,
         guestId,
         events: EVENTS.reduce(
-          (acc, e) => ({ ...acc, [e.key]: isDraft ? (attendance[i]?.[e.key] ?? null) : attendance[i][e.key] }),
+          (acc, e) => ({
+            ...acc,
+            [e.key]: isDraft
+              ? (attendance[i]?.[e.key] ?? null)
+              : attendance[i][e.key],
+          }),
           {},
         ),
         dietaryRestrictions: dietary[i]?.trim() || "",
@@ -255,7 +281,8 @@ const WeddingLogistics = () => {
 
     const existingIdsByGuestId = {};
     memberNames.forEach((name, i) => {
-      if (name.trim() && ids[i] && existingRsvpIds[i]) existingIdsByGuestId[ids[i]] = existingRsvpIds[i];
+      if (name.trim() && ids[i] && existingRsvpIds[i])
+        existingIdsByGuestId[ids[i]] = existingRsvpIds[i];
     });
 
     return { submittedBy, formattedPhone, memberRsvps, existingIdsByGuestId };
@@ -273,13 +300,23 @@ const WeddingLogistics = () => {
         const parts = name.split(" ");
         const fn = parts[0];
         const ln = parts.length > 1 ? parts.slice(1).join(" ") : "";
-        updatedIds[slotIdx] = await upsertGuestForMember(fn, ln, guestCountFromDoc);
-      })
+        updatedIds[slotIdx] = await upsertGuestForMember(
+          fn,
+          ln,
+          guestCountFromDoc,
+        );
+      }),
     );
 
-    const updatedPartyNames = memberNames.slice(1).map((n) => n.trim().toLowerCase() || null);
+    const updatedPartyNames = memberNames
+      .slice(1)
+      .map((n) => n.trim().toLowerCase() || null);
     const updatedPartyIds = updatedIds.slice(1).map((id) => id ?? null);
-    await updateGuestPartyMembers(guestDocId, updatedPartyNames, updatedPartyIds);
+    await updateGuestPartyMembers(
+      guestDocId,
+      updatedPartyNames,
+      updatedPartyIds,
+    );
 
     setMemberIds(updatedIds);
     return updatedIds;
@@ -294,9 +331,14 @@ const WeddingLogistics = () => {
     setSubmitting(true);
 
     const finalIds = await persistGuestData();
-    const { submittedBy, formattedPhone, memberRsvps, existingIdsByGuestId } = buildRsvpPayload(false, finalIds);
+    const { submittedBy, formattedPhone, memberRsvps, existingIdsByGuestId } =
+      buildRsvpPayload(false, finalIds);
     await saveRsvps(memberRsvps, existingIdsByGuestId);
-    notifyGoogleSheets({ submittedBy, phoneNumber: formattedPhone, members: memberRsvps });
+    notifyGoogleSheets({
+      submittedBy,
+      phoneNumber: formattedPhone,
+      members: memberRsvps,
+    });
 
     setSubmitting(false);
     setSubmitted(true);
@@ -304,7 +346,10 @@ const WeddingLogistics = () => {
 
   const handleSave = async () => {
     const finalIds = await persistGuestData();
-    const { memberRsvps, existingIdsByGuestId } = buildRsvpPayload(true, finalIds);
+    const { memberRsvps, existingIdsByGuestId } = buildRsvpPayload(
+      true,
+      finalIds,
+    );
     await saveRsvps(memberRsvps, existingIdsByGuestId, true);
   };
 
@@ -323,7 +368,10 @@ const WeddingLogistics = () => {
           width={width}
           height={height}
           frameRate={60}
-          style={{ transition: "opacity 2s ease-out", opacity: confettiOpacity }}
+          style={{
+            transition: "opacity 2s ease-out",
+            opacity: confettiOpacity,
+          }}
         />
       )}
 
@@ -365,7 +413,6 @@ const WeddingLogistics = () => {
             className="bg-[#faf0e6] rounded-xl px-6 md:px-8 py-8 w-full max-w-xl flex flex-col items-center gap-5 shadow-xl max-h-[90vh] overflow-y-auto animate-fade-in md:py-12"
             onClick={(e) => e.stopPropagation()}
           >
-
             {step === 1 && (
               <ModalStep1
                 firstName={firstName}
@@ -383,7 +430,10 @@ const WeddingLogistics = () => {
               <ModalDraftResume
                 firstName={firstName}
                 lastName={lastName}
-                onContinue={() => { setIsDraftResume(false); setStep(3); }}
+                onContinue={() => {
+                  setIsDraftResume(false);
+                  setStep(3);
+                }}
                 onClose={handleClose}
               />
             )}
@@ -446,13 +496,16 @@ const WeddingLogistics = () => {
         </div>
         <div className="font-prata text-[#5a5a5a] text-sm md:text-base lg:text-lg mt-2 space-y-2 md:space-y-3">
           <p className="leading-relaxed">
-            Please note that we have secured a heavily discounted room rate for our guests from May 31 through June 7, 2027.
+            Please note that we have secured a heavily discounted room rate for
+            our guests from May 31 through June 7, 2027.
           </p>
           <p className="leading-relaxed">
-             Per venue policy, the RSVP must be made using the link displayed after submitting the form below.
+            Per venue policy, the RSVP must be made using the link displayed
+            after submitting the form below.
           </p>
           <p className="leading-relaxed">
-            We appreciate your understanding and can't wait to celebrate with you!
+            We appreciate your understanding and can't wait to celebrate with
+            you!
           </p>
         </div>
         <button
@@ -475,7 +528,9 @@ const WeddingLogistics = () => {
         {EVENT_DAYS.map((day, i) => (
           <div
             key={day.key}
-            className={i < EVENT_DAYS.length - 1 ? "border-b border-[#691700]/15" : ""}
+            className={
+              i < EVENT_DAYS.length - 1 ? "border-b border-[#691700]/15" : ""
+            }
           >
             <button
               onClick={() => toggleDay(day.key)}
@@ -485,7 +540,9 @@ const WeddingLogistics = () => {
                 <span className="font-prata text-xl md:text-2xl text-[#1a1a1a]">
                   {day.label}
                 </span>
-                <span className="font-prata text-black text-sm">— {day.weekday}</span>
+                <span className="font-prata text-black text-sm">
+                  — {day.weekday}
+                </span>
               </div>
               <ChevronIcon open={openDays.has(day.key)} />
             </button>

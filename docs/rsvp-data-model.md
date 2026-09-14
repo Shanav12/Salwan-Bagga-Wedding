@@ -48,6 +48,7 @@ RSVP "1" *-- "1" Events : embeds
 ## Collections (Firestore)
 
 ### `guests`
+
 One document per named guest.
 
 - `guestId`: UUID generated at creation time. Used as the stable foreign key across collections (distinct from the Firestore document ID).
@@ -57,6 +58,7 @@ One document per named guest.
 - `phoneNumber`: optional. Only set for primary invitees; used to disambiguate when multiple guests share the same name.
 
 ### `rsvps`
+
 One document per person (one per party member, including the party head).
 
 - `guestId`: references `guests.guestId` — the stable key linking an RSVP to its guest doc.
@@ -79,12 +81,12 @@ One document per person (one per party member, including the party head).
 
 ## Events
 
-| Key | Label | Date |
-|-----|-------|------|
-| `haldi` | Ganesh Pooja & Haldi | June 3 — Thursday |
-| `sangeet` | Sangeet | June 3 — Thursday |
-| `baraat` | Baraat | June 4 — Friday |
-| `weddingCeremony` | Wedding Ceremony | June 4 — Friday |
-| `cocktailDinner` | Cocktail & Dinner | June 4 — Friday |
-| `cocktailHour` | Cocktail Hour | June 5 — Saturday |
-| `dinner` | Dinner | June 5 — Saturday |
+| Key               | Label                | Date              |
+| ----------------- | -------------------- | ----------------- |
+| `haldi`           | Ganesh Pooja & Haldi | June 3 — Thursday |
+| `sangeet`         | Sangeet              | June 3 — Thursday |
+| `baraat`          | Baraat               | June 4 — Friday   |
+| `weddingCeremony` | Wedding Ceremony     | June 4 — Friday   |
+| `cocktailDinner`  | Cocktail & Dinner    | June 4 — Friday   |
+| `cocktailHour`    | Cocktail Hour        | June 5 — Saturday |
+| `dinner`          | Dinner               | June 5 — Saturday |

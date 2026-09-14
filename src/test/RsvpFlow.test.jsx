@@ -4,11 +4,19 @@ import WeddingLogistics from "../components/WeddingLogistics";
 import { makeSnap, makeDoc, fillStep1 } from "./rsvpTestHelpers";
 
 vi.mock("react-confetti", () => ({ default: () => null }));
-vi.mock("react-use", () => ({ useWindowSize: () => ({ width: 1024, height: 768 }) }));
-vi.mock("../assets/saveTheDateBack.png", () => ({ default: "saveTheDateBack.png" }));
+vi.mock("react-use", () => ({
+  useWindowSize: () => ({ width: 1024, height: 768 }),
+}));
+vi.mock("../assets/saveTheDateBack.png", () => ({
+  default: "saveTheDateBack.png",
+}));
 vi.mock("react-phone-number-input", () => ({
   default: ({ placeholder, onChange, value }) => (
-    <input placeholder={placeholder} value={value ?? ""} onChange={(e) => onChange(e.target.value)} />
+    <input
+      placeholder={placeholder}
+      value={value ?? ""}
+      onChange={(e) => onChange(e.target.value)}
+    />
   ),
   parsePhoneNumber: () => null,
 }));
@@ -52,7 +60,9 @@ describe("RSVP flow — step routing", () => {
     await fillStep1("John", "Doe");
 
     await waitFor(() =>
-      expect(screen.getByText(/we already have your rsvp on file/i)).toBeInTheDocument(),
+      expect(
+        screen.getByText(/we already have your rsvp on file/i),
+      ).toBeInTheDocument(),
     );
   });
 
@@ -90,7 +100,13 @@ describe("RSVP flow — step routing", () => {
 
   it("lists party members from the guest doc in Step 3", async () => {
     mockLookupGuest.mockResolvedValue(
-      makeSnap([makeDoc({ guestCount: 2, partyMembers: ["jane doe"], partyMemberIds: ["gid-jane"] })]),
+      makeSnap([
+        makeDoc({
+          guestCount: 2,
+          partyMembers: ["jane doe"],
+          partyMemberIds: ["gid-jane"],
+        }),
+      ]),
     );
     mockLookupExistingRsvps.mockResolvedValue({});
 

@@ -4,11 +4,19 @@ import WeddingLogistics from "../components/WeddingLogistics";
 import { openModal } from "./rsvpTestHelpers";
 
 vi.mock("react-confetti", () => ({ default: () => null }));
-vi.mock("react-use", () => ({ useWindowSize: () => ({ width: 1024, height: 768 }) }));
-vi.mock("../assets/saveTheDateBack.png", () => ({ default: "saveTheDateBack.png" }));
+vi.mock("react-use", () => ({
+  useWindowSize: () => ({ width: 1024, height: 768 }),
+}));
+vi.mock("../assets/saveTheDateBack.png", () => ({
+  default: "saveTheDateBack.png",
+}));
 vi.mock("react-phone-number-input", () => ({
   default: ({ placeholder, onChange, value }) => (
-    <input placeholder={placeholder} value={value ?? ""} onChange={(e) => onChange(e.target.value)} />
+    <input
+      placeholder={placeholder}
+      value={value ?? ""}
+      onChange={(e) => onChange(e.target.value)}
+    />
   ),
   parsePhoneNumber: () => null,
 }));
@@ -27,7 +35,9 @@ describe("RSVP modal — open and close", () => {
   });
 
   it("renders the RSVP Form button on the page", () => {
-    expect(screen.getByRole("button", { name: /rsvp form/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /rsvp form/i }),
+    ).toBeInTheDocument();
   });
 
   it("shows the name form when RSVP Form is clicked", () => {
@@ -41,7 +51,9 @@ describe("RSVP modal — open and close", () => {
     openModal();
     fireEvent.click(screen.getByRole("button", { name: /cancel/i }));
     await waitFor(() =>
-      expect(screen.queryByPlaceholderText("First name")).not.toBeInTheDocument(),
+      expect(
+        screen.queryByPlaceholderText("First name"),
+      ).not.toBeInTheDocument(),
     );
   });
 });

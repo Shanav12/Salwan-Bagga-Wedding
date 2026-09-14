@@ -5,11 +5,19 @@ import WeddingLogistics from "../components/WeddingLogistics";
 import { openModal } from "./rsvpTestHelpers";
 
 vi.mock("react-confetti", () => ({ default: () => null }));
-vi.mock("react-use", () => ({ useWindowSize: () => ({ width: 1024, height: 768 }) }));
-vi.mock("../assets/saveTheDateBack.png", () => ({ default: "saveTheDateBack.png" }));
+vi.mock("react-use", () => ({
+  useWindowSize: () => ({ width: 1024, height: 768 }),
+}));
+vi.mock("../assets/saveTheDateBack.png", () => ({
+  default: "saveTheDateBack.png",
+}));
 vi.mock("react-phone-number-input", () => ({
   default: ({ placeholder, onChange, value }) => (
-    <input placeholder={placeholder} value={value ?? ""} onChange={(e) => onChange(e.target.value)} />
+    <input
+      placeholder={placeholder}
+      value={value ?? ""}
+      onChange={(e) => onChange(e.target.value)}
+    />
   ),
   parsePhoneNumber: () => null,
 }));
@@ -48,6 +56,8 @@ describe("RSVP form — Continue button validation", () => {
     openModal();
     await userEvent.type(screen.getByPlaceholderText("First name"), "John");
     await userEvent.type(screen.getByPlaceholderText("Last name"), "Doe");
-    expect(screen.getByRole("button", { name: /continue/i })).not.toBeDisabled();
+    expect(
+      screen.getByRole("button", { name: /continue/i }),
+    ).not.toBeDisabled();
   });
 });

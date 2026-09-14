@@ -4,11 +4,19 @@ import WeddingLogistics from "../components/WeddingLogistics";
 import { makeSnap, makeDoc, fillStep1 } from "./rsvpTestHelpers";
 
 vi.mock("react-confetti", () => ({ default: () => null }));
-vi.mock("react-use", () => ({ useWindowSize: () => ({ width: 1024, height: 768 }) }));
-vi.mock("../assets/saveTheDateBack.png", () => ({ default: "saveTheDateBack.png" }));
+vi.mock("react-use", () => ({
+  useWindowSize: () => ({ width: 1024, height: 768 }),
+}));
+vi.mock("../assets/saveTheDateBack.png", () => ({
+  default: "saveTheDateBack.png",
+}));
 vi.mock("react-phone-number-input", () => ({
   default: ({ placeholder, onChange, value }) => (
-    <input placeholder={placeholder} value={value ?? ""} onChange={(e) => onChange(e.target.value)} />
+    <input
+      placeholder={placeholder}
+      value={value ?? ""}
+      onChange={(e) => onChange(e.target.value)}
+    />
   ),
   parsePhoneNumber: () => null,
 }));
@@ -74,7 +82,9 @@ describe("Guest lookup", () => {
       await fillStep1("Sam", "Singh");
 
       await waitFor(() =>
-        expect(screen.getByText(/multiple guests share this name/i)).toBeInTheDocument(),
+        expect(
+          screen.getByText(/multiple guests share this name/i),
+        ).toBeInTheDocument(),
       );
       expect(mockLookupExistingRsvps).not.toHaveBeenCalled();
     });
@@ -105,7 +115,9 @@ describe("Guest lookup", () => {
       await fillStep1("Sam", "Singh", "9999999999");
 
       await waitFor(() =>
-        expect(screen.getByText(/phone number didn't match/i)).toBeInTheDocument(),
+        expect(
+          screen.getByText(/phone number didn't match/i),
+        ).toBeInTheDocument(),
       );
     });
 

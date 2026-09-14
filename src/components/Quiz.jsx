@@ -226,16 +226,24 @@ const Quiz = () => {
 
     const submittedName = name;
     const normalizedInput = submittedName.toLowerCase().trim();
-    const titleCasedName = submittedName.trim().replace(/\w\S*/g, (w) =>
-      w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()
-    );
+    const titleCasedName = submittedName
+      .trim()
+      .replace(
+        /\w\S*/g,
+        (w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase(),
+      );
     const pendingId = `pending-${Date.now()}`;
 
     setEntries((prev) => {
       const existingIdx = prev.findIndex(
-        (e) => e.name.toLowerCase().trim() === normalizedInput
+        (e) => e.name.toLowerCase().trim() === normalizedInput,
       );
-      const newEntry = { id: pendingId, name: titleCasedName, numCorrect, timestamp: Date.now() };
+      const newEntry = {
+        id: pendingId,
+        name: titleCasedName,
+        numCorrect,
+        timestamp: Date.now(),
+      };
       if (existingIdx !== -1) {
         const updated = [...prev];
         updated[existingIdx] = { ...updated[existingIdx], ...newEntry };
@@ -253,9 +261,7 @@ const Quiz = () => {
       await submitQuizScore(submittedName, numCorrect);
     } catch (err) {
       console.error("Submit error:", err);
-      setEntries((prev) =>
-        prev.filter((entry) => entry.id !== pendingId),
-      );
+      setEntries((prev) => prev.filter((entry) => entry.id !== pendingId));
     }
   };
 

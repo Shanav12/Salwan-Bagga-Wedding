@@ -145,7 +145,9 @@ export const ModalStep2 = ({ firstName, lastName, onModify, onClose }) => {
       </div>
       <div className="flex flex-col gap-3 w-full">
         <PrimaryButton
-          onClick={() => window.open(HOTEL_URL, "_blank", "noopener,noreferrer")}
+          onClick={() =>
+            window.open(HOTEL_URL, "_blank", "noopener,noreferrer")
+          }
           className="w-full"
         >
           Book Hotel
@@ -258,13 +260,18 @@ export const ModalStep3 = ({
                       <span className="font-prata text-sm text-[#691700]">
                         {day.label}
                       </span>
-                      <ChevronIcon open={openDays.has(makeKey(slotIdx, dayIdx))} />
+                      <ChevronIcon
+                        open={openDays.has(makeKey(slotIdx, dayIdx))}
+                      />
                     </button>
 
                     {openDays.has(makeKey(slotIdx, dayIdx)) && (
                       <div className="flex flex-col gap-3 px-4 py-3">
                         {day.events.map((event) => (
-                          <div key={event.key} className="flex flex-col gap-1.5">
+                          <div
+                            key={event.key}
+                            className="flex flex-col gap-1.5"
+                          >
                             <span className="font-prata text-sm text-[#1a1a1a]">
                               {event.label}
                             </span>
@@ -307,7 +314,11 @@ export const ModalStep3 = ({
         <SecondaryButton onClick={onClose} className="flex-1">
           Cancel
         </SecondaryButton>
-        <PrimaryButton onClick={onSubmit} disabled={submitting} className="flex-1">
+        <PrimaryButton
+          onClick={onSubmit}
+          disabled={submitting}
+          className="flex-1"
+        >
           {submitting ? "Submitting…" : "Submit RSVP"}
         </PrimaryButton>
       </div>
@@ -315,7 +326,12 @@ export const ModalStep3 = ({
   );
 };
 
-export const ModalDraftResume = ({ firstName, lastName, onContinue, onClose }) => {
+export const ModalDraftResume = ({
+  firstName,
+  lastName,
+  onContinue,
+  onClose,
+}) => {
   const fullKey = `${firstName.trim()} ${lastName.trim()}`.toLowerCase();
   const displayName = NAME_ROLES[fullKey] ?? toTitleCase(firstName);
   return (
@@ -345,8 +361,12 @@ export const ModalConfirmation = ({ onClose }) => (
       Thank You!
     </h3>
     <div className="font-prata text-center leading-relaxed space-y-2">
-      <p className="text-[#5a5a5a] text-sm md:text-base">Your RSVP has been received. You can come back and modify it.</p>
-      <p className="text-[#5a5a5a] text-md opacity-80">We can&apos;t wait to celebrate with you!</p>
+      <p className="text-[#5a5a5a] text-sm md:text-base">
+        Your RSVP has been received. You can come back and modify it.
+      </p>
+      <p className="text-[#5a5a5a] text-md opacity-80">
+        We can&apos;t wait to celebrate with you!
+      </p>
     </div>
     <div className="flex gap-3 w-full">
       <SecondaryButton onClick={onClose} className="flex-1">

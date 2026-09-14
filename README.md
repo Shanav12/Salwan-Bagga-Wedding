@@ -6,17 +6,18 @@ The official wedding website for **Ambika Salwan & Sahil Bagga**. Built with Rea
 
 ## Features
 
-| Page | Description |
-|------|-------------|
-| **Home** | Save-the-date card, countdown timer, and our story section. |
-| **Journey** | Photo timeline of Ambika & Sahil's relationship story |
-| **Gallery** | Photo gallery with full-screen lightbox |
-| **Wedding Logistics** | Event schedule across all three days with times and venue locations |
-| **Lineup** | Wedding party profiles |
-| **Quiz** | Interactive trivia game about the couple |
-| **RSVP** | Modal-based RSVP flow. guest lookup, per-event attendance, dietary restrictions |
+| Page                  | Description                                                                     |
+| --------------------- | ------------------------------------------------------------------------------- |
+| **Home**              | Save-the-date card, countdown timer, and our story section.                     |
+| **Journey**           | Photo timeline of Ambika & Sahil's relationship story                           |
+| **Gallery**           | Photo gallery with full-screen lightbox                                         |
+| **Wedding Logistics** | Event schedule across all three days with times and venue locations             |
+| **Lineup**            | Wedding party profiles                                                          |
+| **Quiz**              | Interactive trivia game about the couple                                        |
+| **RSVP**              | Modal-based RSVP flow. guest lookup, per-event attendance, dietary restrictions |
 
 **Additional UX details:**
+
 - Background music player (auto-hidden on scroll, restored on navigation)
 - Save-the-date splash screen shown once per browser session
 - Confetti on RSVP submission
@@ -26,16 +27,16 @@ The official wedding website for **Ambika Salwan & Sahil Bagga**. Built with Rea
 
 ## Tech Stack
 
-| Layer | Technology |
-|-------|------------|
-| UI framework | React 19 |
-| Build tool | Vite 7 |
-| Styling | Tailwind CSS 4 |
-| Routing | React Router v7 (hash-based, for GitHub Pages compatibility) |
-| Backend / DB | Firebase Firestore |
-| RSVP notifications | Google Apps Script webhook → Google Sheets |
-| Deployment | `gh-pages` → GitHub Pages |
-| Testing | Vitest + React Testing Library |
+| Layer              | Technology                                                   |
+| ------------------ | ------------------------------------------------------------ |
+| UI framework       | React 19                                                     |
+| Build tool         | Vite 7                                                       |
+| Styling            | Tailwind CSS 4                                               |
+| Routing            | React Router v7 (hash-based, for GitHub Pages compatibility) |
+| Backend / DB       | Firebase Firestore                                           |
+| RSVP notifications | Google Apps Script webhook → Google Sheets                   |
+| Deployment         | `gh-pages` → GitHub Pages                                    |
+| Testing            | Vitest + React Testing Library                               |
 
 ---
 
@@ -86,6 +87,7 @@ The official wedding website for **Ambika Salwan & Sahil Bagga**. Built with Rea
 RSVPs are stored in **Firebase Firestore** with two collections:
 
 **`guests`** — pre-seeded list of invited guests:
+
 - `guestId` — stable UUID used as the foreign key across collections (distinct from the Firestore doc ID)
 - `firstName`, `lastName` (lowercase)
 - `phoneNumber` (optional, used to disambiguate guests with the same name)
@@ -94,6 +96,7 @@ RSVPs are stored in **Firebase Firestore** with two collections:
 - `partyMemberIds` — parallel array of `guestId` values for each party member; `null` until their guest doc is created
 
 **`rsvps`** — one document per person (one per party member, including the party head):
+
 - `guestId` — references `guests.guestId`
 - `name` — lowercase full name of this party member
 - `submittedBy` — party head who filled out the form
@@ -108,15 +111,15 @@ See [`docs/rsvp-data-model.md`](docs/rsvp-data-model.md) for the full ERD and sc
 
 ### Events
 
-| Key | Label | Date | Time | Venue |
-|-----|-------|------|------|-------|
-| `haldi` | Ganesh Pooja & Haldi | June 3 — Thu | 10:00 am | Retune Terrace |
-| `sangeet` | Sangeet | June 3 — Thu | 5:30 pm | Serenade Terrace |
-| `baraat` | Baraat | June 4 — Fri | 3:00 pm | — |
-| `weddingCeremony` | Wedding Ceremony | June 4 — Fri | 4:00 pm | Coda Gardens |
-| `cocktailDinner` | Cocktail & Dinner | June 4 — Fri | 7:00 pm | Moonlight Terrace |
-| `cocktailHour` | Cocktail Hour | June 5 — Sat | 6:00 pm | Harmony Ballroom |
-| `dinner` | Dinner | June 5 — Sat | 7:30 pm | Harmony Ballroom |
+| Key               | Label                | Date         | Time     | Venue             |
+| ----------------- | -------------------- | ------------ | -------- | ----------------- |
+| `haldi`           | Ganesh Pooja & Haldi | June 3 — Thu | 10:00 am | Retune Terrace    |
+| `sangeet`         | Sangeet              | June 3 — Thu | 5:30 pm  | Serenade Terrace  |
+| `baraat`          | Baraat               | June 4 — Fri | 3:00 pm  | —                 |
+| `weddingCeremony` | Wedding Ceremony     | June 4 — Fri | 4:00 pm  | Coda Gardens      |
+| `cocktailDinner`  | Cocktail & Dinner    | June 4 — Fri | 7:00 pm  | Moonlight Terrace |
+| `cocktailHour`    | Cocktail Hour        | June 5 — Sat | 6:00 pm  | Harmony Ballroom  |
+| `dinner`          | Dinner               | June 5 — Sat | 7:30 pm  | Harmony Ballroom  |
 
 ---
 
@@ -137,6 +140,7 @@ node --version  # should print v22.x.x
 ## Getting Started
 
 1. **Clone the repo**
+
 ---
 
 ## Development
@@ -146,20 +150,20 @@ npm install
 npm run dev
 ```
 
-   The app will be available at `http://localhost:5173`.
+The app will be available at `http://localhost:5173`.
 
 ## Available Scripts
 
 Run all scripts from the `src/` directory.
 
-| Script | Description |
-|---|---|
-| `npm run dev` | Start the Vite dev server with hot reload |
-| `npm run build` | Build the app for production (output: `dist/`) |
-| `npm run preview` | Locally preview the production build |
-| `npm run deploy` | Build and deploy to GitHub Pages |
-| `npm test` | Run the test suite once |
-| `npm run test:watch` | Run tests in watch mode |
+| Script               | Description                                    |
+| -------------------- | ---------------------------------------------- |
+| `npm run dev`        | Start the Vite dev server with hot reload      |
+| `npm run build`      | Build the app for production (output: `dist/`) |
+| `npm run preview`    | Locally preview the production build           |
+| `npm run deploy`     | Build and deploy to GitHub Pages               |
+| `npm test`           | Run the test suite once                        |
+| `npm run test:watch` | Run tests in watch mode                        |
 
 ## Deployment
 
