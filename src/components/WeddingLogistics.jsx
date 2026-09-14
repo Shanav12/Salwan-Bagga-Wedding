@@ -9,18 +9,19 @@ import {
   lookupExistingRsvps,
   saveRsvps,
   notifyGoogleSheets,
+  updateGuestPartyMembers,
+  upsertGuestForMember,
 } from "../api/rsvp";
 import {
   EVENTS,
   EVENT_DAYS,
-  NAME_ROLES,
-  initAttendance,
 } from "../weddingConstants";
 import {
   ModalStep1,
   ModalStep2,
   ModalStep3,
   ModalConfirmation,
+  ModalDraftResume,
 } from "./RsvpModal";
 import "react-phone-number-input/style.css";
 import "../App.css";
@@ -68,10 +69,14 @@ const WeddingLogistics = () => {
   const [lastName, setLastName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
 
-  const [partyMembers, setPartyMembers] = useState([]);
+  const [memberNames, setMemberNames] = useState([]);
+  const [memberIds, setMemberIds] = useState([]);
   const [attendance, setAttendance] = useState({});
   const [dietary, setDietary] = useState({});
   const [existingRsvpIds, setExistingRsvpIds] = useState({});
+  const [guestDocId, setGuestDocId] = useState(null);
+  const [guestCountFromDoc, setGuestCountFromDoc] = useState(1);
+  const [isDraftResume, setIsDraftResume] = useState(false);
 
   const [openDays, setOpenDays] = useState(new Set());
 
@@ -92,10 +97,14 @@ const WeddingLogistics = () => {
     setFirstName("");
     setLastName("");
     setPhoneNumber("");
-    setPartyMembers([]);
+    setMemberNames([]);
+    setMemberIds([]);
     setAttendance({});
     setDietary({});
     setExistingRsvpIds({});
+    setGuestDocId(null);
+    setGuestCountFromDoc(1);
+    setIsDraftResume(false);
   };
 
   const handleClose = () => {
@@ -149,54 +158,132 @@ const WeddingLogistics = () => {
 
     const data = matchedDoc.data();
     const self = `${firstName.trim()} ${lastName.trim()}`.toLowerCase();
-    const extras = Array.isArray(data.partyMembers) ? data.partyMembers : [];
-    const members = [
-      self,
-      ...extras.map((m) => m.toLowerCase()).filter((m) => m !== self),
-    ];
+    const guestCount = data.guestCount ?? ((Array.isArray(data.partyMembers) ? data.partyMembers.length : 0) + 1);
+    const rawParty = Array.isArray(data.partyMembers) ? data.partyMembers : [];
+    const rawPartyIds = Array.isArray(data.partyMemberIds) ? data.partyMemberIds : [];
 
-    const existingRsvps = await lookupExistingRsvps(members);
+    const names = [self];
+    const ids = [data.guestId ?? null];
+    for (let i = 0; i < guestCount - 1; i++) {
+      const val = rawParty[i];
+      names.push(val ? val.toLowerCase() : "");
+      ids.push(rawPartyIds[i] ?? null);
+    }
 
-    let att = initAttendance(members);
-    let diet = Object.fromEntries(members.map((m) => [m, ""]));
+    const namedIds = ids.filter((id, i) => id && names[i].trim());
+    const existingRsvps = await lookupExistingRsvps(namedIds);
 
-    members.forEach((member) => {
-      const prior = existingRsvps[member];
-      if (!prior) return;
-      EVENTS.forEach((e) => {
-        if (prior.events?.[e.key] !== undefined)
-          att[member][e.key] = prior.events[e.key];
-      });
-      diet[member] = prior.dietaryRestrictions ?? "";
+    const emptyEvents = Object.fromEntries(EVENTS.map((e) => [e.key, null]));
+    const att = {};
+    const diet = {};
+    names.forEach((name, i) => {
+      att[i] = { ...emptyEvents };
+      diet[i] = "";
+      const guestId = ids[i];
+      if (guestId && existingRsvps[guestId]) {
+        EVENTS.forEach((e) => {
+          if (existingRsvps[guestId].events?.[e.key] !== undefined)
+            att[i][e.key] = existingRsvps[guestId].events[e.key];
+        });
+        diet[i] = existingRsvps[guestId].dietaryRestrictions ?? "";
+      }
     });
 
-    setExistingRsvpIds(
-      Object.fromEntries(
-        Object.entries(existingRsvps).map(([name, data]) => [name, data.id]),
-      ),
-    );
+    const idsByIndex = {};
+    names.forEach((_, i) => {
+      const guestId = ids[i];
+      if (guestId && existingRsvps[guestId]) idsByIndex[i] = existingRsvps[guestId].id;
+    });
 
-    setPartyMembers(members);
+    setGuestDocId(matchedDoc.id);
+    setGuestCountFromDoc(guestCount);
+    setMemberNames(names);
+    setMemberIds(ids);
     setAttendance(att);
     setDietary(diet);
-    setStep(Object.keys(existingRsvps).length > 0 ? 2 : 3);
+    setExistingRsvpIds(idsByIndex);
+    const hasDraft = Object.values(existingRsvps).some((r) => r.isDraft);
+    const hasExisting = Object.keys(existingRsvps).length > 0;
+    setIsDraftResume(hasDraft);
+    setStep(hasExisting ? 2 : 3);
   };
 
-  const handleAttendanceChange = (member, eventKey, value) => {
+  const handleAttendanceChange = (index, eventKey, value) => {
     setAttendance((prev) => ({
       ...prev,
-      [member]: { ...prev[member], [eventKey]: value },
+      [index]: { ...prev[index], [eventKey]: value },
     }));
   };
 
+  const handleNameChange = (index, value) => {
+    setMemberNames((prev) => {
+      const next = [...prev];
+      next[index] = value;
+      return next;
+    });
+  };
+
   const allAnswered = () =>
-    partyMembers.every((m) =>
-      EVENTS.every(
-        (e) =>
-          attendance[m]?.[e.key] !== null &&
-          attendance[m]?.[e.key] !== undefined,
-      ),
+    memberNames.every((name, i) => {
+      if (!name.trim()) return true;
+      return EVENTS.every(
+        (e) => attendance[i]?.[e.key] !== null && attendance[i]?.[e.key] !== undefined,
+      );
+    });
+
+  const buildRsvpPayload = (isDraft, ids = memberIds) => {
+    const submittedBy = `${firstName.trim()} ${lastName.trim()}`.toLowerCase();
+    const parsed = phoneNumber ? parsePhoneNumber(phoneNumber) : null;
+    const formattedPhone = parsed
+      ? `+${parsed.countryCallingCode} ${parsed.nationalNumber}`
+      : phoneNumber;
+
+    const memberRsvps = memberNames
+      .map((name, i) => ({ name: name.trim().toLowerCase(), guestId: ids[i], i }))
+      .filter(({ name }) => name)
+      .map(({ name, guestId, i }) => ({
+        name,
+        guestId,
+        events: EVENTS.reduce(
+          (acc, e) => ({ ...acc, [e.key]: isDraft ? (attendance[i]?.[e.key] ?? null) : attendance[i][e.key] }),
+          {},
+        ),
+        dietaryRestrictions: dietary[i]?.trim() || "",
+        submittedBy,
+        phoneNumber: formattedPhone,
+      }));
+
+    const existingIdsByGuestId = {};
+    memberNames.forEach((name, i) => {
+      if (name.trim() && ids[i] && existingRsvpIds[i]) existingIdsByGuestId[ids[i]] = existingRsvpIds[i];
+    });
+
+    return { submittedBy, formattedPhone, memberRsvps, existingIdsByGuestId };
+  };
+
+  const persistGuestData = async () => {
+    if (!guestDocId) return memberIds;
+
+    const updatedIds = [...memberIds];
+    await Promise.all(
+      memberNames.slice(1).map(async (rawName, relIdx) => {
+        const name = rawName.trim();
+        const slotIdx = relIdx + 1;
+        if (!name || updatedIds[slotIdx]) return;
+        const parts = name.split(" ");
+        const fn = parts[0];
+        const ln = parts.length > 1 ? parts.slice(1).join(" ") : "";
+        updatedIds[slotIdx] = await upsertGuestForMember(fn, ln, guestCountFromDoc);
+      })
     );
+
+    const updatedPartyNames = memberNames.slice(1).map((n) => n.trim().toLowerCase() || null);
+    const updatedPartyIds = updatedIds.slice(1).map((id) => id ?? null);
+    await updateGuestPartyMembers(guestDocId, updatedPartyNames, updatedPartyIds);
+
+    setMemberIds(updatedIds);
+    return updatedIds;
+  };
 
   const handleSubmit = async () => {
     if (!allAnswered()) {
@@ -206,24 +293,9 @@ const WeddingLogistics = () => {
     setError("");
     setSubmitting(true);
 
-    const parsed = phoneNumber ? parsePhoneNumber(phoneNumber) : null;
-    const formattedPhone = parsed
-      ? `+${parsed.countryCallingCode} ${parsed.nationalNumber}`
-      : phoneNumber;
-
-    const submittedBy = `${firstName.trim()} ${lastName.trim()}`.toLowerCase();
-    const memberRsvps = partyMembers.map((m) => ({
-      name: m,
-      events: EVENTS.reduce(
-        (acc, e) => ({ ...acc, [e.key]: attendance[m][e.key] }),
-        {},
-      ),
-      dietaryRestrictions: dietary[m]?.trim() || "",
-      submittedBy,
-      phoneNumber: formattedPhone,
-    }));
-
-    await saveRsvps(memberRsvps, existingRsvpIds);
+    const finalIds = await persistGuestData();
+    const { submittedBy, formattedPhone, memberRsvps, existingIdsByGuestId } = buildRsvpPayload(false, finalIds);
+    await saveRsvps(memberRsvps, existingIdsByGuestId);
     notifyGoogleSheets({ submittedBy, phoneNumber: formattedPhone, members: memberRsvps });
 
     setSubmitting(false);
@@ -231,24 +303,9 @@ const WeddingLogistics = () => {
   };
 
   const handleSave = async () => {
-    const submittedBy = `${firstName.trim()} ${lastName.trim()}`.toLowerCase();
-    const parsed = phoneNumber ? parsePhoneNumber(phoneNumber) : null;
-    const formattedPhone = parsed
-      ? `+${parsed.countryCallingCode} ${parsed.nationalNumber}`
-      : phoneNumber;
-
-    const memberRsvps = partyMembers.map((m) => ({
-      name: m,
-      events: EVENTS.reduce(
-        (acc, e) => ({ ...acc, [e.key]: attendance[m]?.[e.key] ?? null }),
-        {},
-      ),
-      dietaryRestrictions: dietary[m]?.trim() || "",
-      submittedBy,
-      phoneNumber: formattedPhone,
-    }));
-
-    await saveRsvps(memberRsvps, existingRsvpIds, true);
+    const finalIds = await persistGuestData();
+    const { memberRsvps, existingIdsByGuestId } = buildRsvpPayload(true, finalIds);
+    await saveRsvps(memberRsvps, existingIdsByGuestId, true);
   };
 
   const toggleDay = (key) => {
@@ -322,7 +379,15 @@ const WeddingLogistics = () => {
                 onClose={handleClose}
               />
             )}
-            {step === 2 && !submitted && (
+            {step === 2 && !submitted && isDraftResume && (
+              <ModalDraftResume
+                firstName={firstName}
+                lastName={lastName}
+                onContinue={() => { setIsDraftResume(false); setStep(3); }}
+                onClose={handleClose}
+              />
+            )}
+            {step === 2 && !submitted && !isDraftResume && (
               <ModalStep2
                 firstName={firstName}
                 lastName={lastName}
@@ -332,15 +397,16 @@ const WeddingLogistics = () => {
             )}
             {step === 3 && !submitted && (
               <ModalStep3
-                partyMembers={partyMembers}
+                memberNames={memberNames}
                 attendance={attendance}
                 dietary={dietary}
                 error={error}
                 submitting={submitting}
                 onAttendanceChange={handleAttendanceChange}
-                onDietaryChange={(member, val) =>
-                  setDietary((prev) => ({ ...prev, [member]: val }))
+                onDietaryChange={(index, val) =>
+                  setDietary((prev) => ({ ...prev, [index]: val }))
                 }
+                onNameChange={handleNameChange}
                 onSubmit={handleSubmit}
                 onClose={handleClose}
               />

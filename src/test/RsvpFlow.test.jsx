@@ -20,6 +20,8 @@ vi.mock("../api/rsvp", () => ({
   lookupExistingRsvps: (...args) => mockLookupExistingRsvps(...args),
   saveRsvps: vi.fn(),
   notifyGoogleSheets: vi.fn(),
+  updateGuestPartyMembers: vi.fn(),
+  upsertGuestForMember: vi.fn().mockResolvedValue(null),
 }));
 
 describe("RSVP flow — step routing", () => {
@@ -40,9 +42,11 @@ describe("RSVP flow — step routing", () => {
   });
 
   it("shows Thank You (Step 2) when guest already has an RSVP on file", async () => {
-    mockLookupGuest.mockResolvedValue(makeSnap([makeDoc({ guestCount: 1 })]));
+    const guestDoc = makeDoc({ guestCount: 1 });
+    const guestId = guestDoc.data().guestId;
+    mockLookupGuest.mockResolvedValue(makeSnap([guestDoc]));
     mockLookupExistingRsvps.mockResolvedValue({
-      "john doe": { id: "abc", events: {}, dietaryRestrictions: "" },
+      [guestId]: { id: "abc", events: {}, dietaryRestrictions: "" },
     });
 
     await fillStep1("John", "Doe");
@@ -54,9 +58,11 @@ describe("RSVP flow — step routing", () => {
 
   describe("greeting in Step 2", () => {
     it("uses the NAME_ROLES title for known VIPs (e.g. Ambika Salwan → Bride)", async () => {
-      mockLookupGuest.mockResolvedValue(makeSnap([makeDoc({ guestCount: 1 })]));
+      const guestDoc = makeDoc({ guestCount: 1 });
+      const guestId = guestDoc.data().guestId;
+      mockLookupGuest.mockResolvedValue(makeSnap([guestDoc]));
       mockLookupExistingRsvps.mockResolvedValue({
-        "ambika salwan": { id: "x", events: {}, dietaryRestrictions: "" },
+        [guestId]: { id: "x", events: {}, dietaryRestrictions: "" },
       });
 
       await fillStep1("Ambika", "Salwan");
@@ -67,9 +73,11 @@ describe("RSVP flow — step routing", () => {
     });
 
     it("falls back to first name for guests not in NAME_ROLES", async () => {
-      mockLookupGuest.mockResolvedValue(makeSnap([makeDoc({ guestCount: 2 })]));
+      const guestDoc = makeDoc({ guestCount: 2 });
+      const guestId = guestDoc.data().guestId;
+      mockLookupGuest.mockResolvedValue(makeSnap([guestDoc]));
       mockLookupExistingRsvps.mockResolvedValue({
-        "alice wonderland": { id: "y", events: {}, dietaryRestrictions: "" },
+        [guestId]: { id: "y", events: {}, dietaryRestrictions: "" },
       });
 
       await fillStep1("Alice", "Wonderland");
@@ -82,7 +90,7 @@ describe("RSVP flow — step routing", () => {
 
   it("lists party members from the guest doc in Step 3", async () => {
     mockLookupGuest.mockResolvedValue(
-      makeSnap([makeDoc({ guestCount: 2, partyMembers: ["john doe", "jane doe"] })]),
+      makeSnap([makeDoc({ guestCount: 2, partyMembers: ["jane doe"], partyMemberIds: ["gid-jane"] })]),
     );
     mockLookupExistingRsvps.mockResolvedValue({});
 
@@ -91,6 +99,6 @@ describe("RSVP flow — step routing", () => {
     await waitFor(() =>
       expect(screen.getByText(/john doe/i)).toBeInTheDocument(),
     );
-    expect(screen.getByText(/jane doe/i)).toBeInTheDocument();
+    expect(screen.getByDisplayValue(/jane doe/i)).toBeInTheDocument();
   });
 });

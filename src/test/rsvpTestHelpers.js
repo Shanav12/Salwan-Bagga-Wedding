@@ -10,7 +10,8 @@ export function makeSnap(docs = []) {
 }
 
 export function makeDoc(data) {
-  return { id: `doc-${Math.random()}`, data: () => data };
+  const guestId = data.guestId ?? `gid-${Math.random().toString(36).slice(2)}`;
+  return { id: `doc-${Math.random()}`, data: () => ({ guestId, ...data }) };
 }
 
 export function openModal() {

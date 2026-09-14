@@ -20,6 +20,8 @@ vi.mock("../api/rsvp", () => ({
   lookupExistingRsvps: vi.fn(),
   saveRsvps: vi.fn(),
   notifyGoogleSheets: vi.fn(),
+  updateGuestPartyMembers: vi.fn(),
+  upsertGuestForMember: vi.fn().mockResolvedValue(null),
 }));
 
 describe("RSVP form — Continue button validation", () => {

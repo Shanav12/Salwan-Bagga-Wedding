@@ -1,4 +1,4 @@
-import { query, collection, where, getDocs, addDoc, setDoc, doc, serverTimestamp } from "firebase/firestore"
+import { query, collection, where, getDocs, addDoc, setDoc, updateDoc, doc, serverTimestamp } from "firebase/firestore"
 import { db } from "../firebase_config"
 
 const SHEETS_URL = "https://script.google.com/macros/s/AKfycbyIXHCHnBBIII6d8r6Ksq5vcnmpsGLWmTz9Nh9zQtJYjZtsP_BVEGdO6T1voxfvGqu-vQ/exec";
@@ -24,12 +24,13 @@ export async function lookupGuest(firstName, lastName) {
 }
 
 
-export async function lookupExistingRsvps(members) {
+export async function lookupExistingRsvps(memberGuestIds) {
     const results = await Promise.all(
-        members.map(async (member) => {
-            const snap = await getDocs(query(collection(db, "rsvps"), where("name", "==", member)));
+        memberGuestIds.map(async (guestId) => {
+            if (!guestId) return null;
+            const snap = await getDocs(query(collection(db, "rsvps"), where("guestId", "==", guestId)));
             if (snap.empty) return null;
-            return [member, { id: snap.docs[0].id, ...snap.docs[0].data() }];
+            return [guestId, { id: snap.docs[0].id, ...snap.docs[0].data() }];
         })
     );
     return Object.fromEntries(results.filter(Boolean));
@@ -40,15 +41,43 @@ export async function saveRsvps(memberRsvps, existingIds, isDraft = false) {
     await Promise.all(
         memberRsvps.map(async (rsvp) => {
             const data = { ...rsvp, isDraft, submittedAt: serverTimestamp() };
-            const existingId = existingIds[rsvp.name];
+            const existingId = existingIds[rsvp.guestId];
             if (existingId) {
                 await setDoc(doc(db, "rsvps", existingId), data);
             } else {
                 const ref = await addDoc(collection(db, "rsvps"), data);
-                existingIds[rsvp.name] = ref.id;
+                existingIds[rsvp.guestId] = ref.id;
             }
         })
     );
+}
+
+export async function updateGuestPartyMembers(guestDocId, partyMembersArray, partyMemberIdsArray) {
+    await updateDoc(doc(db, "guests", guestDocId), {
+        partyMembers: partyMembersArray,
+        partyMemberIds: partyMemberIdsArray,
+    });
+}
+
+export async function upsertGuestForMember(firstName, lastName, guestCount) {
+    const fn = firstName.trim().toLowerCase();
+    const ln = lastName.trim().toLowerCase();
+    const snap = await getDocs(
+        query(collection(db, "guests"), where("firstName", "==", fn), where("lastName", "==", ln))
+    );
+    if (!snap.empty) {
+        return snap.docs[0].data().guestId ?? null;
+    }
+    const newGuestId = crypto.randomUUID();
+    await addDoc(collection(db, "guests"), {
+        firstName: fn,
+        lastName: ln,
+        guestCount,
+        partyMembers: [],
+        partyMemberIds: [],
+        guestId: newGuestId,
+    });
+    return newGuestId;
 }
 
 export function notifyGoogleSheets(payload) {

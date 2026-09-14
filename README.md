@@ -86,15 +86,19 @@ The official wedding website for **Ambika Salwan & Sahil Bagga**. Built with Rea
 RSVPs are stored in **Firebase Firestore** with two collections:
 
 **`guests`** — pre-seeded list of invited guests:
+- `guestId` — stable UUID used as the foreign key across collections (distinct from the Firestore doc ID)
 - `firstName`, `lastName` (lowercase)
-- `phoneNumber`
-- `partyMembers` — array of lowercase full names in the same party group
+- `phoneNumber` (optional, used to disambiguate guests with the same name)
+- `guestCount` — total party size including self
+- `partyMembers` — indexed array (`guestCount - 1` slots) of lowercase full names; `null` for unfilled slots
+- `partyMemberIds` — parallel array of `guestId` values for each party member; `null` until their guest doc is created
 
-**`rsvps`** — one document per person:
-- `name` — lowercase full name (primary key)
+**`rsvps`** — one document per person (one per party member, including the party head):
+- `guestId` — references `guests.guestId`
+- `name` — lowercase full name of this party member
 - `submittedBy` — party head who filled out the form
 - `phoneNumber`, `dietaryRestrictions`
-- `events` — flat map of event keys → `true | false | null`
+- `events` — flat map of event keys → `true | false | null` (`null` valid in drafts only)
 - `submittedAt` — Firestore server timestamp
 - `isDraft` — `true` while navigating, `false` on final submit
 

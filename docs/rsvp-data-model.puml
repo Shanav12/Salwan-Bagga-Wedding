@@ -3,35 +3,40 @@
 hide circle
 
 class Guest {
-  id: string
+  id: string <<Firestore doc ID>>
+  guestId: string <<UUID>>
   firstName: string
   lastName: string
-  phoneNumber: string
-  partyMembers: string[]
+  phoneNumber: string?
+  guestCount: number
+  partyMembers: (string | null)[]
+  partyMemberIds: (string | null)[]
 }
 
 class RSVP {
-  id: string
+  id: string <<Firestore doc ID>>
+  guestId: string
   name: string
   submittedBy: string
   phoneNumber: string
   dietaryRestrictions: string
+  isDraft: boolean
   submittedAt: timestamp
   events: Events
 }
 
 class Events {
-  haldi: boolean
-  sangeet: boolean
-  baraat: boolean
-  weddingCeremony: boolean
-  cocktailDinner: boolean
-  cocktailHour: boolean
-  dinner: boolean
+  haldi: boolean | null
+  sangeet: boolean | null
+  baraat: boolean | null
+  weddingCeremony: boolean | null
+  cocktailDinner: boolean | null
+  cocktailHour: boolean | null
+  dinner: boolean | null
 }
 
-Guest "1" --> "0..*" RSVP : has one RSVP per member
-Guest "0..*" o-- Guest : partyMembers
+Guest "1" --> "0..*" RSVP : guestId
+Guest "0..*" o-- Guest : partyMemberIds
 RSVP "1" *-- "1" Events : embeds
 
 @enduml

@@ -20,6 +20,8 @@ vi.mock("../api/rsvp", () => ({
   lookupExistingRsvps: (...args) => mockLookupExistingRsvps(...args),
   saveRsvps: vi.fn(),
   notifyGoogleSheets: vi.fn(),
+  updateGuestPartyMembers: vi.fn(),
+  upsertGuestForMember: vi.fn().mockResolvedValue(null),
 }));
 
 describe("Guest lookup", () => {
