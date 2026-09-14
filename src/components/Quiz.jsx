@@ -225,15 +225,24 @@ const Quiz = () => {
     setSubmittedAnswers({ ...answers });
 
     const submittedName = name;
-    setEntries((prev) => [
-      ...prev,
-      {
-        id: `pending-${Date.now()}`,
-        name: submittedName,
-        numCorrect,
-        timestamp: Date.now(),
-      },
-    ]);
+    const normalizedInput = submittedName.toLowerCase().trim();
+    const titleCasedName = submittedName.trim().replace(/\w\S*/g, (w) =>
+      w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()
+    );
+    const pendingId = `pending-${Date.now()}`;
+
+    setEntries((prev) => {
+      const existingIdx = prev.findIndex(
+        (e) => e.name.toLowerCase().trim() === normalizedInput
+      );
+      const newEntry = { id: pendingId, name: titleCasedName, numCorrect, timestamp: Date.now() };
+      if (existingIdx !== -1) {
+        const updated = [...prev];
+        updated[existingIdx] = { ...updated[existingIdx], ...newEntry };
+        return updated;
+      }
+      return [...prev, newEntry];
+    });
 
     setShowQuiz(false);
     setQIdx(0);
@@ -245,7 +254,7 @@ const Quiz = () => {
     } catch (err) {
       console.error("Submit error:", err);
       setEntries((prev) =>
-        prev.filter((entry) => !entry.id.startsWith("pending-")),
+        prev.filter((entry) => entry.id !== pendingId),
       );
     }
   };
