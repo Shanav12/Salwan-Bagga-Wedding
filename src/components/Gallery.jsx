@@ -1,7 +1,6 @@
-import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
-import { collection, addDoc, Timestamp } from 'firebase/firestore';
+import { ref, uploadBytesResumable } from 'firebase/storage';
 import { useState, useEffect, useRef, useCallback } from "react";
-import { storage, db } from '../firebase_config';
+import { storage } from '../firebase_config';
 import { useGallery } from '../contexts/GalleryContext';
 
 
@@ -62,20 +61,7 @@ const Gallery = () => {
                     console.error('Upload error:', error);
                     setUploading(false);
                 },
-                async () => {
-                    try {
-                        const downloadURL = await getDownloadURL(currRef);
-                        await addDoc(collection(db, 'galleryPhotoURLs'), {
-                            url: downloadURL,
-                            storagePath: currRef.name,
-                            contentType: file.type,
-                            size: file.size,
-                            timeCreated: Timestamp.now(),
-                            createdAt: Timestamp.now(),
-                        });
-                    } catch (err) {
-                        console.error('Error saving photo record:', err);
-                    }
+                () => {
                     completedUploads++;
                     if (completedUploads === totalFiles) {
                         setUploading(false);
@@ -232,7 +218,7 @@ const Gallery = () => {
                 ) : !galleryView ? (
                     <div className="relative">
                         <div className="flex justify-center mb-6">
-                            <div className="relative w-full max-w-4xl cursor-pointer">
+                            <div className="relative w-half max-w-4xl cursor-pointer">
                                 <div className="absolute inset-0 bg-[#691700] rounded-lg transform rotate-1"></div>
                                 {focusedImg && (
                                     <div
@@ -259,7 +245,7 @@ const Gallery = () => {
                                 <img 
                                     src={imageList[currIdx]} 
                                     onClick={() => setFocusedImg(imageList[currIdx])}
-                                    className="relative rounded-lg shadow-xl w-full h-[350px] sm:h-[400px] md:h-[500px] lg:h-[500px] object-cover transition-transform duration-200 group-hover:-translate-x-0.5 group-hover:-translate-y-0.5"
+                                    className="relative rounded-lg shadow-xl w-half h-[350px] sm:h-[400px] md:h-[500px] lg:h-[500px] object-cover transition-transform duration-200 group-hover:-translate-x-0.5 group-hover:-translate-y-0.5"
                                 />
                             </div>
                         </div>
