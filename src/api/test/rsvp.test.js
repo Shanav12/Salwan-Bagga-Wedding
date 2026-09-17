@@ -23,7 +23,7 @@ vi.mock("firebase/firestore", () => ({
   serverTimestamp: () => mockServerTimestamp(),
 }));
 
-vi.mock("../firebase_config", () => ({ db: {} }));
+vi.mock("../../firebase_config", () => ({ db: {} }));
 
 // ── Import SUT after mocks ─────────────────────────────────────────────────
 import {
@@ -36,7 +36,7 @@ import {
   lookupNamesByGuestIds,
   upsertGuestForMember,
   notifyGoogleSheets,
-} from "../api/rsvp";
+} from "../rsvp";
 
 // ── Helpers ────────────────────────────────────────────────────────────────
 

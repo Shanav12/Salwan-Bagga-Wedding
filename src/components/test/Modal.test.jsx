@@ -1,13 +1,13 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { vi, describe, it, expect, beforeEach } from "vitest";
-import WeddingLogistics from "../components/WeddingLogistics";
+import WeddingLogistics from "../WeddingLogistics";
 import { openModal } from "./rsvpTestHelpers";
 
 vi.mock("react-confetti", () => ({ default: () => null }));
 vi.mock("react-use", () => ({
   useWindowSize: () => ({ width: 1024, height: 768 }),
 }));
-vi.mock("../assets/saveTheDateBack.png", () => ({
+vi.mock("../../assets/saveTheDateBack.png", () => ({
   default: "saveTheDateBack.png",
 }));
 vi.mock("react-phone-number-input", () => ({
@@ -20,7 +20,7 @@ vi.mock("react-phone-number-input", () => ({
   ),
   parsePhoneNumber: () => null,
 }));
-vi.mock("../api/rsvp", () => ({
+vi.mock("../../api/rsvp", () => ({
   lookupGuest: vi.fn(),
   lookupExistingRsvps: vi.fn(),
   saveRsvps: vi.fn(),
