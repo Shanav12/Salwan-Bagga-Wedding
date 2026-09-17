@@ -26,12 +26,6 @@ const Gallery = () => {
         }
     }, [showSuccess]);
 
-    useEffect(() => {
-        imageList.forEach(src => {
-            const img = new Image();
-            img.src = src;
-        });
-    }, [imageList]);
 
     const handleFileChange = (e) => {
         if (e.target.files) {
