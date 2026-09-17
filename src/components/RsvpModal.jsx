@@ -47,7 +47,7 @@ const ChevronIcon = ({ open }) => (
 const AttendanceToggle = ({ value, onChange }) => (
   <div className="flex gap-2">
     <button
-      onClick={() => onChange(true)}
+      onClick={() => onChange(value === true ? undefined : true)}
       className={`flex-1 font-prata text-xs px-3 py-2 rounded-lg border transition-all duration-150 cursor-pointer ${
         value === true
           ? "bg-[#691700]/85 text-white border-[#691700]/85"
@@ -57,7 +57,7 @@ const AttendanceToggle = ({ value, onChange }) => (
       Attending
     </button>
     <button
-      onClick={() => onChange(false)}
+      onClick={() => onChange(value === false ? undefined : false)}
       className={`flex-1 font-prata text-xs px-3 py-2 rounded-lg border transition-all duration-150 cursor-pointer ${
         value === false
           ? "bg-[#691700]/85 text-white border-[#691700]/85"
@@ -230,7 +230,7 @@ export const ModalStep3 = ({
                     <input
                       type="text"
                       placeholder={`Guest ${slotIdx + 1} Full Name`}
-                      value={name}
+                      value={toTitleCase(name)}
                       onChange={(e) => onNameChange(slotIdx, e.target.value)}
                       className="font-prata text-lg text-[#1a1a1a] bg-transparent border-none border-b border-[#691700]/30 outline-none w-full placeholder:text-[#aaa] focus:border-b focus:border-[#691700] transition-colors"
                     />

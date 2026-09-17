@@ -7,9 +7,11 @@ import EventCard from "./EventCard";
 import {
   lookupGuest,
   lookupExistingRsvps,
+  lookupNamesByGuestIds,
   saveRsvps,
   notifyGoogleSheets,
   updateGuestPartyMembers,
+  updateGuestMemberName,
   upsertGuestForMember,
 } from "../api/rsvp";
 import { EVENTS, EVENT_DAYS } from "../weddingConstants";
@@ -75,7 +77,6 @@ const WeddingLogistics = () => {
   const [memberIds, setMemberIds] = useState([]);
   const [attendance, setAttendance] = useState({});
   const [dietary, setDietary] = useState({});
-  const [existingRsvpIds, setExistingRsvpIds] = useState({});
   const [guestDocId, setGuestDocId] = useState(null);
   const [guestCountFromDoc, setGuestCountFromDoc] = useState(1);
   const [isDraftResume, setIsDraftResume] = useState(false);
@@ -103,7 +104,6 @@ const WeddingLogistics = () => {
     setMemberIds([]);
     setAttendance({});
     setDietary({});
-    setExistingRsvpIds({});
     setGuestDocId(null);
     setGuestCountFromDoc(1);
     setIsDraftResume(false);
@@ -168,20 +168,25 @@ const WeddingLogistics = () => {
 
     const data = matchedDoc.data();
     const self = `${firstName.trim()} ${lastName.trim()}`.toLowerCase();
-    const guestCount =
-      data.guestCount ??
-      (Array.isArray(data.partyMembers) ? data.partyMembers.length : 0) + 1;
-    const rawParty = Array.isArray(data.partyMembers) ? data.partyMembers : [];
     const rawPartyIds = Array.isArray(data.partyMemberIds)
       ? data.partyMemberIds
       : [];
+    const guestCount = data.guestCount ?? rawPartyIds.length + 1;
 
-    const names = [self];
     const ids = [data.guestId ?? null];
     for (let i = 0; i < guestCount - 1; i++) {
-      const val = rawParty[i];
-      names.push(val ? val.toLowerCase() : "");
       ids.push(rawPartyIds[i] ?? null);
+    }
+
+    const filledMemberIds = ids.slice(1).filter(Boolean);
+    const memberNameMap = filledMemberIds.length
+      ? await lookupNamesByGuestIds(filledMemberIds)
+      : {};
+
+    const names = [self];
+    for (let i = 1; i < ids.length; i++) {
+      const id = ids[i];
+      names.push(id && memberNameMap[id] ? memberNameMap[id] : "");
     }
 
     const namedIds = ids.filter((id, i) => id && names[i].trim());
@@ -203,20 +208,12 @@ const WeddingLogistics = () => {
       }
     });
 
-    const idsByIndex = {};
-    names.forEach((_, i) => {
-      const guestId = ids[i];
-      if (guestId && existingRsvps[guestId])
-        idsByIndex[i] = existingRsvps[guestId].id;
-    });
-
     setGuestDocId(matchedDoc.id);
     setGuestCountFromDoc(guestCount);
     setMemberNames(names);
     setMemberIds(ids);
     setAttendance(att);
     setDietary(diet);
-    setExistingRsvpIds(idsByIndex);
     const hasDraft = Object.values(existingRsvps).some((r) => r.isDraft);
     const hasExisting = Object.keys(existingRsvps).length > 0;
     setIsDraftResume(hasDraft);
@@ -253,7 +250,7 @@ const WeddingLogistics = () => {
     const parsed = phoneNumber ? parsePhoneNumber(phoneNumber) : null;
     const formattedPhone = parsed
       ? `+${parsed.countryCallingCode} ${parsed.nationalNumber}`
-      : phoneNumber;
+      : phoneNumber || "";
 
     const memberRsvps = memberNames
       .map((name, i) => ({
@@ -279,13 +276,7 @@ const WeddingLogistics = () => {
         phoneNumber: formattedPhone,
       }));
 
-    const existingIdsByGuestId = {};
-    memberNames.forEach((name, i) => {
-      if (name.trim() && ids[i] && existingRsvpIds[i])
-        existingIdsByGuestId[ids[i]] = existingRsvpIds[i];
-    });
-
-    return { submittedBy, formattedPhone, memberRsvps, existingIdsByGuestId };
+    return { submittedBy, formattedPhone, memberRsvps };
   };
 
   const persistGuestData = async () => {
@@ -296,27 +287,25 @@ const WeddingLogistics = () => {
       memberNames.slice(1).map(async (rawName, relIdx) => {
         const name = rawName.trim();
         const slotIdx = relIdx + 1;
-        if (!name || updatedIds[slotIdx]) return;
+        if (!name) return;
         const parts = name.split(" ");
         const fn = parts[0];
         const ln = parts.length > 1 ? parts.slice(1).join(" ") : "";
+        if (updatedIds[slotIdx]) {
+          await updateGuestMemberName(updatedIds[slotIdx], fn, ln);
+          return;
+        }
         updatedIds[slotIdx] = await upsertGuestForMember(
           fn,
           ln,
           guestCountFromDoc,
+          updatedIds[0],
         );
       }),
     );
 
-    const updatedPartyNames = memberNames
-      .slice(1)
-      .map((n) => n.trim().toLowerCase() || null);
     const updatedPartyIds = updatedIds.slice(1).map((id) => id ?? null);
-    await updateGuestPartyMembers(
-      guestDocId,
-      updatedPartyNames,
-      updatedPartyIds,
-    );
+    await updateGuestPartyMembers(guestDocId, updatedPartyIds);
 
     setMemberIds(updatedIds);
     return updatedIds;
@@ -331,9 +320,9 @@ const WeddingLogistics = () => {
     setSubmitting(true);
 
     const finalIds = await persistGuestData();
-    const { submittedBy, formattedPhone, memberRsvps, existingIdsByGuestId } =
+    const { submittedBy, formattedPhone, memberRsvps } =
       buildRsvpPayload(false, finalIds);
-    await saveRsvps(memberRsvps, existingIdsByGuestId);
+    await saveRsvps(memberRsvps);
     notifyGoogleSheets({
       submittedBy,
       phoneNumber: formattedPhone,
@@ -346,11 +335,8 @@ const WeddingLogistics = () => {
 
   const handleSave = async () => {
     const finalIds = await persistGuestData();
-    const { memberRsvps, existingIdsByGuestId } = buildRsvpPayload(
-      true,
-      finalIds,
-    );
-    await saveRsvps(memberRsvps, existingIdsByGuestId, true);
+    const { memberRsvps } = buildRsvpPayload(true, finalIds);
+    await saveRsvps(memberRsvps, true);
   };
 
   const toggleDay = (key) => {

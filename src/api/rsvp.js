@@ -3,7 +3,7 @@ import {
   collection,
   where,
   getDocs,
-  addDoc,
+  getDoc,
   setDoc,
   updateDoc,
   doc,
@@ -12,8 +12,22 @@ import {
 import { db } from "../firebase_config";
 /** @import { GuestDoc, RsvpDoc, MemberRsvpPayload } from "../types" */
 
+/**
+ * @param {string} firstName
+ * @param {string} lastName
+ * @param {string} [parentGuestId]
+ * @returns {Promise<string>}
+ */
+export async function generateGuestId(firstName, lastName, parentGuestId = "") {
+  const slug = `${firstName.trim().toLowerCase()}${lastName.trim().toLowerCase()}`;
+  const seed = `wedding2026_${slug}_${parentGuestId}`;
+  const buffer = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(seed));
+  const suffix = String(new DataView(buffer).getUint32(0) % 1e8).padStart(8, "0");
+  return `${slug}-${suffix}`;
+}
+
 const SHEETS_URL =
-  "https://script.google.com/macros/s/AKfycbyIXHCHnBBIII6d8r6Ksq5vcnmpsGLWmTz9Nh9zQtJYjZtsP_BVEGdO6T1voxfvGqu-vQ/exec";
+  "https://script.google.com/macros/s/AKfycbzbaw3M8ojriJixlC6B9rIS7S31h9ZbJ47N1Rwp36S0LyluQpL4wUfq9sDSHQcVZMK7pA/exec";
 
 /**
  * @param {string} firstName
@@ -40,17 +54,15 @@ export async function lookupGuest(firstName, lastName) {
 
 /**
  * @param {string[]} memberGuestIds
- * @returns {Promise<Record<string, RsvpDoc & { id: string }>>}
+ * @returns {Promise<Record<string, RsvpDoc>>} map of guestId → rsvp data (doc ID equals guestId)
  */
 export async function lookupExistingRsvps(memberGuestIds) {
   const results = await Promise.all(
     memberGuestIds.map(async (guestId) => {
       if (!guestId) return null;
-      const snap = await getDocs(
-        query(collection(db, "rsvps"), where("guestId", "==", guestId)),
-      );
-      if (snap.empty) return null;
-      return [guestId, { id: snap.docs[0].id, ...snap.docs[0].data() }];
+      const snap = await getDoc(doc(db, "rsvps", guestId));
+      if (!snap.exists()) return null;
+      return [guestId, snap.data()];
     }),
   );
   return Object.fromEntries(results.filter(Boolean));
@@ -58,49 +70,74 @@ export async function lookupExistingRsvps(memberGuestIds) {
 
 /**
  * @param {MemberRsvpPayload[]} memberRsvps
- * @param {Record<string, string>} existingIds - mutable map of guestId → rsvp doc id
  * @param {boolean} [isDraft]
  * @returns {Promise<void>}
  */
-export async function saveRsvps(memberRsvps, existingIds, isDraft = false) {
+export async function saveRsvps(memberRsvps, isDraft = false) {
   await Promise.all(
     memberRsvps.map(async (rsvp) => {
       const data = { ...rsvp, isDraft, submittedAt: serverTimestamp() };
-      const existingId = existingIds[rsvp.guestId];
-      if (existingId) {
-        await setDoc(doc(db, "rsvps", existingId), data);
-      } else {
-        const ref = await addDoc(collection(db, "rsvps"), data);
-        existingIds[rsvp.guestId] = ref.id;
-      }
+      await setDoc(doc(db, "rsvps", rsvp.guestId), data);
     }),
   );
 }
 
 /**
  * @param {string} guestDocId - Firestore document id in the guests collection
- * @param {GuestDoc["partyMembers"]} partyMembersArray
  * @param {GuestDoc["partyMemberIds"]} partyMemberIdsArray
  * @returns {Promise<void>}
  */
-export async function updateGuestPartyMembers(
-  guestDocId,
-  partyMembersArray,
-  partyMemberIdsArray,
-) {
+export async function updateGuestPartyMembers(guestDocId, partyMemberIdsArray) {
   await updateDoc(doc(db, "guests", guestDocId), {
-    partyMembers: partyMembersArray,
     partyMemberIds: partyMemberIdsArray,
   });
+}
+
+/**
+ * @param {string} guestId - used as both the lookup key and doc ID
+ * @param {string} firstName
+ * @param {string} lastName
+ * @returns {Promise<void>}
+ */
+export async function updateGuestMemberName(guestId, firstName, lastName) {
+  await updateDoc(doc(db, "guests", guestId), {
+    firstName: firstName.trim().toLowerCase(),
+    lastName: lastName.trim().toLowerCase(),
+  });
+}
+
+/**
+ * @param {string[]} guestIds
+ * @returns {Promise<Record<string, string>>} map of guestId → full name (lowercase)
+ */
+export async function lookupNamesByGuestIds(guestIds) {
+  const results = await Promise.all(
+    guestIds.map(async (guestId) => {
+      if (!guestId) return null;
+      const snap = await getDocs(
+        query(collection(db, "guests"), where("guestId", "==", guestId)),
+      );
+      if (snap.empty) return null;
+      const { firstName, lastName } = snap.docs[0].data();
+      return [guestId, `${firstName} ${lastName}`.trim()];
+    }),
+  );
+  return Object.fromEntries(results.filter(Boolean));
 }
 
 /**
  * @param {string} firstName
  * @param {string} lastName
  * @param {number} guestCount
+ * @param {string} parentGuestId - guestId of the parent/primary guest this member belongs to
  * @returns {Promise<string>} the guestId (existing or newly created)
  */
-export async function upsertGuestForMember(firstName, lastName, guestCount) {
+export async function upsertGuestForMember(
+  firstName,
+  lastName,
+  guestCount,
+  parentGuestId,
+) {
   const fn = firstName.trim().toLowerCase();
   const ln = lastName.trim().toLowerCase();
   const snap = await getDocs(
@@ -108,19 +145,20 @@ export async function upsertGuestForMember(firstName, lastName, guestCount) {
       collection(db, "guests"),
       where("firstName", "==", fn),
       where("lastName", "==", ln),
+      where("parentGuestId", "==", parentGuestId),
     ),
   );
   if (!snap.empty) {
     return snap.docs[0].data().guestId ?? null;
   }
-  const newGuestId = crypto.randomUUID();
-  await addDoc(collection(db, "guests"), {
+  const newGuestId = await generateGuestId(fn, ln, parentGuestId);
+  await setDoc(doc(db, "guests", newGuestId), {
     firstName: fn,
     lastName: ln,
     guestCount,
-    partyMembers: [],
     partyMemberIds: [],
     guestId: newGuestId,
+    parentGuestId,
   });
   return newGuestId;
 }

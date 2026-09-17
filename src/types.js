@@ -7,10 +7,10 @@
  * @typedef {Object} GuestDoc
  * @property {string} firstName - Lowercase first name
  * @property {string} lastName - Lowercase last name
- * @property {string} guestId - UUID for this guest
+ * @property {string} guestId - Deterministic ID in the form `{firstName}{lastName}-{8digits}`, e.g. `johnsmith-04829173`
  * @property {number} guestCount - Total allowed party size
- * @property {string[]} partyMembers - Full names of additional party members (index 0 = slot 1, etc.)
- * @property {string[]} partyMemberIds - UUIDs corresponding to each partyMembers entry
+ * @property {string[]} partyMemberIds - `guestId`s for each party member slot (null if slot unfilled); length = guestCount - 1
+ * @property {string} [parentGuestId] - guestId of the primary guest this member belongs to (absent on primary guests)
  */
 
 /**
@@ -21,7 +21,7 @@
 /**
  * An RSVP document in the Firestore "rsvps" collection.
  * @typedef {Object} RsvpDoc
- * @property {string} guestId - UUID matching GuestDoc.guestId
+ * @property {string} guestId - ID matching GuestDoc.guestId
  * @property {string} firstName
  * @property {string} lastName
  * @property {string} [phoneNumber]

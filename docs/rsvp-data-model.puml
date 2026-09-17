@@ -3,18 +3,18 @@
 hide circle
 
 class Guest {
-  id: string <<Firestore doc ID>>
-  guestId: string <<UUID>>
+  id: string <<Firestore doc ID = guestId>>
+  guestId: string <<{firstName}{lastName}-{8digits}>>
   firstName: string
   lastName: string
   phoneNumber: string?
   guestCount: number
-  partyMembers: (string | null)[]
   partyMemberIds: (string | null)[]
+  parentGuestId: string? <<FK, party members only>>
 }
 
 class RSVP {
-  id: string <<Firestore doc ID>>
+  id: string <<Firestore doc ID = guestId>>
   guestId: string
   name: string
   submittedBy: string
