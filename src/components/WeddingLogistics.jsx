@@ -110,7 +110,12 @@ const WeddingLogistics = () => {
   };
 
   const handleClose = () => {
-    if (step === 3 && !submitted) {
+    const hasProgress =
+      Object.values(attendance).some((member) =>
+        Object.values(member).some((v) => v !== null),
+      ) ||
+      Object.values(dietary).some((v) => v?.trim());
+    if (step === 3 && !submitted && hasProgress) {
       setShowCloseConfirm(true);
       return;
     }
