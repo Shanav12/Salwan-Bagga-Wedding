@@ -1,18 +1,18 @@
-import { useState, useRef, useEffect, useMemo } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useState, useRef, useEffect, useMemo } from "react";
+import { useLocation } from "react-router-dom";
 import EoO from "../assets/EoO.mp3";
 import teriOre from "../assets/teri_ore.mp3";
 import headlines from "../assets/drake_headlines.mp3";
 import dieForYou from "../assets/die_for_you_weeknd.mp3";
-import jeopardyThemeSong from "../assets/jeopardyThemeSong.mp3"
-import wiiThemeSong from "../assets/wiiThemeSong.mp3"
+import jeopardyThemeSong from "../assets/jeopardyThemeSong.mp3";
+import wiiThemeSong from "../assets/wiiThemeSong.mp3";
 
 const ROUTE_SONG_INDEX = {
-  '/journey': 0,
-  '/gallery': 1,
-  '/lineup': 2,
-  '/wedding-logistics': 3,
-  '/quiz': 4,
+  "/journey": 0,
+  "/gallery": 1,
+  "/lineup": 2,
+  "/wedding-logistics": 3,
+  "/quiz": 4,
 };
 
 const MusicPlayer = ({ showPlay }) => {
@@ -21,7 +21,10 @@ const MusicPlayer = ({ showPlay }) => {
   const audioRef = useRef(null);
   const playingRef = useRef(playing);
   const location = useLocation();
-  const songs = useMemo(() => [teriOre, dieForYou, headlines, EoO, jeopardyThemeSong, wiiThemeSong], []);
+  const songs = useMemo(
+    () => [teriOre, dieForYou, headlines, EoO, jeopardyThemeSong, wiiThemeSong],
+    [],
+  );
 
   useEffect(() => {
     playingRef.current = playing;
@@ -42,7 +45,7 @@ const MusicPlayer = ({ showPlay }) => {
   useEffect(() => {
     if (!audioRef.current) return;
     const audio = audioRef.current;
-    const isQuiz = location.pathname === '/quiz';
+    const isQuiz = location.pathname === "/quiz";
     audio.pause();
     audio.src = songs[currIdx];
     audio.loop = !isQuiz;
@@ -51,10 +54,10 @@ const MusicPlayer = ({ showPlay }) => {
     let cleanup = () => {};
     if (isQuiz) {
       const handleEnded = () => {
-        setCurrIdx(prev => (prev === 4 ? 5 : 4));
+        setCurrIdx((prev) => (prev === 4 ? 5 : 4));
       };
-      audio.addEventListener('ended', handleEnded);
-      cleanup = () => audio.removeEventListener('ended', handleEnded);
+      audio.addEventListener("ended", handleEnded);
+      cleanup = () => audio.removeEventListener("ended", handleEnded);
     }
 
     if (playingRef.current) {
@@ -75,7 +78,7 @@ const MusicPlayer = ({ showPlay }) => {
 
   useEffect(() => {
     const songIdx = ROUTE_SONG_INDEX[location.pathname];
-    if (location.pathname === '/') {
+    if (location.pathname === "/") {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setPlaying(false);
       return;
@@ -88,27 +91,38 @@ const MusicPlayer = ({ showPlay }) => {
 
   return (
     <div className="flex items-center gap-3 px-5 py-2.5 text-[#5C2C1D]">
-      {showPlay &&
-      <>
-        <button
-          onClick={() => setPlaying(p => !p)}
-          className="w-8 h-8 rounded-full border border-[#5C2C1D] flex items-center justify-center cursor-pointer"
-        >
-          {playing ? (
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-              <rect x="6" y="4" width="3" height="16" />
-              <rect x="15" y="4" width="3" height="16" />
-            </svg>
-          ) : (
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M5 3l14 9-14 9V3z" />
-            </svg>
-          )}
-        </button>
-        <span className="text-xs tracking-[0.15em] uppercase font-prata opacity-80">
-          {playing ? 'Pause Music' : 'Play Music'}
-        </span>
-      </>}
+      {showPlay && (
+        <>
+          <button
+            onClick={() => setPlaying((p) => !p)}
+            className="w-8 h-8 rounded-full border border-[#5C2C1D] flex items-center justify-center cursor-pointer"
+          >
+            {playing ? (
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <rect x="6" y="4" width="3" height="16" />
+                <rect x="15" y="4" width="3" height="16" />
+              </svg>
+            ) : (
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path d="M5 3l14 9-14 9V3z" />
+              </svg>
+            )}
+          </button>
+          <span className="text-xs tracking-[0.15em] uppercase font-prata opacity-80">
+            {playing ? "Pause Music" : "Play Music"}
+          </span>
+        </>
+      )}
     </div>
   );
 };

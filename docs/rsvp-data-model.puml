@@ -1,0 +1,42 @@
+@startuml rsvp-data-model
+
+hide circle
+
+class Guest {
+  id: string <<Firestore doc ID = guestId>>
+  guestId: string <<{firstName}{lastName}-{8digits}>>
+  firstName: string
+  lastName: string
+  phoneNumber: string?
+  guestCount: number
+  partyMemberIds: (string | null)[]
+  parentGuestId: string? <<FK, party members only>>
+}
+
+class RSVP {
+  id: string <<Firestore doc ID = guestId>>
+  guestId: string
+  name: string
+  submittedBy: string
+  phoneNumber: string
+  dietaryRestrictions: string
+  isDraft: boolean
+  submittedAt: timestamp
+  events: Events
+}
+
+class Events {
+  haldi: boolean | null
+  sangeet: boolean | null
+  baraat: boolean | null
+  weddingCeremony: boolean | null
+  cocktailDinner: boolean | null
+  cocktailHour: boolean | null
+  dinner: boolean | null
+}
+
+Guest "1" --> "0..*" RSVP : guestId
+Guest "0..*" o-- Guest : partyMemberIds
+RSVP "1" *-- "1" Events : embeds
+
+@enduml

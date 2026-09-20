@@ -3,7 +3,6 @@ import { getStorage } from "firebase/storage";
 import { getAuth } from "firebase/auth";
 import { initializeFirestore, persistentLocalCache } from "firebase/firestore";
 
-
 const firebaseConfig = {
   apiKey: "AIzaSyCUU5rwQEaRf2E-lll3DzUqdzCAduaQ0AI",
   authDomain: "salwan-bagga-wedding-6b25f.firebaseapp.com",
@@ -11,7 +10,7 @@ const firebaseConfig = {
   storageBucket: "salwan-bagga-wedding-6b25f.firebasestorage.app",
   messagingSenderId: "227249034078",
   appId: "1:227249034078:web:f896fb3b21e304a4b2b5cf",
-  measurementId: "G-KLZKHFMQ1W"
+  measurementId: "G-KLZKHFMQ1W",
 };
 
 const app = initializeApp(firebaseConfig);
@@ -22,11 +21,10 @@ export const db = initializeFirestore(app, {
   localCache: persistentLocalCache(),
 });
 
-
 // async function duplicateChecker() {
 //   await signInAnonymously(auth);
 //   const snapshot = await getDocs(collection(db, "guests"));
- 
+
 //   if (snapshot.empty) {
 //     console.log("No guests found.");
 //     return;
@@ -54,9 +52,8 @@ export const db = initializeFirestore(app, {
 //     });
 //   }
 // }
- 
-// duplicateChecker().catch(console.error);
 
+// duplicateChecker().catch(console.error);
 
 // async function checkNames() {
 //   await signInAnonymously(auth);
