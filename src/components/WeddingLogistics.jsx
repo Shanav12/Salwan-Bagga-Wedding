@@ -63,11 +63,11 @@ const WeddingLogistics = () => {
   const [confettiOpacity, setConfettiOpacity] = useState(1);
 
   const [showModal, setShowModal] = useState(false);
+  const [showCloseConfirm, setShowCloseConfirm] = useState(false);
   const [step, setStep] = useState(1);
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
-  const [showCloseConfirm, setShowCloseConfirm] = useState(false);
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -123,12 +123,18 @@ const WeddingLogistics = () => {
     resetModal();
   };
 
+  const handleCloseNoSave = () => {
+    setShowModal(false);
+    resetModal();
+  };
+
   const handleConfirmClose = async (save) => {
     setShowCloseConfirm(false);
     if (save) await handleSave();
     setShowModal(false);
     resetModal();
   };
+
 
   const handleLookup = async () => {
     if (!firstName.trim() || !lastName.trim()) return;
@@ -340,8 +346,8 @@ const WeddingLogistics = () => {
 
   const handleSave = async () => {
     const finalIds = await persistGuestData();
-    const { memberRsvps } = buildRsvpPayload(true, finalIds);
-    await saveRsvps(memberRsvps, true);
+    const { memberRsvps } = buildRsvpPayload(isDraftResume, finalIds);
+    await saveRsvps(memberRsvps, isDraftResume);
   };
 
   const toggleDay = (key) => {
@@ -354,18 +360,6 @@ const WeddingLogistics = () => {
 
   return (
     <div className="min-h-full bg-[#faf0e6] py-14 px-4">
-      {showConfetti && (
-        <Confetti
-          width={width}
-          height={height}
-          frameRate={60}
-          style={{
-            transition: "opacity 2s ease-out",
-            opacity: confettiOpacity,
-          }}
-        />
-      )}
-
       {/* Close confirmation dialog */}
       {showCloseConfirm && (
         <div className="fixed inset-0 bg-black/40 z-[60] flex items-center justify-center px-4">
@@ -394,16 +388,39 @@ const WeddingLogistics = () => {
         </div>
       )}
 
+      {showConfetti && (
+        <Confetti
+          width={width}
+          height={height}
+          frameRate={60}
+          style={{
+            transition: "opacity 2s ease-out",
+            opacity: confettiOpacity,
+          }}
+        />
+      )}
+
+
       {/* RSVP Modal */}
       {showModal && (
         <div
           className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center px-4 py-8"
-          onClick={handleClose}
+          onClick={handleCloseNoSave}
         >
           <div
-            className="bg-[#faf0e6] rounded-xl px-6 md:px-8 py-8 w-full max-w-xl flex flex-col items-center gap-5 shadow-xl max-h-[90vh] overflow-y-auto animate-fade-in md:py-12"
+            className="relative bg-[#faf0e6] rounded-xl px-6 md:px-8 py-8 w-full max-w-xl flex flex-col items-center gap-5 shadow-xl max-h-[90vh] overflow-y-auto animate-fade-in md:py-12"
             onClick={(e) => e.stopPropagation()}
           >
+            <button
+              onClick={handleCloseNoSave}
+              className="absolute top-4 right-4 text-[#691700]/60 hover:text-[#691700] hover:bg-[#691700]/10 transition-colors cursor-pointer border border-[#691700]/40 hover:border-[#691700] rounded-md p-1"
+              aria-label="Close"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
             {step === 1 && (
               <ModalStep1
                 firstName={firstName}

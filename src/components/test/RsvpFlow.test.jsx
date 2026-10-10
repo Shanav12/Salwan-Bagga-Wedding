@@ -23,9 +23,11 @@ vi.mock("react-phone-number-input", () => ({
 
 const mockLookupGuest = vi.fn();
 const mockLookupExistingRsvps = vi.fn();
+const mockLookupNamesByGuestIds = vi.fn();
 vi.mock("../../api/rsvp", () => ({
   lookupGuest: (...args) => mockLookupGuest(...args),
   lookupExistingRsvps: (...args) => mockLookupExistingRsvps(...args),
+  lookupNamesByGuestIds: (...args) => mockLookupNamesByGuestIds(...args),
   saveRsvps: vi.fn(),
   notifyGoogleSheets: vi.fn(),
   updateGuestPartyMembers: vi.fn(),
@@ -35,6 +37,7 @@ vi.mock("../../api/rsvp", () => ({
 describe("RSVP flow — step routing", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockLookupNamesByGuestIds.mockResolvedValue({});
     render(<WeddingLogistics />);
   });
 
@@ -109,6 +112,7 @@ describe("RSVP flow — step routing", () => {
       ]),
     );
     mockLookupExistingRsvps.mockResolvedValue({});
+    mockLookupNamesByGuestIds.mockResolvedValue({ "gid-jane": "jane doe" });
 
     await fillStep1("John", "Doe");
 

@@ -16,13 +16,6 @@ The official wedding website for **Ambika Salwan & Sahil Bagga**. Built with Rea
 | **Quiz**              | Interactive trivia game about the couple                                        |
 | **RSVP**              | Modal-based RSVP flow. guest lookup, per-event attendance, dietary restrictions |
 
-**Additional UX details:**
-
-- Background music player (auto-hidden on scroll, restored on navigation)
-- Save-the-date splash screen shown once per browser session
-- Confetti on RSVP submission
-- Fully responsive
-
 ---
 
 ## Tech Stack
@@ -35,7 +28,7 @@ The official wedding website for **Ambika Salwan & Sahil Bagga**. Built with Rea
 | Routing            | React Router v7 (hash-based, for GitHub Pages compatibility) |
 | Backend / DB       | Firebase Firestore                                           |
 | RSVP notifications | Google Apps Script webhook → Google Sheets                   |
-| Deployment         | `gh-pages` → GitHub Pages                                    |
+| Deployment         | GitHub Pages                                    |
 | Testing            | Vitest + React Testing Library                               |
 
 ---
@@ -48,25 +41,30 @@ The official wedding website for **Ambika Salwan & Sahil Bagga**. Built with Rea
 │   ├── api/
 │   │   ├── rsvp.js          # Firestore RSVP read/write + Google Sheets webhook
 │   │   ├── gallery.js       # Gallery image fetching
-│   │   └── quiz.js          # Quiz question fetching
+│   │   ├── quiz.js          # Quiz question fetching
+│   │   └── test/
+│   │       └── rsvp.test.js
 │   ├── components/
 │   │   ├── Home.jsx         # Landing page with countdown
 │   │   ├── Journey.jsx      # Couple's story timeline
 │   │   ├── Gallery.jsx      # Photo gallery with lightbox
-│   │   ├── WeddingLogistics.jsx  # Schedule / venue info
+│   │   ├── WeddingLogistics.jsx  # Schedule / venue info + RSVP modal host
 │   │   ├── Lineup.jsx       # Wedding party
 │   │   ├── Quiz.jsx         # Trivia game
-│   │   ├── RsvpModal.jsx    # Multi-step RSVP form
+│   │   ├── RsvpModal.jsx    # Multi-step RSVP form steps
 │   │   ├── NavBar.jsx       # Top navigation
 │   │   ├── MusicPlayer.jsx  # Floating background music player
-│   │   └── EventCard.jsx    # Reusable event card
+│   │   ├── EventCard.jsx    # Reusable event card
+│   │   └── test/            # Component tests + helpers
 │   ├── contexts/
 │   │   ├── GalleryContext.jsx
 │   │   └── GalleryProvider.jsx
 │   ├── assets/              # Images, audio files
 │   ├── App.jsx              # Root component, routes, splash screen
 │   ├── firebase_config.js   # Firebase initialization
-│   └── weddingConstants.js  # Event schedule, hotel URL, name-role map
+│   ├── weddingConstants.js  # Event schedule, hotel URL, name-role map
+│   ├── main.jsx             # App entry point
+│   └── index.css
 ├── docs/
 │   ├── rsvp-data-model.md   # Firestore schema documentation
 │   ├── rsvp-data-model.puml # PlantUML ERD source
@@ -87,13 +85,12 @@ The official wedding website for **Ambika Salwan & Sahil Bagga**. Built with Rea
 RSVPs are stored in **Firebase Firestore** with two collections:
 
 **`guests`** — pre-seeded list of invited guests:
+- `guestId` — UUID used as the foreign key across collections (distinct from the Firestore doc ID)
 
-- `guestId` — stable UUID used as the foreign key across collections (distinct from the Firestore doc ID)
 - `firstName`, `lastName` (lowercase)
 - `phoneNumber` (optional, used to disambiguate guests with the same name)
 - `guestCount` — total party size including self
-- `partyMembers` — indexed array (`guestCount - 1` slots) of lowercase full names; `null` for unfilled slots
-- `partyMemberIds` — parallel array of `guestId` values for each party member; `null` until their guest doc is created
+- `partyMemberIds` — array of `guestId` values for each party member (`guestCount - 1` slots); `null` until their guest doc is created
 
 **`rsvps`** — one document per person (one per party member, including the party head):
 
@@ -174,36 +171,6 @@ npm run deploy
 ```
 
 This builds the project into `dist/` and pushes it to the `gh-pages` branch.
-
-## Project Structure
-
-```
-Salwan-Bagga-Wedding/
-├── src/
-│   ├── api/              # API utilities (e.g. quiz data fetching)
-│   ├── assets/           # Images, audio files
-│   ├── components/       # Page-level and shared React components
-│   │   ├── EventCard.jsx
-│   │   ├── Gallery.jsx
-│   │   ├── Home.jsx
-│   │   ├── Journey.jsx
-│   │   ├── Lineup.jsx
-│   │   ├── MusicPlayer.jsx
-│   │   ├── NavBar.jsx
-│   │   ├── Quiz.jsx
-│   │   └── WeddingLogistics.jsx
-│   ├── contexts/         # React context providers (e.g. GalleryContext)
-│   ├── test/             # Vitest test files
-│   ├── App.jsx           # Root component and route definitions
-│   ├── firebase_config.js
-│   ├── main.jsx          # App entry point
-│   └── index.css
-├── public/
-├── index.html
-├── vite.config.js
-├── tailwind.config.js
-└── package.json
-```
 
 ## Firebase Configuration
 
