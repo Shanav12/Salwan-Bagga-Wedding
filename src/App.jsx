@@ -9,6 +9,7 @@ import GalleryProvider from "./contexts/GalleryProvider";
 import Quiz from "./components/Quiz";
 import { Routes, Route, HashRouter, useLocation } from "react-router-dom";
 import WeddingLogistics from "./components/WeddingLogistics";
+import RoommateForm from "./components/RoommateForm";
 import { useState, useEffect } from "react";
 import saveTheDate from "../src/assets/saveTheDate.png";
 
@@ -48,6 +49,7 @@ const AppContent = () => {
         <Route path="/wedding-logistics" element={<WeddingLogistics />} />
         <Route path="/lineup" element={<Lineup />} />
         <Route path="/quiz" element={<Quiz />} />
+        <Route path="/roommates" element={<RoommateForm />} />
       </Routes>
     </>
   );
