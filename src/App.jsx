@@ -26,7 +26,8 @@ const ScrollToTop = () => {
 const AppContent = () => {
   const { pathname } = useLocation();
   const [scrollHidesControls, setScrollHidesControls] = useState(false);
-  const showPlay = pathname !== "/" && !scrollHidesControls;
+  const showPlay = pathname !== "/" && pathname !== "/roommates" && !scrollHidesControls;
+  const showNav = pathname !== "/roommates";
 
   useEffect(() => {
     setScrollHidesControls(false);
@@ -35,10 +36,12 @@ const AppContent = () => {
   return (
     <>
       <ScrollToTop />
-      <NavBar
-        showPlay={showPlay}
-        setScrollHidesControls={setScrollHidesControls}
-      />
+      {showNav && (
+        <NavBar
+          showPlay={showPlay}
+          setScrollHidesControls={setScrollHidesControls}
+        />
+      )}
       <div className="fixed top-1 right-6 z-50">
         <MusicPlayer showPlay={showPlay} />
       </div>
