@@ -2,8 +2,8 @@ import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 const ROOMMATE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbw1UO_plMZ2L9ZPOjHAlFLiwreeZz3x8OI0fAVZW1LYwtB3JqBRYlkOLBecgVHOMWHt/exec";
-
 const SHEET_VIEW_URL = "https://docs.google.com/spreadsheets/d/16KI6iI3DC5gqxOGhdz-8ZvM_5mI2U3T139zV3OAzACA/edit?usp=sharing";
+
 
 const Divider = ({ large = false }) => (
   <div className="flex items-center justify-center gap-2 md:gap-3">
@@ -181,7 +181,7 @@ export default function RoommateForm() {
             </div>
 
             <div>
-              <label className={labelClass}>People You Already Have</label>
+              <label className={labelClass}>Current Party Size</label>
               <Select
                 value={form.peopleHave}
                 onChange={setVal("peopleHave")}
@@ -191,7 +191,7 @@ export default function RoommateForm() {
             </div>
 
             <div>
-              <label className={labelClass}>People You're Looking For</label>
+              <label className={labelClass}>Number of People You're Looking For</label>
               <Select
                 value={form.peopleCount}
                 onChange={setVal("peopleCount")}
