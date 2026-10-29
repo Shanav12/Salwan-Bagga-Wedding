@@ -22,6 +22,7 @@ import {
   ModalConfirmation,
   ModalDraftResume,
 } from "./RsvpModal";
+import { HOTEL_URL } from "../weddingConstants";
 import "react-phone-number-input/style.css";
 import "../App.css";
 
@@ -494,34 +495,51 @@ const WeddingLogistics = () => {
         </div>
       </div>
 
-      {/* RSVP Section */}
+
+      {/* Room Rates + RSVP Section */}
       <section className="max-w-2xl md:max-w-3xl mx-auto px-4 py-6 text-center">
-        <h2 className="font-prata text-3xl md:text-4xl text-[#4a4a4a] mt-1 md:mt-2 mb-2">
-          RSVP
-        </h2>
-        <div className="mb-2 md:mb-4">
-          <Divider />
+        <div className="flex flex-col md:flex-row gap-6">
+        <div className="bg-[#f5f2ee]/80 border border-[#691700]/30 rounded-xl px-6 py-7 flex-1">
+          <h2 className="font-prata text-2xl md:text-3xl text-[#4a4a4a] mb-2">
+            Room Rates
+          </h2>
+          <div className="mb-3">
+            <Divider />
+          </div>
+          <p className="font-prata text-[#5a5a5a] text-sm md:text-base lg:text-lg leading-relaxed">
+            Please note that we have secured a heavily discounted room rate for our guests from{" "}
+            <span className="text-[#691700]">May 31 – June 7, 2027</span>.{" "}
+            Per venue policy, the hotel booking must be made using the link below.
+          </p>
+          <a
+            href={HOTEL_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-4 inline-block font-prata text-base text-white bg-[#691700] px-6 py-2 rounded-lg transition-all duration-200 hover:bg-[#4a1000] hover:-translate-y-0.5"
+          >
+            View Hotel Rates
+          </a>
         </div>
-        <div className="font-prata text-[#5a5a5a] text-sm md:text-base lg:text-lg mt-2 space-y-2 md:space-y-3">
-          <p className="leading-relaxed">
-            Please note that we have secured a heavily discounted room rate for
-            our guests from May 31 through June 7, 2027.
+
+        <div className="bg-[#f5f2ee]/80 border border-[#691700]/30 rounded-xl px-6 py-7 flex-1">
+          <h2 className="font-prata text-2xl md:text-3xl text-[#4a4a4a] mb-2">
+            RSVP
+          </h2>
+          <div className="mb-3">
+            <Divider />
+          </div>
+          <p className="font-prata text-[#5a5a5a] text-sm md:text-base lg:text-lg leading-relaxed">
+            Please let us know which events your party will attend using the RSVP link below.
+            We'll use this to coordinate with the venue. You can always come back and update your response!
           </p>
-          <p className="leading-relaxed">
-            Per venue policy, the RSVP must be made using the link displayed
-            after submitting the form below.
-          </p>
-          <p className="leading-relaxed">
-            We appreciate your understanding and can't wait to celebrate with
-            you!
-          </p>
+          <button
+            onClick={() => setShowModal(true)}
+            className="mt-4 inline-block font-prata text-base text-white bg-[#691700] px-6 py-2 rounded-lg transition-all duration-200 hover:bg-[#4a1000] hover:-translate-y-0.5 cursor-pointer"
+          >
+            RSVP Form
+          </button>
         </div>
-        <button
-          onClick={() => setShowModal(true)}
-          className="mt-5 inline-block font-prata text-lg text-white bg-[#691700] px-6 py-2 rounded-lg transition-all duration-200 hover:bg-[#4a1000] hover:-translate-y-0.5 cursor-pointer"
-        >
-          RSVP Form
-        </button>
+        </div>
       </section>
 
       {/* Events Section */}
