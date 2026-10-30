@@ -496,12 +496,12 @@ const WeddingLogistics = () => {
       </div>
 
 
-      {/* Room Rates + RSVP Section */}
+      {/* Hotel Booking + RSVP Section */}
       <section className="max-w-2xl md:max-w-3xl mx-auto px-4 py-6 text-center">
         <div className="flex flex-col md:flex-row gap-6">
         <div className="bg-[#f5f2ee]/80 border border-[#691700]/30 rounded-xl px-6 py-7 flex-1">
           <h2 className="font-prata text-2xl md:text-3xl text-[#4a4a4a] mb-2">
-            Room Rates
+            Hotel Booking
           </h2>
           <div className="mb-3">
             <Divider />
@@ -517,7 +517,7 @@ const WeddingLogistics = () => {
             rel="noopener noreferrer"
             className="mt-4 inline-block font-prata text-base text-white bg-[#691700] px-6 py-2 rounded-lg transition-all duration-200 hover:bg-[#4a1000] hover:-translate-y-0.5"
           >
-            View Hotel Rates
+            Hotel Website
           </a>
         </div>
 
