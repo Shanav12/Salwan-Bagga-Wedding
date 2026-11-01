@@ -3,6 +3,7 @@ import Confetti from "react-confetti";
 import { useWindowSize } from "react-use";
 import { useState, useEffect } from "react";
 import saveTheDateBack from "../assets/saveTheDateBack.png";
+import dressCode from "../assets/event-color-breakdown.webp"
 import EventCard from "./EventCard";
 import {
   lookupGuest,
@@ -581,6 +582,16 @@ const WeddingLogistics = () => {
             )}
           </div>
         ))}
+      </section>
+      {/* Dress Code Section */}
+      <section className="max-w-2xl md:max-w-3xl mx-auto px-4 py-6 mb-10">
+        <h2 className="font-prata text-3xl md:text-4xl text-[#4a4a4a] text-center mb-2">
+          Dress Code
+        </h2>
+        <div className="mb-6">
+          <Divider />
+        <img src={dressCode} alt="Event color schemes" className="w-auto max-w-md mx-auto block rounded-lg mt-4 border border-[#691700]/30" />
+        </div>
       </section>
     </div>
   );
