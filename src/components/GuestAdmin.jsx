@@ -100,12 +100,12 @@ function AddGuestForm({ onAdd }) {
 
       <div>
         <label className={labelClass}>First Name</label>
-        <input required type="text" placeholder="e.g. priya" value={form.firstName} onChange={set("firstName")} className={inputClass} />
+        <input required type="text" placeholder="e.g. ambika" value={form.firstName} onChange={set("firstName")} className={inputClass} />
       </div>
 
       <div>
         <label className={labelClass}>Last Name</label>
-        <input required type="text" placeholder="e.g. sharma" value={form.lastName} onChange={set("lastName")} className={inputClass} />
+        <input required type="text" placeholder="e.g. salwan" value={form.lastName} onChange={set("lastName")} className={inputClass} />
       </div>
 
       <div>
