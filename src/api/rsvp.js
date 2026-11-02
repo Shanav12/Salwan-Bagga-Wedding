@@ -27,7 +27,7 @@ export async function generateGuestId(firstName, lastName, parentGuestId = "") {
 }
 
 const SHEETS_URL =
-  "https://script.google.com/macros/s/AKfycbzRD2xx6l4pieKUvlm5uzyrdoqzc12bxuyKIZMsomYI9RyBrXWrOYVl8KQHeOmP0h4vpw/exec";
+  "https://script.google.com/macros/s/AKfycbyvDqeUnWQCNBud4ssIVaHl7Cu0bM6SYrSZFAwjwh0rC0BBPCTGQidYYhNsatzFozoATg/exec";
 
 /**
  * @param {string} firstName
