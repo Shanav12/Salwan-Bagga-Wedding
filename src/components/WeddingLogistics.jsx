@@ -3,7 +3,7 @@ import Confetti from "react-confetti";
 import { useWindowSize } from "react-use";
 import { useState, useEffect } from "react";
 import saveTheDateBack from "../assets/saveTheDateBack.png";
-import dressCode from "../assets/event-color-breakdown.webp"
+import dressCode from "../assets/dress-code.webp"
 import EventCard from "./EventCard";
 import {
   lookupGuest,
