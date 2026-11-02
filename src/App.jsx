@@ -10,6 +10,7 @@ import Quiz from "./components/Quiz";
 import { Routes, Route, HashRouter, useLocation } from "react-router-dom";
 import WeddingLogistics from "./components/WeddingLogistics";
 import RoommateForm from "./components/RoommateForm";
+import GuestAdmin from "./components/GuestAdmin";
 import { useState, useEffect } from "react";
 import saveTheDate from "../src/assets/saveTheDate.png";
 
@@ -26,8 +27,8 @@ const ScrollToTop = () => {
 const AppContent = () => {
   const { pathname } = useLocation();
   const [scrollHidesControls, setScrollHidesControls] = useState(false);
-  const showPlay = pathname !== "/" && pathname !== "/roommates" && !scrollHidesControls;
-  const showNav = pathname !== "/roommates";
+  const showPlay = pathname !== "/" && pathname !== "/roommates" && pathname !== "/guests" && !scrollHidesControls;
+  const showNav = pathname !== "/roommates" && pathname !== "/guests";
 
   useEffect(() => {
     setScrollHidesControls(false);
@@ -53,6 +54,7 @@ const AppContent = () => {
         <Route path="/lineup" element={<Lineup />} />
         <Route path="/quiz" element={<Quiz />} />
         <Route path="/roommates" element={<RoommateForm />} />
+        <Route path="/guests" element={<GuestAdmin />} />
       </Routes>
     </>
   );
