@@ -10,7 +10,6 @@ const GalleryProvider = ({ children }) => {
   const [authReady, setAuthReady] = useState(false);
 
   useEffect(() => {
-    localStorage.removeItem("galleryImageCache");
     signInAnonymously(auth)
       .catch((err) => console.error("Auth error:", err))
       .finally(() => setAuthReady(true));

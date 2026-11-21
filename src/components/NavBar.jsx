@@ -60,10 +60,10 @@ const NavBar = ({ showPlay, setScrollHidesControls }) => {
         <span className="text-[#991D00]">♥</span>
 
         <Link
-          to="/gallery"
+          to="/wedding-photos"
           className="px-3.25 py-1.75 font-prata border border-[#691700] rounded text-[#5a5a5a] hover:bg-[#E0462B] hover:text-white transition-all tracking-wide text-xs uppercase"
         >
-          Gallery
+          Wedding Photos
         </Link>
 
         <span className="text-[#991D00]">♥</span>
@@ -72,7 +72,7 @@ const NavBar = ({ showPlay, setScrollHidesControls }) => {
           to="/lineup"
           className="px-3.25 py-1.75 font-prata border border-[#691700] rounded text-[#5a5a5a] hover:bg-[#E0462B] hover:text-white transition-all tracking-wide text-xs uppercase"
         >
-          Wedding Party Lineup
+          Wedding Lineup
         </Link>
 
         <span className="text-[#991D00]">♥</span>
@@ -87,10 +87,19 @@ const NavBar = ({ showPlay, setScrollHidesControls }) => {
         <span className="text-[#991D00]">♥</span>
 
         <Link
+          to="/memories"
+          className="px-3.25 py-1.75 font-prata border border-[#691700] rounded text-[#5a5a5a] hover:bg-[#E0462B] hover:text-white transition-all tracking-wide text-xs uppercase"
+        >
+          Memories
+        </Link>
+
+        <span className="text-[#991D00]">♥</span>
+
+        <Link
           to="/quiz"
           className="px-3.25 py-1.75 font-prata border border-[#691700] rounded text-[#5a5a5a] hover:bg-[#E0462B] hover:text-white transition-all tracking-wide text-xs uppercase"
         >
-          Take The Quiz
+          Quiz
         </Link>
       </nav>
 
@@ -155,11 +164,11 @@ const NavBar = ({ showPlay, setScrollHidesControls }) => {
           <span className="text-[#991D00]">♥</span>
 
           <Link
-            to="/gallery"
+            to="/wedding-photos"
             onClick={() => setIsMenuOpen(false)}
             className="w-full font-prata text-center px-3.25 py-1.75 border border-[#691700] rounded text-[#5a5a5a] hover:bg-[#E0462B] hover:text-white transition-all tracking-wide text-xs uppercase"
           >
-            Gallery
+            Wedding Photos
           </Link>
 
           <span className="text-[#991D00]">♥</span>
@@ -169,7 +178,7 @@ const NavBar = ({ showPlay, setScrollHidesControls }) => {
             onClick={() => setIsMenuOpen(false)}
             className="w-full font-prata text-center px-3.25 py-1.75 border border-[#691700] rounded text-[#5a5a5a] hover:bg-[#E0462B] hover:text-white transition-all tracking-wide text-xs uppercase"
           >
-            Wedding Party Lineup
+            Wedding Lineup
           </Link>
 
           <span className="text-[#991D00]">♥</span>
@@ -185,11 +194,21 @@ const NavBar = ({ showPlay, setScrollHidesControls }) => {
           <span className="text-[#991D00]">♥</span>
 
           <Link
+            to="/memories"
+            onClick={() => setIsMenuOpen(false)}
+            className="w-full font-prata text-center px-3.25 py-1.75 border border-[#691700] rounded text-[#5a5a5a] hover:bg-[#E0462B] hover:text-white transition-all tracking-wide text-xs uppercase"
+          >
+            Memories
+          </Link>
+
+          <span className="text-[#991D00]">♥</span>
+
+          <Link
             to="/quiz"
             onClick={() => setIsMenuOpen(false)}
             className="w-full font-prata text-center px-3.25 py-1.75 border border-[#691700] rounded text-[#5a5a5a] hover:bg-[#E0462B] hover:text-white transition-all tracking-wide text-xs uppercase"
           >
-            Take The Quiz
+            Quiz
           </Link>
         </nav>
       )}

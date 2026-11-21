@@ -3,9 +3,11 @@ import HomePage from "./components/Home";
 import Journey from "./components/Journey";
 import NavBar from "./components/NavBar";
 import Gallery from "./components/Gallery";
+import WeddingPhotos from "./components/WeddingPhotos";
 import MusicPlayer from "./components/MusicPlayer";
 import Lineup from "./components/Lineup";
 import GalleryProvider from "./contexts/GalleryProvider";
+import WeddingPhotosProvider from "./contexts/WeddingPhotosProvider";
 import Quiz from "./components/Quiz";
 import { Routes, Route, HashRouter, useLocation } from "react-router-dom";
 import WeddingLogistics from "./components/WeddingLogistics";
@@ -49,7 +51,8 @@ const AppContent = () => {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/journey" element={<Journey />} />
-        <Route path="/gallery" element={<Gallery />} />
+        <Route path="/memories" element={<Gallery />} />
+        <Route path="/wedding-photos" element={<WeddingPhotos />} />
         <Route path="/wedding-logistics" element={<WeddingLogistics />} />
         <Route path="/lineup" element={<Lineup />} />
         <Route path="/quiz" element={<Quiz />} />
@@ -81,6 +84,7 @@ const App = () => {
 
   return (
     <GalleryProvider>
+    <WeddingPhotosProvider>
       {splashVisible && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center px-6 py-8"
@@ -100,6 +104,7 @@ const App = () => {
       <HashRouter>
         <AppContent />
       </HashRouter>
+    </WeddingPhotosProvider>
     </GalleryProvider>
   );
 };
